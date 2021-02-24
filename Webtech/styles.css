@@ -127,22 +127,22 @@ background-color: grey;
     Padding-left: 15px;
 }
 
-#disabilities {
+article section #disabilities {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  width: 100%;
+  width: 80%;
 }
 
-#disabilities td, #disabilities th {
+article section #disabilities td, article section #disabilities th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-#disabilities tr:nth-child(even){background-color: #f2f2f2;}
+article section #disabilities tr:nth-child(even){background-color: #f2f2f2;}
 
-#disabilities tr:hover {background-color: #ddd;}
+article section #disabilities tr:hover {background-color: #ddd;}
 
-#disabilities th {
+article section #disabilities th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
