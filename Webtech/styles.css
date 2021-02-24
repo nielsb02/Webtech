@@ -49,8 +49,8 @@ nav {
 article {   
 float: left;
 width: 65%;
-    Position: relative;
-    left:7.5%;
+Position: relative;
+left:7.5%;
 }
 
 article section
@@ -60,24 +60,19 @@ article section
   margin-top:25px;
   margin-bottom:25px;
 }
-article section .figure_with_caption_left{
-  width: 40%;
+
+article section .figure_column {
   float: left;
-    padding: 5px;
-  padding-top:1rem;
-  padding-bottom:1rem;
-  background-color: grey;
-}
-article section .figure_with_caption_right{
   width: 40%;
-  padding-top:1rem;
-  padding-bottom:1rem;
-  background-color: grey;
+  padding: 5px;
 }
-  .figure_with_caption .img {
-  width: 100%;
-  position: relative;
+
+article section .figure_row::after {
+  content: "";
+  clear: both;
+  display: table;
 }
+
 article section .img_full{
   width: 60%;
   position: relative;
@@ -86,7 +81,6 @@ article section .img_full{
   padding-bottom:1rem;
 }
 
-/* Right column */
 aside {
 float: right;
 Position: relative;
@@ -162,5 +156,26 @@ background-color: grey;
       width: 100%;
       padding-top:1rem;
       padding-bottom:1rem;
+      left:0%;
     }
+}
+
+@media screen and (max-width: 1450px){
+  article section .figure_column {
+    float: none;
+    width: 95%;
+    position: relative;
+    right: 5%;
+    padding: 5px;
+  }
+  article section .figure_row::after {
+    content: "";
+    clear: none;
+    display: none;
+  }
+  article section .figure_column img{
+    position: relative;
+    left:25%;
+    width:50%;
+  }
 }
