@@ -2,6 +2,7 @@
 body {
     font-family: Arial;
     padding: 10px;
+    font-size: 1.5rem;
   }
 
 header{
@@ -11,7 +12,9 @@ header{
 }
 
 nav {
-    width: 100%;
+    width: 85%;
+    Position: relative;
+    left:7.5%;
     background-color: #555;
     overflow: auto;
   }
@@ -43,44 +46,93 @@ nav {
     background-color: #4CAF50;
 }
 
-.article {   
+article {   
 float: left;
-width: 75%;
-
+width: 65%;
+    Position: relative;
+    left:7.5%;
 }
 
-.article section
+article section
 {
-    background-color: grey;
+  background-color: grey;
+  padding: 10px;
+  margin-top:25px;
+  margin-bottom:25px;
+}
+article section .figure_with_caption_left{
+  width: 40%;
+  float: left;
+    padding: 5px;
+  padding-top:1rem;
+  padding-bottom:1rem;
+  background-color: grey;
+}
+article section .figure_with_caption_right{
+  width: 40%;
+  padding-top:1rem;
+  padding-bottom:1rem;
+  background-color: grey;
+}
+  .figure_with_caption .img {
+  width: 100%;
+  position: relative;
+}
+article section .img_full{
+  width: 60%;
+  position: relative;
+  left:20%;
+  padding-top:1rem;
+  padding-bottom:1rem;
 }
 
 /* Right column */
-.aside {
-float: right; 
-width: 20%; 
+aside {
+float: right;
+Position: relative;
+right:7.5%;
+width: 15%; 
 background-color: green; 
 color: white; 
-padding: 5px;
-margin: 10px;
+padding: 10px;
+margin: 25px;
 margin-right: 0px;
 } 
 
-.footer {
-width: 100%;
+footer {
+width: 85%;
+Position: relative;
+left:7.5%;
 float: left;
 text-align: center;
 margin-top: 20px;
 margin-bottom: 20px;
 background-color: grey;
 }
-
-  .footer ul{
+  footer ul{
     list-style-type: none;
-    margin: 0;
-    padding: 0;
   } 
 
-  
+.code-example{
+  background-color: lightgray;
+  border-style: solid;
+    border-width: 3px;
+    border-color: green;
+  Margin: 10px;
+  Padding: 10px;
+  font-size:1rem;
+}
+  .code-example strong{
+    color:darkcyan;
+  }
+  .code-example p{
+    padding-top: 10px;
+    padding-bottom:10px;
+  }
+  .code-example-list{
+    Padding-left: 15px;
+}
+
 @media screen and (max-width: 635px) {
   nav li {
     float: none;
@@ -88,8 +140,27 @@ background-color: grey;
 }
 
 @media screen and (max-width: 800px) {
-    .article, .aside {   
+    article, aside, footer {   
     width: 100%;
     padding: 0;
+    left: 0%;
+    right:0%;
+    }
+
+    nav{
+      width:100%;
+      left:0%;
+    }
+    article section .img_smaller{
+      width: 75%;
+      position: relative;
+      left:12.5%;
+      padding-top:1rem;
+      padding-bottom:1rem;
+    }
+    article section .img_full{
+      width: 100%;
+      padding-top:1rem;
+      padding-bottom:1rem;
     }
 }

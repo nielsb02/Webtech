@@ -33,9 +33,8 @@
                 and less bandwidth for the user to download (particularly prevalent for those on slow connections). 
                 You can verify these claims by testing out a <a title="modern page layout example" href=https://mdn.github.io/learning-area/html/introduction-to-html/document_and_website_structure/ >  modern website structure example</a>.
             </p>
-            <figure title="modern page layout">
-                <img src="Resources/Website Layout.png" alt="A clear represantation of the modern page layout for html.">
-            </figure>
+            <img class="img_full" title="modern page layout" src="Resources/Website Layout.png" alt="A clear represantation of the modern page layout for html.">
+            
         </section>
 
         <section>
@@ -65,18 +64,86 @@
                 <li> Do not skip <strong>&lt;h...&gt; </strong> levels, instead start with <strong>&lt;h1&gt; </strong> and use the same header again or go a level up. </li>
             </ul>
 
-            <figure title="semantic HTML code snippet">
-                <img src="Resources/semantic_html.png" alt="A code snippet, with the correct use of semantic HTML" >
-            </figure>
+            <div class="code-example" title="A code snippet, with the correct use of semantic HTML">
+                <p>
+                    &lt;<strong>h1</strong>&gt;This is a heading. &lt;<strong>/h1</strong>&gt;
+                </p>
+                <p>
+                    &lt;<strong>p</strong>&gt;This is the first paragraph.&lt;<strong>p</strong>&gt;
+                </p> 
+                <p>
+                &lt;<strong>p</strong>&gt;This is the second paragraph.&lt;<strong>p</strong>&gt;
+                </p>
+                &lt;<strong>ul</strong>&gt; This is an unordered list.
+                <div class = "code-example-list">  
+                    &lt;<strong>li</strong>&gt;an unordered&lt;<strong>/li</strong>&gt;<br>
+                    &lt;<strong>li</strong>&gt;This is&lt;<strong>/li</strong>&gt;<br>
+                    &lt;<strong>li</strong>&gt;list.&lt;<strong>/li</strong>&gt;<br>
+                </div>
+                &lt;<strong>/ul</strong>&gt;
+                <p>
+                    &lt;<strong>h2</strong>&gt; This is a subheading. &lt;<strong>/h2</strong>&gt;
+                </p>
+                <p>
+                    &lt;<strong>p</strong>&gt; This is the first subsection. &lt;<strong>p</strong>&gt;
+                </p>
+                <p>
+                    &lt;<strong>h3</strong>&gt; This is a subheading within a subheading. &lt;<strong>/h3</strong>&gt;
+                </p>
+                <p>
+                    &lt;<strong>p</strong>&gt; This is a subsection within the subsection. &lt;<strong>p</strong>&gt;
+                </p>
+            </div>
 
             If you would try this code snippet out with a screen reader, you would see that this is pretty easy to navigate:
-            <ul>
-                <li> 1.	The screen reader reads each header out as you progress through the content, notifying you what a heading is, what is a paragraph, etc.</li>
-                <li> 2.	It stops after each element, letting you go at whatever pace is comfortable for you. </li>
-                <li> 3.	You can jump to the next/previous heading in many screen readers. </li>
-                <li>4.	You can also bring up a list of all headings in many screen readers, allowing you to use them as a handy table of contents to find specific content.</li>
-            </ul>
+            <ol>
+                <li>The screen reader reads each header out as you progress through the content, notifying you what a heading is, what is a paragraph, etc.</li>
+                <li>It stops after each element, letting you go at whatever pace is comfortable for you. </li>
+                <li>You can jump to the next/previous heading in many screen readers. </li>
+                <li>You can also bring up a list of all headings in many screen readers, allowing you to use them as a handy table of contents to find specific content.</li>
+            </ol>
 
+            <h3> The Title Attribute</h3>
+
+            The title attribute gives spedcif information about an element.
+            This information is often shown as a tooltip text when the mouse hovers over the element.
+            The title attribute can be used on any HTML element, altough it is not really useful for every element. But for it can be a nice feature for images abbreviations, or links:
+
+            <div class="code-example" title ="example abbreviations">
+                &lt;<strong>p</strong>&gt;&lt;<strong>abbr </strong> title="World Health Organization"&gt;WHO&lt;<strong>/abbr</strong>&gt; was founded in 1948.&lt;<strong>/p</strong>&gt;
+            </div>
+            <div class="code-example" title ="example link">
+                &lt;<strong>p</strong>&gt; &lt;<strong>a </strong>title="Free Web tutorials" href="W3Schools.com"&gt;&lt;<strong>/p</strong>&gt;
+            </div>
+
+            <h3> Labels and form controls </h3>
+            
+            Use a for attribute on the &lt;<strong>label</strong>&gt; element linked to the id attribute of the form element,
+                 or using WAI-ARIA attributes. In specific situations it may be acceptable to hide &lt;<strong>label</strong>&gt; elements visually,
+                    but in most cases labels are needed to help all readers understand the required input.
+            Example: Using for and id attributes
+
+            <div class="code-example" title="example lablel">
+                &lt;<strong>label</strong> for="username"&gt;Username&lt;<strong>/label</strong>&gt;
+                <br>
+                &lt;<strong>input</strong> id="username" type="text" name="username"&gt;
+            </div>
+
+            <p>
+                Associating a  &lt;<strong>label</strong>&gt; with an &lt;<strong>input</strong>&gt; element offers some major advantages:
+                <ul>
+                    <li>
+                        The label text is not only visually associated with its corresponding text input; it is programmatically associated with it too. This means that, for example,
+                        a screen reader will read out the label when the user is focused on the form input,
+                        making it easier for an assistive technology user to understand what data should be entered.
+                    </li>
+                    <li>
+                        You can click the associated label to focus/activate the input,
+                        as well as the input itself. This increased hit area provides an advantage to anyone trying to activate the input,
+                        including those using a touch-screen device.
+                    </li>
+                </ul>
+            </p>
         </section>
 
         <section>
@@ -101,32 +168,22 @@
             </ul>
             <p>
                 By Using these tips your alt text will look something like this:
-
-                <figure title="First image alt text example">
-                  <img src="Resources/Alt1.png" alt="image alt text example, about the new arch on the esplanade extension." >
-                </figure>
-
+            </p> 
+            <div class="figure_with_caption_left">
+                <img class="img" title="First image alt text example" src="Resources/Alt1.png" alt="image alt text example, about the new arch on the esplanade extension." >
+                <br>
                 <strong>Alt text:</strong> <em>Students walk through the new arch on the esplanade extension that connects the Kent State campus with downtown Kent.</em>
                 <br>
                 The alt text description adequately describes the content of the image without becoming too lengthy or overly descriptive.
-               
-            </p>
-            <p>
-                <figure title="Second image alt text example">
-                  <img src="Resources/Alt2.png" alt="image alt text example, about an decorative image." >
-                </figure>
-                
+            </div>
+            <div class="figure_with_caption_left">
+                <img class="img" title="Second image alt text example" src="Resources/Alt2.png" alt="image alt text example, about an decorative image." >
+                <br>
                 <strong>Alt text:</strong> <em>(left blank)</em>
                 <br>
                 The alt text description for the information graphics is left blank because the images are decorative, 
                 and are only being used to draw attention to the links they're placed above. The adjacent link text is sufficient.
-               
-            </p>
-
-        </section>
-
-        <section>
-           
+            </div> 
         </section>
     </article>
 
@@ -139,6 +196,7 @@
         <ul>
             <li><a title ="Mozilla HTML Accessibility" href="https://developer.mozilla.org/en-US/docs/Learn/Accessibility/HTML" target="_blank"> HTML: A good basis for accessibility</a> <em>by MDN contributors</em></li>
             <li><a title ="Mozilla CSS Accessibility" href="https://developer.mozilla.org/en-US/docs/Learn/Accessibility/CSS_and_JavaScript" target="_blank"> CSS and JavaScript accessibility best practices</a> <em>by MDN contributors</em></li>
+            <li><a title ="Mozilla Label Element" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label" target="_blank"> The Label Element</a> <em>by MDN contributors</em> </li>
             <li><a title ="W3C Tips for Developing" href="https://www.w3.org/WAI/tips/developing/" target="_blank"> Developing for Web Accessibility</a> by W3C Web Accessibility Initiative (WAI) </li>
             <li><a title ="w3schools HTML Accessibility" href="https://www.w3schools.com/html/html_accessibility.asp" target="_blank">HTML Accessibility</a> by W3Schools </li>
             <li><a title = "Kent State University Web Accessibility Examples" href="https://du1ux2871uqvu.cloudfront.net/digital-accessibility/web-accessibility-examples" target="_blank">Web Accessibility Examples</a> by Kent State University's Student Accessibility Services </li>
