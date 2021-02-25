@@ -211,16 +211,18 @@ left:7.5%;
 }
 
 aside {
+border-radius: 25px;
 float: right;
-Position: relative;
-text-align: center;
-right:7.5%;
 width: 15%; 
+Position: relative;
+right:7.5%;
+text-align: center;
 background-color: rgb(24,144,255);
 color: white; 
 padding: 10px;
 margin: 25px;
 margin-right: 0px;
+opacity:0.95;
 } 
 
   aside ul
@@ -239,10 +241,11 @@ margin-right: 0px;
 
     aside li a {
       display: block;
+      border-radius: 25px;
       color: white;
       text-align: center;
-      padding: 14px 16px;
       text-decoration: none;
+      padding: 14px 16px;
     } 
 
       aside li a .imgaside{
@@ -269,19 +272,14 @@ color: white;
     font-size:18px;
     line-height:1.6;
     margin-bottom:0;
-<<<<<<< Updated upstream
     } 
+
     footer #references{
       color: rgb(24,144,255);
     }
-  footer a{
-     color:inherit;
-=======
-  } 
-  
+
   footer a{
     color:inherit;
->>>>>>> Stashed changes
     text-decoration:none;
     opacity:0.8;
   }
@@ -331,6 +329,10 @@ color: white;
     padding-top:1rem;
     padding-bottom:1rem;
     left:0%;
+  }
+
+  aside{
+    border-radius: 0px; 
   }
 
   aside li a {
