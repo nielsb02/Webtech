@@ -40,8 +40,45 @@
                 and less bandwidth for the user to download (particularly prevalent for those on slow connections). 
                 You can verify these claims by testing out a <a title="modern page layout example" href=https://mdn.github.io/learning-area/html/introduction-to-html/document_and_website_structure/ target="_blank">  modern website structure example</a>.
             </p>
-            <img class="img_full" title="modern page layout" src="Resources/Website Layout.png" alt="A clear represantation of the modern page layout for html.">
             
+            <table id="html_layout_table">
+                <tr>
+                    <td colspan="2">
+                        <strong>&lt;header&gt;</strong> <br>
+                        <em>contains the brandings like logo</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <strong>&lt;nav&gt;</strong> <br>
+                        <em>contains navigational section of the site</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="column1"> 
+                        <strong>&lt;article&gt;</strong> <br> 
+                        <em>web paged main content</em><br>
+                        <div class="sub-column">
+                            <strong>&lt;section&gt;</strong> <br>
+                            <em>divided section of main content</em><br>
+                        </div>
+                        <div class="sub-column">
+                            <strong>&lt;section&gt;</strong><br>
+                            <em>divided section of main content</em>
+                        </div>
+                    </td>
+                    <td id="column2">
+                        <strong>&lt;aside&gt;</strong><br>
+                        <em>contains extra information and related content or links</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <strong>&lt;footer&gt;</strong> <br>
+                        <em>information about copyright, privacy policy, terms of use, etc.</em>
+                    </td>
+                </tr>
+            </table>
         </section>
 
         <section>
@@ -51,16 +88,17 @@
              Semantic elements are elements with a meaning; if you need a button, use the <strong> &lt;button&gt; </strong> element (and not a <strong>&lt;div&gt; </strong> element).
              For example, a control button to play a video on your site could be marked up like this:
             <p>
-            <strong>&lt;div&gt; </strong>Play video<strong>&lt;/div&gt; </strong>
-            <br> <br>
-            But as you'll see in greater detail later on, it makes sense to use the correct element for the job:
-            <br> <br>
-            <strong>&lt;button&gt; </strong>Play video<strong>&lt;/button&gt; </strong>
+                <strong>&lt;div&gt; </strong>Play video<strong>&lt;/div&gt; </strong>
+                <p>
+                    But as you'll see in greater detail later on, it makes sense to use the correct element for the job:
+                </p>
+                <strong>&lt;button&gt; </strong>Play video<strong>&lt;/button&gt; </strong>
+            </p>
+            <p>
+                Not only does HTML <strong>&lt;button&gt; </strong> have some suitable styling applied by default (which you will probably want to override),
+                it also has built-in keyboard accessibility — users can navigate between buttons using the “Tab” key and activate their selection using “Return” or “Enter”. 
             </p>
 
-            Not only does HTML <strong>&lt;button&gt; </strong> have some suitable styling applied by default (which you will probably want to override),
-             it also has built-in keyboard accessibility — users can navigate between buttons using the “Tab” key and activate their selection using “Return” or “Enter”. 
-            
             <h3> Basic layout with semantic HTML </h3>
 
             One of the best accessibility aids a screen reader user can have is an excellent content
