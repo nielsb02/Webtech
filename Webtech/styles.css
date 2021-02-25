@@ -3,7 +3,7 @@ body {
     font-family: Arial;
     padding: 10px;
     font-size: 1.5rem;
-    background:rgb(255,255,255);
+    background:rgb(251,251,251);
     margin: 0;
     padding: 0;
     width: 100vw;
@@ -13,6 +13,7 @@ body {
 header{
     padding: 30px;
     text-align: center;
+    background-image:url("Resources/headerbgr.jpg");
 }
 
 nav {
@@ -65,6 +66,32 @@ article section
   margin-bottom:25px;
 }
 
+h1,
+h2,
+h3,
+h4 {
+    margin: .1rem 0;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    padding-left: 0px;
+}
+
+h3 {
+    font-size: 1.7rem;
+    padding-left: 0px;
+}
+
+h4 {
+    font-size: 1.5rem;
+    padding-left: 60px;
+}
+
 article section .figure_column {
   float: left;
   width: 40%;
@@ -88,6 +115,7 @@ article section .img_full{
 aside {
 float: right;
 Position: relative;
+text-align: center;
 right:7.5%;
 width: 15%; 
 background-color: rgb(0,129,255);
@@ -97,41 +125,36 @@ margin: 25px;
 margin-right: 0px;
 } 
 
-aside ul
-{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
+  aside ul
+  {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color:rgb(0,129,255);
+  }
 
-aside li
-{
-  float: left;
-}
+  aside li
+  {
+    float: left;
+  }
 
-aside li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-} 
-aside li a .imgaside
-{
-max-width: 100%;
-max-height: 100%;
-}
+    aside li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    } 
+      aside li a .imgaside
+      {
+      max-width: 50%;
+      max-height: 50%;
+      }
 
-aside li a:hover {
-  background-color: #111;
-}
-aside li a.active {
-  background-color: #4CAF50;
-}
-
-
+      aside li a:hover {
+        background-color: rgb(1, 75, 150)
+      }
 
 footer {
 width: 100%;
@@ -148,9 +171,9 @@ color: white;
   footer a{
     color: rgb(0,129,255);
   }
-  footer a:hover{
-    color:rgb(1, 75, 150);
-  }
+    footer a:hover{
+      color:rgb(1, 75, 150);
+    }
 
 .code-example{
   background-color: rgb(255,255,255);
@@ -224,9 +247,16 @@ article section #disabilities th {
       width: 100%;
       padding-top:1rem;
       padding-bottom:1rem;
-<<<<<<< Updated upstream
       left:0%;
     }
+    aside li a {
+      display: inline-block;
+      width:25%;
+    }
+      aside li a .imgaside {
+        width: 75%;
+        height: 75%;
+      }
 }
 
 @media screen and (max-width: 1450px){
@@ -248,8 +278,3 @@ article section #disabilities th {
     width:50%;
   }
 }
-=======
-      left: 0%;
-    }
-}
->>>>>>> Stashed changes
