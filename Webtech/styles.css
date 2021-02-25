@@ -176,15 +176,13 @@ color: white;
     line-height:1.6;
     margin-bottom:0;
     } 
-  
+    footer #references{
+      color: rgb(24,144,255);
+    }
   footer a{
-<<<<<<< Updated upstream
-    color:inherit;
+     color:inherit;
     text-decoration:none;
     opacity:0.8;
-=======
-    color: rgb(24,144,255);
->>>>>>> Stashed changes
   }
     footer a:hover{
       opacity:1;
