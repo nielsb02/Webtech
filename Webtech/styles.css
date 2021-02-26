@@ -87,30 +87,30 @@ article {
     margin-bottom:25px;
   }
 
-    article section .article__links{
+    .article__links{
       color:rgb(24,144,255);
     }
 
-    article section .alt-example {
+    .article__links:link{
+      text-decoration: none;
+    }
+
+    .alt-example {
       width:100%;
       padding: 5px;
 
       display: flex;
       flex-flow: row;
       justify-content: center;
-  } 
-
-    article section .alt-example__figure {
       text-align: left;
-      width:50%
-    } 
-    article section .alt-example__figure__img {
+  } 
+    .alt-example__figure__img {
       position: relative;
       left: 12.5%;
       width:75%;
   } 
     
-  article section .img_full{
+  .img_full{
     width: 90%;
     max-width: 585px;
     position: relative;
@@ -119,7 +119,14 @@ article {
     padding-bottom:1rem;
   }
 
-  article section #html_layout_table{
+  .img_full2{
+    width: 90%;
+    max-width: 1000px;
+    padding-top:1rem;
+    padding-bottom:1rem;
+  }
+
+  #html_layout_table{
     text-align: center;
     margin: 10px;
     border-collapse:separate; 
@@ -130,7 +137,7 @@ article {
     left: 5%;
   }
 
-    article section #html_layout_table td{
+  #html_layout_table{
     border-radius: 20px;
     text-align: center;
     background-color: rgb(24,144,255);
@@ -138,11 +145,11 @@ article {
     width:50%
     }
 
-      article section #html_layout_table td strong{
+    #html_layout_table td strong{
         font-size:125% ;
       }
 
-      article section #html_layout_table td .sub-column{
+      #html_layout_table td .sub-column{
         border-radius: 20px;
         text-align: center;
         background-color: rgb(1, 75, 150);
@@ -151,12 +158,12 @@ article {
         margin-top:0.75rem;
       }
 
-      article section #html_layout_table #column1{width: 67%;}
+      #html_layout_table .column1{width: 67%;}
 
-      article section #html_layout_table #column2{width: 33%;
+      #html_layout_table .column2{width: 33%;
   }
   
-  article section #disabilities {
+  #disabilities {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     table-layout: auto;
@@ -167,12 +174,12 @@ article {
     font-size:85% ;
   }
   
-    article section #disabilities td, article section #disabilities th {
+    #disabilities td, #disabilities th {
       border: 2px solid #ddd;
       padding: 8px;
     }
 
-      article section #disabilities th {
+    #disabilities th {
         padding: 1rem;
         margin-bottom: 0.5rem;
         margin-top:0.75rem;
@@ -180,43 +187,45 @@ article {
         color: white;
     }
 
-    article section #disabilities a{
+    #disabilities a{
       color:rgb(24,144,255);
     }
 
-      article section #disabilities a:link {
+      #disabilities a:link {
         text-decoration: none;
       }
-      article section #disabilities a:hover {
+      #disabilities a:hover {
         text-decoration: underline;
     }
   
-    article section #disabilities tr:nth-child(even){background-color: #f2f2f2;}
+    #disabilities tr:nth-child(even){background-color: #f2f2f2;}
   
-    article section #disabilities tr:hover {background-color: #ddd;
+    #disabilities tr:hover {background-color: #ddd;
   }
 
-  article section .code-example{
+  .code-example{
     background-color: rgb(255,255,255);
     border-style: solid;
       border-width: 3px;
       border-color: rgb(1, 75, 150);
     Margin: 10px;
-    Padding: 10px;
+    margin-top:1.5rem;
+    margin-bottom:1.5rem;
+    Padding: 15px;
     font-family: Consolas,monospace;
-      font-size:1rem;
+      font-size:90%;
   }
   
-  article section .code-example strong{
+  .code-example strong{
       color:rgb(0,129,255);
     }
   
-    article section .code-example p{
+    .code-example p{
       padding-top: 10px;
       padding-bottom:10px;
     }
     
-    article section .code-example-list{
+    .code-example-list{
       Padding-left: 15px;
 }
 
@@ -302,6 +311,11 @@ footer {
 }
 
 @media screen and (max-width: 800px) {
+
+  body {
+    font-size: 1rem;
+  }
+
   article, aside, footer {   
     width: 100%;
     padding: 0px;
@@ -317,18 +331,32 @@ footer {
       float: none;
     }
 
-  article section .img_smaller{
+  article{
+    width:90%;
+    position: relative;
+    margin-left: 5%;
+    margin-right: 5%
+  }
+
+  .img_smaller{
     width: 75%;
     position: relative;
     left:12.5%;
     padding-top:1rem;
     padding-bottom:1rem;
   }
-  article section #html_layout_table td .sub-column{
+  #html_layout_table{
+    width:100%;
+    margin-left: 0px;
+    left:0%;
+    padding-left:0px;
+  }
+
+  #html_layout_table td .sub-column{
     font-size: 75%;
   }
 
-  article section .alt-example {
+  .alt-example {
     width:100%;
     padding-left:0px;
     margin-left:0px;
@@ -338,35 +366,41 @@ footer {
     justify-content: left;
   }  
 
-    article section .alt-example__figure {
+    .alt-example__figure {
       text-align: left;
       width:100%;
       padding-left: 0px;
       margin-left:0px;
     } 
-      article section .alt-example__figure__img {
+      .alt-example__figure__img {
         text-align: center;
         width:75%;
     }
 
-  article section .img_full{
+  .img_full{
+    width: 100%;
+    padding-top:1rem;
+    padding-bottom:1rem;
+    left:0%;
+  }
+  .img_full2{
     width: 100%;
     padding-top:1rem;
     padding-bottom:1rem;
     left:0%;
   }
   
-  article section #disabilities {
+  #disabilities {
     table-layout: auto;
     width: 90%;
     text-align: left;
     left: 0%;
-    font-size:65%;
+    font-size:85%;
   }
 
   aside{
     padding-bottom:15px;
-    opacity:unset;
+    opacity:1;
     margin-bottom:0px;
     border-radius: 0px; 
     flex-flow: row wrap;
@@ -380,7 +414,7 @@ footer {
     aside a {
       border-radius: 10px; 
       text-align: center;
-      width:25%;
+      width:17%;
       height: 25%;
     }
 
@@ -390,8 +424,14 @@ footer {
   }
 
   footer{
-    margin-top: 0px;
+    margin-top:0px;
     padding-top: 15px;
+    padding-bottom: 15px;
+  }
+    footer ul{
+      padding-left:5%;
+      padding-right:5%;
+      
   }
 
 }
