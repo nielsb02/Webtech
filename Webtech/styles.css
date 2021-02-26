@@ -379,8 +379,8 @@ footer {
       width:25%;
       height: 25%;
       
-      margin-left: 1%;
-      margin-right: 1%;
+      margin-left: 0.5%;
+      margin-right: 0.5%;
     }
 
       aside a .imgaside {
@@ -393,25 +393,4 @@ footer {
     padding-top: 15px;
   }
 
-
-}
-
-@media screen and (max-width: 1450px){
-  article section .figure-column {
-    float: none;
-    width: 95%;
-    position: relative;
-    right: 5%;
-    padding: 5px;
-  }
-  article section .figure_row::after {
-    content: "";
-    clear: none;
-    display: none;
-  }
-  article section .figure_column img{
-    position: relative;
-    left:25%;
-    width:50%;
-  }
 }
