@@ -324,6 +324,9 @@ footer {
     padding-top:1rem;
     padding-bottom:1rem;
   }
+  article section #html_layout_table td .sub-column{
+    font-size: 75%;
+  }
 
   article section .alt-example {
     width:100%;
@@ -355,14 +358,15 @@ footer {
   
   article section #disabilities {
     table-layout: auto;
-    width: 100%;
-    text-align: center;
+    width: 90%;
+    text-align: left;
     left: 0%;
     font-size:65%;
   }
 
   aside{
     padding-bottom:15px;
+    opacity:unset;
     margin-bottom:0px;
     border-radius: 0px; 
     flex-flow: row wrap;
@@ -378,9 +382,6 @@ footer {
       text-align: center;
       width:25%;
       height: 25%;
-      
-      margin-left: 0.5%;
-      margin-right: 0.5%;
     }
 
       aside a .imgaside {
