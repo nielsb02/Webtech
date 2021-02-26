@@ -102,12 +102,12 @@ article {
       display: flex;
       flex-flow: row;
       justify-content: center;
-      text-align: left;
   } 
     .alt-example__figure__img {
       position: relative;
       left: 12.5%;
       width:75%;
+      height: 50%;
   } 
     
   .img_full{
@@ -126,7 +126,7 @@ article {
     padding-bottom:1rem;
   }
 
-  #html_layout_table{
+  .html_layout_table{
     text-align: center;
     margin: 10px;
     border-collapse:separate; 
@@ -137,7 +137,7 @@ article {
     left: 5%;
   }
 
-  #html_layout_table{
+  .html_layout_table td{
     border-radius: 20px;
     text-align: center;
     background-color: rgb(24,144,255);
@@ -145,11 +145,11 @@ article {
     width:50%
     }
 
-    #html_layout_table td strong{
+    .html_layout_table td strong{
         font-size:125% ;
       }
 
-      #html_layout_table td .sub-column{
+      .html_layout_table td .sub-column{
         border-radius: 20px;
         text-align: center;
         background-color: rgb(1, 75, 150);
@@ -158,9 +158,9 @@ article {
         margin-top:0.75rem;
       }
 
-      #html_layout_table .column1{width: 67%;}
+      .html_layout_table .column1{width: 67%;}
 
-      #html_layout_table .column2{width: 33%;
+      .html_layout_table .column2{width: 33%;
   }
   
   #disabilities {
@@ -345,14 +345,15 @@ footer {
     padding-top:1rem;
     padding-bottom:1rem;
   }
-  #html_layout_table{
+
+  .html_layout_table{
     width:100%;
     margin-left: 0px;
     left:0%;
     padding-left:0px;
   }
 
-  #html_layout_table td .sub-column{
+  .html_layout_table td .sub-column{
     font-size: 75%;
   }
 
