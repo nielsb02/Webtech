@@ -1,7 +1,4 @@
-#!/usr/bin nodejs
-
-var http = require(’http’);
-http.createServer(function (req, res) {
-res.writeHead(200, {’Content-Type’: ’text/plain’});
-res.end(’Hello World.’);
-}).listen(8031,’localhost’);
+var a = document.getElementsByTagName("question");
+var b = document.createElement("p");
+var c = document.createTextNode("Where does the feature ’Voice Recognition’ belong to?");
+b.appendChild(c);
