@@ -29,9 +29,9 @@
     </nav>
 
     <article>
-        <h1>Page Design</h1>
+        <h1 class="first_heading">Page Design</h1>
         <section>
-            <h2> Page Layout </h2>
+            <h2> Layout </h2>
             <p>
                 Page Layouts used to be created by using HTML tables, using different table cells to contain the header, footer, sidebar, main content column, etc.
                 This is not a good idea because a screen reader will likely give out confusing readouts, especially if the layout is complex. 
@@ -45,42 +45,46 @@
             </p>
             
             <table class="html_layout_table">
-                <tr>
-                    <td colspan="2">
-                        <strong>&lt;header&gt;</strong> <br>
-                        <em>contains the brandings like logo</em>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <strong>&lt;nav&gt;</strong> <br>
-                        <em>contains navigational section of the site</em>
-                    </td>
-                </tr>
-                <tr>
-                    <td id="column1"> 
-                        <strong>&lt;article&gt;</strong> <br> 
-                        <em>web paged main content</em><br>
-                        <div class="sub-column">
-                            <strong>&lt;section&gt;</strong> <br>
-                            <em>divided section of main content</em><br>
-                        </div>
-                        <div class="sub-column">
-                            <strong>&lt;section&gt;</strong><br>
-                            <em>divided section of main content</em>
-                        </div>
-                    </td>
-                    <td class="column2">
-                        <strong>&lt;aside&gt;</strong><br>
-                        <em>contains extra information and related content or links</em>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <strong>&lt;footer&gt;</strong> <br>
-                        <em>information about copyright, privacy policy, terms of use, etc.</em>
-                    </td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <strong>&lt;header&gt;</strong> <br>
+                            <em>contains the brandings like logo</em>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <strong>&lt;nav&gt;</strong> <br>
+                            <em>contains navigational section of the site</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="column1"> 
+                            <strong>&lt;article&gt;</strong> <br> 
+                            <em>web paged main content</em><br>
+                            <div class="sub-column">
+                                <strong>&lt;section&gt;</strong> <br>
+                                <em>divided section of main content</em><br>
+                            </div>
+                            <div class="sub-column">
+                                <strong>&lt;section&gt;</strong><br>
+                                <em>divided section of main content</em>
+                            </div>
+                        </td>
+                        <td class="column2">
+                            <strong>&lt;aside&gt;</strong><br>
+                            <em>contains extra information and related content or links</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <strong>&lt;footer&gt;</strong> <br>
+                            <em>information about copyright, privacy policy, terms of use, etc.</em>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </section>
 

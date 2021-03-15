@@ -10,18 +10,15 @@ body {
     max-width: 100%;
   }
 
-  h1,h2,h3,h4 {
-    margin: .1rem 0;
-  }
+  h1,h2,h3,h4 {margin: .1rem 0;}
 
-    h1 {font-size: 2.5rem;}
+  h1 {font-size: 2.5rem;}
 
-    h2 {font-size: 2rem;}
+  h2 {font-size: 2rem;}
 
-    h3 {font-size: 1.7rem;}
+  h3 {font-size: 1.7rem;}
 
-    h4 {font-size: 1.5rem;
-}
+  h4 {font-size: 1.5rem;}
 
 header{
     font-family: Tahoma;
@@ -31,9 +28,8 @@ header{
     text-shadow: 1px 1px rgb(1, 75, 150);
     background-color: rgb(24,144,255);
 }
-  header img{
-    width:100%;
-  }
+
+header img{width:100%;}
 
 nav {
     width: 100%;
@@ -46,32 +42,27 @@ nav {
     border-bottom: 7px solid rgb(1,14,30);
   }
   
-  nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color:rgb(1,14,30);
-  }
-
-  nav li {
-    float: left;
-  }
-
-    nav li a {
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-    } 
-
-      nav li a:hover {
-        background-color: rgb(1, 75, 150);
-      }
-      nav li a.active {
-        background-color: rgb(24,144,255);
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color:rgb(1,14,30);
 }
+
+nav li {float: left;}
+
+nav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+} 
+
+nav li a:hover {background-color: rgb(1, 75, 150);}
+
+nav li a.active {background-color: rgb(24,144,255);}
 
 article {   
   float: left;
@@ -80,154 +71,140 @@ article {
   left:7.5%;
 }
 
-  article section
-  {
-    padding: 10px;
-    margin-top:25px;
-    margin-bottom:25px;
-  }
+article  .first_heading{  text-align: center;}
 
-    .article__links{
-      color:rgb(24,144,255);
-    }
-
-    .article__links:link{
-      text-decoration: none;
-    }
-
-    .alt-example {
-      width:100%;
-      padding: 5px;
-
-      display: flex;
-      flex-flow: row;
-      justify-content: center;
-  } 
-    .alt-example__figure__img {
-      position: relative;
-      left: 12.5%;
-      width:75%;
-      height: 50%;
-  } 
-    
-  .img_full{
-    width: 90%;
-    max-width: 585px;
-    position: relative;
-    left:10%;
-    padding-top:1rem;
-    padding-bottom:1rem;
-  }
-
-  .img_full2{
-    width: 90%;
-    max-width: 1000px;
-    padding-top:1rem;
-    padding-bottom:1rem;
-  }
-
-  .html_layout_table{
-    text-align: center;
-    margin: 10px;
-    border-collapse:separate; 
-    border-spacing:0.75rem;
-    table-layout: fixed;
-    width: 90%;
-    position: relative;
-    left: 5%;
-  }
-
-  .html_layout_table td{
-    border-radius: 20px;
-    text-align: center;
-    background-color: rgb(24,144,255);
-    padding: 1rem;
-    width:50%
-    }
-
-    .html_layout_table td strong{
-        font-size:125% ;
-      }
-
-      .html_layout_table td .sub-column{
-        border-radius: 20px;
-        text-align: center;
-        background-color: rgb(1, 75, 150);
-        padding: 1rem;
-        margin-bottom: 0.5rem;
-        margin-top:0.75rem;
-      }
-
-      .html_layout_table .column1{width: 67%;}
-
-      .html_layout_table .column2{width: 33%;
-  }
-  
-  #disabilities {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    table-layout: auto;
-    width: 90%;
-    position: relative;
-    text-align: center;
-    left: 5%;
-    font-size:85% ;
-  }
-  
-    #disabilities td, #disabilities th {
-      border: 2px solid #ddd;
-      padding: 8px;
-    }
-
-    #disabilities th {
-        padding: 1rem;
-        margin-bottom: 0.5rem;
-        margin-top:0.75rem;
-        background-color:rgb(24,144,255);
-        color: white;
-    }
-
-    #disabilities a{
-      color:rgb(24,144,255);
-    }
-
-      #disabilities a:link {
-        text-decoration: none;
-      }
-      #disabilities a:hover {
-        text-decoration: underline;
-    }
-  
-    #disabilities tr:nth-child(even){background-color: #f2f2f2;}
-  
-    #disabilities tr:hover {background-color: #ddd;
-  }
-
-  .code-example{
-    background-color: rgb(255,255,255);
-    border-style: solid;
-      border-width: 3px;
-      border-color: rgb(1, 75, 150);
-    Margin: 10px;
-    margin-top:1.5rem;
-    margin-bottom:1.5rem;
-    Padding: 15px;
-    font-family: Consolas,monospace;
-      font-size:90%;
-  }
-  
-  .code-example strong{
-      color:rgb(0,129,255);
-    }
-  
-    .code-example p{
-      padding-top: 10px;
-      padding-bottom:10px;
-    }
-    
-    .code-example-list{
-      Padding-left: 15px;
+article section
+{
+  padding: 10px;
+  margin-top:25px;
+  margin-bottom:25px;
 }
+
+.article__links{ color:rgb(24,144,255); }
+
+.article__links:link{ text-decoration: none;}
+
+.alt-example {
+  width:100%;
+  padding: 5px;
+
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+.alt-example__figure__img {
+  position: relative;
+  left: 12.5%;
+  width:75%;
+  height: 50%;
+} 
+    
+.img_full{
+  width: 90%;
+  max-width: 585px;
+  position: relative;
+  left:10%;
+  padding-top:1rem;
+  padding-bottom:1rem;
+}
+
+.img_full2{
+  width: 90%;
+  max-width: 1000px;
+  padding-top:1rem;
+  padding-bottom:1rem;
+}
+
+.html_layout_table{
+  text-align: center;
+  margin: 10px;
+  border-collapse:separate; 
+  border-spacing:0.75rem;
+  table-layout: fixed;
+  width: 90%;
+  position: relative;
+  left: 5%;
+}
+
+.html_layout_table th, td{
+  border-radius: 20px;
+  text-align: center;
+  background-color: rgb(24,144,255);
+  padding: 1rem;
+  width:50%
+}
+
+.html_layout_table th strong, td strong{ font-size:125%;}
+
+.html_layout_table th .sub-column, td .sub-column{
+  border-radius: 20px;
+  text-align: center;
+  background-color: rgb(1, 75, 150);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top:0.75rem;
+}
+
+.html_layout_table .column1{width: 67%;}
+
+.html_layout_table .column2{width: 33%;}
+
+#disabilities {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  table-layout: auto;
+  width: 90%;
+  position: relative;
+  text-align: center;
+  left: 5%;
+  font-size:85% ;
+}
+
+#disabilities td, #disabilities th {
+  border: 2px solid #ddd;
+  padding: 8px;
+}
+
+#disabilities th {
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top:0.75rem;
+  background-color:rgb(24,144,255);
+  color: white;
+}
+
+#disabilities a{color:rgb(24,144,255);}
+
+#disabilities a:link { text-decoration: none;}
+
+#disabilities a:hover {  text-decoration: underline;}
+
+#disabilities tr:nth-child(even){background-color: #f2f2f2;}
+
+#disabilities tr:hover {background-color: #ddd;}
+
+.code-example{
+  background-color: rgb(255,255,255);
+  border-style: solid;
+  border-width: 3px;
+  border-color: rgb(1, 75, 150);
+  Margin: 10px;
+  margin-top:1.5rem;
+  margin-bottom:1.5rem;
+  Padding: 15px;
+  font-family: Consolas,monospace;
+  font-size:90%;
+}
+
+.code-example strong{color:rgb(0,129,255);}
+
+.code-example p{
+  padding-top: 10px;
+  padding-bottom:10px;
+}
+
+.code-example-list{Padding-left: 15px;}
 
 aside {
   border-radius: 25px;
@@ -247,24 +224,22 @@ aside {
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
-
 } 
 
-  aside a {
-    border-radius: 25px;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    padding: 14px 16px;
-  } 
+aside a {
+  border-radius: 25px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px;
+} 
 
-    aside a .imgaside{
-    max-width: 50%;
-    max-height: 50%;
-    }
-
-    aside a:hover { background-color: rgb(1, 75, 150)
+aside a .imgaside{
+  max-width: 50%;
+  max-height: 50%;
 }
+
+aside a:hover { background-color: rgb(1, 75, 150)}
 
 footer {
   padding:40px 0;
@@ -275,40 +250,36 @@ footer {
   background-color:rgb(1,14,30);
   color: white;
 }
-  footer ul{
-    padding:0px;
-    list-style:none;
-    text-align:center;
-    font-size:18px;
-    line-height:1.6;
-    margin-bottom:0;
-    } 
+footer ul{
+  padding:0px;
+  list-style:none;
+  text-align:center;
+  font-size:18px;
+  line-height:1.6;
+  margin-bottom:0;
+} 
 
-    footer #references{
-      color: rgb(24,144,255);
-    }
-
-  footer a{
-    color:inherit;
-    text-decoration:none;
-    opacity:0.8;
-  }
-
-    footer a:hover{
-      opacity:1;
-    }
-
-  footer #copyright{
-    font-size: small;
-    text-align:center;
-    padding-top:24px;
-    opacity:0.3;
-    margin-bottom:0;
-  }
-
-  footer hr{
-    width: 50%;
+footer #references{
+  color: rgb(24,144,255);
 }
+
+footer a{
+  color:inherit;
+  text-decoration:none;
+  opacity:0.8;
+}
+
+footer a:hover{opacity:1;}
+
+footer #copyright{
+  font-size: small;
+  text-align:center;
+  padding-top:24px;
+  opacity:0.3;
+  margin-bottom:0;
+}
+
+footer hr{width: 50%;}
 
 @media screen and (max-width: 800px) {
 
@@ -327,9 +298,7 @@ footer {
     width:100%;
     left:0%;
   }
-    nav li {
-      float: none;
-    }
+  nav li {float: none;}
 
   article{
     width:90%;
@@ -353,9 +322,7 @@ footer {
     padding-left:0px;
   }
 
-  .html_layout_table td .sub-column{
-    font-size: 75%;
-  }
+  .html_layout_table td .sub-column{font-size: 75%;}
 
   .alt-example {
     width:100%;
@@ -367,16 +334,16 @@ footer {
     justify-content: left;
   }  
 
-    .alt-example__figure {
-      text-align: left;
-      width:100%;
-      padding-left: 0px;
-      margin-left:0px;
-    } 
-      .alt-example__figure__img {
-        text-align: center;
-        width:75%;
-    }
+  .alt-example__figure {
+    text-align: left;
+    width:100%;
+    padding-left: 0px;
+    margin-left:0px;
+  } 
+    .alt-example__figure__img {
+      text-align: center;
+      width:75%;
+  }
 
   .img_full{
     width: 100%;
@@ -408,20 +375,18 @@ footer {
     justify-content:center;
   }
   
-    aside .text{
-      width:100%;
-    }
+  aside .text{width:100%;}
 
-    aside a {
-      border-radius: 10px; 
-      text-align: center;
-      width:17%;
-      height: 25%;
-    }
+  aside a {
+    border-radius: 10px; 
+    text-align: center;
+    width:17%;
+    height: 25%;
+  }
 
-      aside a .imgaside {
-        width: 100%;
-        height: 90%;
+  aside a .imgaside {
+    width: 100%;
+    height: 90%;
   }
 
   footer{
