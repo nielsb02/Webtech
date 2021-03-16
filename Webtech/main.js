@@ -6,6 +6,9 @@ choiceSpan = [];
 var strong;  
 
 var n = 0;
+const imgArray = ["Resources/Afbeelding.png"];
+imgArray[0] = document.createElement("IMG");
+imgArray[0].setAttribute("src","Resources/Afbeelding.png");
 const titlearray = ["Where does the feature 'Voice Recognition' belong to?",
  "Where does the feature 'Colors with Good Contrast' belong to?",
  "To which main reason does this sentence belong to?",
@@ -13,7 +16,7 @@ const titlearray = ["Where does the feature 'Voice Recognition' belong to?",
  "What element should replace the dots?"];
 const answerarray = ["Physical disability", "Visual Disability","Commercial reasons","ul", "aside"];
 const optionsarray = [["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
-["Visual Disability","Hearing Disability","Cognitive Disability","a"],
+["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
 ["Ethical reasons","Reputational reasons","Legal reasons","Commercial reasons"]];
 
 
@@ -33,9 +36,9 @@ class question{
 </label>*/
 
 class multiplechoice extends question{
-    constructor(qtitle, answer, optionss){
+    constructor(qtitle, answer, options){
     super(qtitle, answer);
-    this.options = optionss;
+    this.options = options;
     }
 }
 
@@ -77,14 +80,17 @@ multiplechoice.prototype.changeOptions = function()
 
 
 class fillin extends question{
-    constructor(a){
-        super()}
+    constructor(qtitle, answer){
+        super(qtitle, answer);
+
+    }
 }
 
 
 
 function layout()
 {
+    section.appendChild(imgArray[0]);
     section = document.createElement("SECTION");
     article.appendChild(section);
     section.setAttribute("class", "question");
@@ -121,14 +127,12 @@ function layout()
 
 layout();
 
-
+question1 = new multiplechoice(titlearray[0], answerarray[0], optionsarray[0]);
 question2 = new multiplechoice(titlearray[1], answerarray[1], optionsarray[1]);
-//question2.changeOptions();
 question3 = new multiplechoice(titlearray[2], answerarray[2], optionsarray[2]);
-question3.changeOptions();
-/*question4 = new fillin(a[3], z[3]);
-question5 = new fillin(a[4], z[4]);
-questions = [{question1},{question2},{question3},{question4},{question5}];*/
+question4 = new fillin(titlearray[2], answerarray[2]);
+question5 = new fillin(titlearray[2], answerarray[2]);
+questions = [{question1},{question2},{question3},{question4},{question5}];
 function whichquestion()
 {
     titel(questions[n].title);
