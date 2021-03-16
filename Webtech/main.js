@@ -33,17 +33,18 @@ class question{
 class multiplechoice extends question{
     constructor(title, answer, options){
     super(title, answer);
-    let a = document.createElement("LABEL");
-    let b = document.createElement("INPUT");
-    let c = document.createElement("SPAN");
-    let d = document.createElement("SPAN");
+    this.options = options;
+    this.label = document.createElement("LABEL");
+    this.input = document.createElement("INPUT");
+    this.spanCss = document.createElement("SPAN");
+    this.spanText = document.createElement("SPAN");
     let e = document.createTextNode(options[0]);
     let f = document.createTextNode(options[1]);
     let g = document.createTextNode(options[2]);
     let h = document.createTextNode(options[3]);
-    b.setAttribute("type", "radio");
-    b.setAttribute("name", "question1");
-    c.setAttribute("class", "design");
+    this.input.setAttribute("type", "radio");
+    this.input.setAttribute("name", "qoptions");
+    this.spanCss.setAttribute("class", "design");
     d.appendChild(e);
     a.appendChild(b);
     a.appendChild(c);
@@ -70,6 +71,11 @@ class multiplechoice extends question{
     d.replaceChild(h);
     section.appendChild(a);*/
     }
+
+}
+
+multiplechoice.prototype.CreateOptions = function()
+{
 
 }
 
