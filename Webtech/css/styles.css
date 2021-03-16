@@ -281,6 +281,48 @@ footer #copyright{
 
 footer hr{width: 50%;}
 
+
+
+.question{
+background-color: rgb(24,144,255);
+margin-top: 50px;
+border: 5px solid rgb(0, 16, 235);
+}
+label {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  margin: 12px 0;
+
+  cursor: pointer;
+  position: relative;
+}
+ .design {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--other);
+  border-radius: 100%;
+  margin-right: 16px;
+  position: relative;
+}
+.qbutton1{
+  opacity: 0.6;
+  cursor: not-allowed;
+  font-size: x-large;
+}
+.qbutton2{
+  cursor: allowed;
+  font-size: x-large;
+}
+
+
+
+
+
+
+
 @media screen and (max-width: 800px) {
 
   body {
@@ -396,8 +438,7 @@ footer hr{width: 50%;}
   }
     footer ul{
       padding-left:5%;
-      padding-right:5%;
-      
+      padding-right:5%; 
   }
 
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
     <title>Quiz</title>
 </head>
     <body id="body">
@@ -22,17 +23,32 @@
         </nav>
         
         <article>
-            <section>
-                <p>Where does the feature ’Voice Recognition’ belong to</p>
-                <input type="radio" id="incorrect" name="disability" value="Visual Disability">
-                <label for="incorrect">Visual Disability</label><br>
-                <input type="radio" id="incorrect" name="disability" value="Hearing Disability">
-                <label for="incorrect">Hearing Disability</label><br>
-                <input type="radio" id="incorrect" name="disability" value="Cognitive Disability">
-                <label for="incorrect">Cognitive Disability</label><br>
-                <input type="radio" id="correct" name="disability" value="Phisical Disability">
-                <label for="correct">Phisical Disability</label>
-                <input type="submit" value="Submit">
+            <section class = "question">
+                <p><strong>Where does the feature <em>Voice Recognition</em> belong to?</strong></p>
+                <label>
+                    <input type="radio" name="question1" value="incorrect" >
+                    <span class="design"></span>
+                    <span class="text">Visual Disability</span>
+                  </label>
+                
+                  <label>
+                    <input type="radio" name="question1" value="incorrect">
+                    <span class="design"></span>
+                    <span class="text">Hearing Disability</span>
+                  </label>
+                
+                  <label>
+                    <input type="radio" name="question1" value="incorrect">
+                    <span class="design"></span>
+                    <span class="text">Cognitive Disability</span>
+                  </label>
+                  <label>
+                    <input type="radio" name="question1" value="correct">
+                    <span class="design"></span>
+                    <span class="text">Physical Disability</span>
+                  </label>
+                  <input type="button" value="check" class="qbutton1">
+                  <input type="button" value="next" class="qbutton2">
             </section>
         </article>
     
