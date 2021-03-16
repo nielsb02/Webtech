@@ -1,5 +1,5 @@
 var elementSelectionbox, propertySelectionbox, appearanceButton;
-var lastSelectedelement = "Presets", lastSelectedProperty = "Default";
+var lastSelectedelement = "Presets", lastSelectedProperty = "Default", selectedPreset = "Default", selectedBodyFont = "Medium Font";
 
 // A Class to create selection boxes. By transforming the arguments object into an array,
 // we can use shift to get the name of the selectionbox (note that the name is always the first given parameter)
@@ -31,21 +31,78 @@ selectionBox.prototype.removeOptions = function(){
     }
 }
 
+function removeFromArray(array, remove){
+    var newArray;
+    array.forEach(function (string){
+        for(var i = 0; i < remove.length; i++ )
+        {
+            console.log(string);
+            if(string === remove[i])
+            {
+                array.splice(array.indexOf(remove[i], 1));
+                newArray = array;
+                return newArray;
+            }
+        }
+    });
+    return newArray;
+}
+
 function presetsAppearance(property){
     var bodyAppearance = document.getElementsByTagName("BODY")[0];
+    var attributes = bodyAppearance.getAttribute("class").split(" ");
+    attributes.shift();
+    selectedPreset = property;
+    
+    console.log(bodyAppearance.getAttribute("class"));
+    console.log(attributes.join(" "));
     switch(property){
         case "Default":
-            bodyAppearance.setAttribute("class", "body--default");
+            bodyAppearance.setAttribute("class", "body--default " + attributes.join(" "));
+            var header = document.getElementsByTagName("HEADER")[0];
+            var img = header.children[1];
+            img.setAttribute("src", "Resources/headerbgr1.png");
             break;
         case "Dark Mode":
-            bodyAppearance.setAttribute("class", "body--dark_mode");
+            bodyAppearance.setAttribute("class", "body--dark_mode "+ attributes.join(" "));
+            var header = document.getElementsByTagName("HEADER")[0];
+            var img = header.children[1];
+            img.setAttribute("src", "Resources/headerbgrdark.jpg");
             break;
         case "Inverted Colors":
-            bodyAppearance.setAttribute("class", "body--inverted_colors");
+            bodyAppearance.setAttribute("class", "body--inverted_colors " + attributes.join(" "));
+            break;
+        default:
+            break;
+    } 
+    console.log(bodyAppearance.getAttribute("class"));
+
+}
+
+function bodyApperance(property){
+    var bodyAppearance = document.getElementsByTagName("BODY")[0];
+    let attributes = bodyAppearance.getAttribute("class").split(" ");
+    console.log(attributes);
+    
+    var addAttributes = removeFromArray(attributes, ["body--small_font", "body--medium_font", "body--large_font"])
+
+    console.log(addAttributes.join(" "));
+    selectedBodyFont = property;
+
+    switch(property){
+        case "Small Font":
+            bodyAppearance.setAttribute("class", addAttributes.join(" ") + " body--small_font");
+            break;
+        case "Medium Font":
+            bodyAppearance.setAttribute("class", addAttributes.join(" ") + " body--medium_font");
+            break;
+        case "Large Font":
+            bodyAppearance.setAttribute("class", addAttributes.join(" ") + " body--large_font");
             break;
         default:
             break;
     }
+    console.log(bodyAppearance.getAttribute("class"));
 }
 
 
@@ -57,23 +114,23 @@ function changeProperty(){
             propertySelectionbox.options = ["Default", "Dark Mode", "Inverted Colors"];
             break;
         case "Body":
-            propertySelectionbox.options = ["small font", "medium font", "large font"];
+            propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font"];
             break;
         case "Header":
             propertySelectionbox.options = ["a", "b", "c"];
             break;
         case "Article":
-            propertySelectionbox.options = ["a", "b", "c"];
+            propertySelectionbox.options = ["enable border", "b", "c"];
             break;
         case "Aside":
-            propertySelectionbox.options = ["a", "b", "c"];
+            propertySelectionbox.options = ["place aside above footer", "b", "c"];
             break;
         case "Footer":
             propertySelectionbox.options = ["a", "b", "c"];
             break;
         default:
             if(elementSelectionbox.element.value.includes("Section")){
-                propertySelectionbox.options = ["d", "e", "f"];
+                propertySelectionbox.options = ["enable border", "e", "f"];
             }
             break;
     }
@@ -84,14 +141,13 @@ function changeProperty(){
 function changeAppearance(){
     if(lastSelectedelement !== elementSelectionbox.element.value || lastSelectedProperty !== propertySelectionbox.element.value)
     {
-        
         console.log("appearance changed...");
         switch (elementSelectionbox.element.value){
             case "Presets":
                 presetsAppearance(propertySelectionbox.element.value);
                 break;
             case "Body":
-                
+                bodyApperance(propertySelectionbox.element.value);
                 break;
             case "Header":
                 
@@ -110,7 +166,6 @@ function changeAppearance(){
         }
     }
     lastSelectedProperty = propertySelectionbox.element.value;
-
 }
 
 // Function to create the complete menu to change the appearance,

@@ -1,38 +1,41 @@
 
 .body--default, .body--dark_mode, .body--inverted_colors {
-    font-family: Arial;
-    padding: 10px;
-    font-size: 1.5rem;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    max-width: 100%;
+  font-family: Arial;
+  padding: 10px;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  max-width: 100%;
+  background:rgb(251,251,251);
 }
 
-.body--default{ background:rgb(251,251,251);}
+.body--dark_mode{ background:#121212;  color: rgba(255,255,255, 0.75);}
 
-.body--dark_mode{ 
-  background:#121212;
-  color: rgba(255,255,255, 0.88);
-}
-  h1,h2,h3,h4 {margin: .1rem 0;}
+.body--small_font{font-size: 1rem;}
+.body--medium_font{font-size: 1.3rem;}
+.body--large_font{font-size: 1.6rem;}
+  
+h1,h2,h3,h4 {margin: .1em 0;}
 
-  h1 {font-size: 2.5rem;}
+h1 {font-size: 2.5em;}
 
-  h2 {font-size: 2rem;}
+h2 {font-size: 2em;}
 
-  h3 {font-size: 1.7rem;}
+h3 {font-size: 1.7em;}
 
-  h4 {font-size: 1.5rem;}
+h4 {font-size: 1.5em;}
 
 header{
-    font-family: Tahoma;
-    font-weight: bold;
-    padding: 30px;
-    text-align: center;
-    text-shadow: 1px 1px rgb(1, 75, 150);
-    background-color: rgb(24,144,255);
+  font-family: Tahoma;
+  font-weight: bold;
+  padding: 30px;
+  text-align: center;
+  text-shadow: 1px 1px rgb(1, 75, 150);
+  background-color: rgb(24,144,255);
+  color: black;
 }
+
+.body--dark_mode header{ background-color: rgb(1, 11, 43); color:rgba(255,255,255, 0.92); }
 
 header img{width:100%;}
 
@@ -41,11 +44,13 @@ nav {
     Position: relative;
     left:0%;
     background-color: rgb(1,14,40);
-    font-size: 1.30rem;
+    font-size: 1em;
     overflow: auto;
     border-top: 7px solid rgb(1,14,30);
     border-bottom: 7px solid rgb(1,14,30);
-  }
+}
+
+.body--dark_mode nav{ background-color:rgb(1, 75, 150); border-color: rgb(1, 75, 150);}
   
 nav ul {
   list-style-type: none;
@@ -54,20 +59,26 @@ nav ul {
   overflow: hidden;
   background-color:rgb(1,14,30);
 }
+.body--dark_mode nav ul{ background-color:rgb(1, 11, 43);}
 
 nav li {float: left;}
 
 nav li a {
   display: block;
-  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  color: white;
 } 
 
+
 nav li a:hover {background-color: rgb(1, 75, 150);}
+.body--dark_mode nav li a:hover {background-color: rgba(24, 143, 255, 0.808);}
 
 nav li a.active {background-color: rgb(24,144,255);}
+.body--dark_mode nav li a.active {background-color: rgb(1, 75, 150);}
+
+.body--dark_mode nav li a{color: rgba(255,255,255, 0.75);} 
 
 article {   
   float: left;
@@ -76,7 +87,7 @@ article {
   left:7.5%;
 }
 
-article  .first_heading{  text-align: center;}
+article .first_heading{  text-align: center;}
 
 article section
 {
@@ -110,22 +121,22 @@ article section
   max-width: 585px;
   position: relative;
   left:10%;
-  padding-top:1rem;
-  padding-bottom:1rem;
+  padding-top:1em;
+  padding-bottom:1em;
 }
 
 .img_full2{
   width: 90%;
   max-width: 1000px;
-  padding-top:1rem;
-  padding-bottom:1rem;
+  padding-top:1em;
+  padding-bottom:1em;
 }
 
 .html_layout_table{
   text-align: center;
   margin: 10px;
   border-collapse:separate; 
-  border-spacing:0.75rem;
+  border-spacing:0.75em;
   table-layout: fixed;
   width: 90%;
   position: relative;
@@ -136,7 +147,7 @@ article section
   border-radius: 20px;
   text-align: center;
   background-color: rgb(24,144,255);
-  padding: 1rem;
+  padding: 1em;
   width:50%
 }
 
@@ -146,10 +157,13 @@ article section
   border-radius: 20px;
   text-align: center;
   background-color: rgb(1, 75, 150);
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  margin-top:0.75rem;
+  padding: 1em;
+  margin-bottom: 0.5em;
+  margin-top:0.75em;
 }
+
+.body--dark_mode .html_layout_table th, .body--dark_mode .html_layout_table td{background-color: rgb(1, 75, 150); color:rgba(255,255,255, 0.75);}
+.body--dark_mode .html_layout_table th .sub-column, .body--dark_mode .html_layout_table td .sub-column{background-color: rgb(1,14,30);}
 
 .html_layout_table .column1{width: 67%;}
 
@@ -164,6 +178,7 @@ article section
   text-align: center;
   left: 5%;
   font-size:85% ;
+  color: white;
 }
 
 #disabilities td, #disabilities th {
@@ -172,11 +187,10 @@ article section
 }
 
 #disabilities th {
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  margin-top:0.75rem;
+  padding: 1em;
+  margin-bottom: 0.5em;
+  margin-top:0.75em;
   background-color:rgb(24,144,255);
-  color: white;
 }
 
 #disabilities a{color:rgb(24,144,255);}
@@ -195,14 +209,18 @@ article section
   border-width: 3px;
   border-color: rgb(1, 75, 150);
   Margin: 10px;
-  margin-top:1.5rem;
-  margin-bottom:1.5rem;
+  margin-top:1.5em;
+  margin-bottom:1.5em;
   Padding: 15px;
   font-family: Consolas,monospace;
   font-size:90%;
 }
 
+.body--dark_mode .code-example{background:#121212;  color: rgba(255,255,255, 0.75);}
+
 .code-example strong{color:rgb(0,129,255);}
+
+.body--dark_mode .code-example strong{color:rgb(1, 75, 150);}
 
 .code-example p{
   padding-top: 10px;
@@ -223,6 +241,8 @@ aside {
 
   text-align: center;
   color: white; 
+  font-size: 1.1em;
+
   background-color: rgb(24,144,255);
   opacity:0.95;
 
@@ -230,6 +250,8 @@ aside {
   flex-flow: column wrap;
   justify-content: center;
 } 
+
+.body--dark_mode aside{ background-color: rgb(1, 75, 150); color: rgba(255,255,255, 0.75);}
 
 aside a {
   border-radius: 25px;
@@ -255,11 +277,12 @@ footer {
   background-color:rgb(1,14,30);
   color: white;
 }
+
+.body--dark_mode footer{color: rgba(255,255,255, 0.75); background-color:rgb(1, 11, 43);}
 footer ul{
   padding:0px;
   list-style:none;
   text-align:center;
-  font-size:18px;
   line-height:1.6;
   margin-bottom:0;
 } 
@@ -284,7 +307,6 @@ footer #copyright{
   margin-bottom:0;
 }
 
-footer .button--appearance{}
 
 footer hr{width: 50%;}
 
@@ -318,8 +340,8 @@ footer hr{width: 50%;}
     width: 75%;
     position: relative;
     left:12.5%;
-    padding-top:1rem;
-    padding-bottom:1rem;
+    padding-top:1em;
+    padding-bottom:1em;
   }
 
   .html_layout_table{
@@ -354,14 +376,14 @@ footer hr{width: 50%;}
 
   .img_full{
     width: 100%;
-    padding-top:1rem;
-    padding-bottom:1rem;
+    padding-top:1em;
+    padding-bottom:1em;
     left:0%;
   }
   .img_full2{
     width: 100%;
-    padding-top:1rem;
-    padding-bottom:1rem;
+    padding-top:1em;
+    padding-bottom:1em;
     left:0%;
   }
   
