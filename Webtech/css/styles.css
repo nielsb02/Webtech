@@ -313,6 +313,11 @@ label {
   font-size: x-large;
 }
 .qbutton2{
+  opacity: 0.6;
+  cursor: not-allowed;
+  font-size: x-large;
+}
+.qbutton3{
   cursor: allowed;
   font-size: x-large;
 }
