@@ -283,11 +283,23 @@ footer hr{width: 50%;}
 
 
 
-.question{
+.question, .correct, .incorrect{
 background-color: rgb(24,144,255);
 margin-top: 50px;
-border: 5px solid rgb(0, 16, 235);
 }
+
+.question{
+  border: 15px solid rgb(0, 16, 235);
+}
+
+.correct{
+  border: 15px solid green;
+}
+
+.incorrect{
+  border: 15px solid red;
+}
+
 label {
   display: flex;
   justify-content: flex-start;
