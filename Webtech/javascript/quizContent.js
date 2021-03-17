@@ -321,7 +321,7 @@ function next()
         case n < 2:
             if(n == 0)
             {
-                let nextCss = document.getElementById("previous");
+                var nextCss = document.getElementById("previous");
                 nextCss.setAttribute("class","qbutton--enabled");
             }
             n++;
@@ -344,7 +344,7 @@ function next()
             {
             if(n == 3)
             {
-                let nextCss = document.getElementById("next");
+                var nextCss = document.getElementById("next");
                 nextCss.setAttribute("class","qbutton--disabled");
             }
             n++;
