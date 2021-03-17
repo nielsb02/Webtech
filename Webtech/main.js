@@ -7,11 +7,11 @@ var strong;
 
 var n = 0;
 const imgArray = ["Resources/Afbeelding.png", "Resources/list.png"];
-const titlearray = ["Where does the feature 'Voice Recognition' belong to?",
- "Where does the feature 'Colors with Good Contrast' belong to?",
- "To which main reason does this sentence belong to?",
- "What element should replace the dots?",
- "What element should replace the dots?"];
+const titlearray = ["Question 1: Where does the feature 'Voice Recognition' belong to?",
+ "Question 2: Where does the feature 'Colors with Good Contrast' belong to?",
+ "Question 3: To which main reason does this sentence belong to?",
+ "Question 4: What element should replace the dots?",
+ "Question 5: What element should replace the dots?"];
 const answerarray = ["Physical Disability", "Visual Disability","Commercial reasons","ul", "aside"];
 const optionsarray = [["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
 ["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
@@ -39,6 +39,7 @@ multiplechoice.prototype.createOptions = function()
 {
     var x = document.createTextNode(this.title);
     strong.appendChild(x);
+    var button = document.getElementById("check");
 
     for(var i = 0; i < this.options.length; i++)
     {
@@ -49,14 +50,14 @@ multiplechoice.prototype.createOptions = function()
         input.setAttribute("type", "radio");
         input.setAttribute("name", "qoptions");
         spanCss.setAttribute("class", "design");
+        label.addEventListener("click", checkEnabled, false);
 
         choiceSpan[i].appendChild(document.createTextNode(this.options[i]));
 
         label.appendChild(input);
         label.appendChild(spanCss);
         label.appendChild(choiceSpan[i]);
-
-        section.appendChild(label);
+        section.insertBefore(label, button);
     }
 }
 
@@ -71,11 +72,24 @@ multiplechoice.prototype.changeOptions = function()
     }
 }
 
+multiplechoice.prototype.deleteOptions = function()
+{
+    strong.removeChild(strong.childNodes[0]);
+    for(var i = section.childNodes.length - 1; i > 0; i--)
+    {
+        if(section.childNodes[i].nodeName == "LABEL")
+        {
+            section.removeChild(section.childNodes[i]);
+        }
+    }
+}
+
 
 class fillin extends question{
-    constructor(qtitle, answer, src){
+    constructor(qtitle, answer, src, imgclass){
         super(qtitle, answer);
         this.src = src;
+        this.class = imgclass;
     }
 }
 
@@ -84,20 +98,35 @@ fillin.prototype.createTextbox = function()
 
     var x = document.createTextNode(this.title);
     strong.appendChild(x);
-    var img = document.createElement("IMG");
-    img.setAttribute("src",this.src);
-    section.appendChild(img);
     var textbox = document.createElement("INPUT");
     textbox.setAttribute("type","text");
+    textbox.setAttribute("value","");
     var br = document.createElement("BR");
     textbox.setAttribute("class","textbox--styling");
-    section.appendChild(textbox);
+    textbox.addEventListener("input", checkEnabled, false);
+    textbox.addEventListener("change", checkDisabledTextbox, false);
+    var button = document.getElementById("check");
+    section.insertBefore(textbox, button);
+    var img = document.createElement("IMG");
+    img.setAttribute("src",this.src);
+    img.setAttribute("class",this.class);
+    section.insertBefore(img, textbox);
 }
 
 fillin.prototype.changeTextbox = function()
 {
     var titleNode = document.createTextNode(this.title);
     strong.replaceChild(titleNode, strong.firstChild);
+    var img = document.getElementsByTagName("IMG")[1];
+    img.setAttribute("src",this.src);
+    img.setAttribute("class",this.class);
+}
+
+fillin.prototype.deleteTextbox = function()
+{
+    strong.removeChild(strong.childNodes[0]);
+    section.removeChild(section.childNodes[1]);
+    section.removeChild(section.childNodes[1]);
 }
 
 function layout()
@@ -117,8 +146,8 @@ function layout()
     question1 = new multiplechoice(titlearray[0], answerarray[0], optionsarray[0]);
     question2 = new multiplechoice(titlearray[1], answerarray[1], optionsarray[1]);
     question3 = new multiplechoice(titlearray[2], answerarray[2], optionsarray[2]);
-    question4 = new fillin(titlearray[3], answerarray[3], imgArray[0]);
-    question5 = new fillin(titlearray[4], answerarray[4], imgArray[1]);
+    question4 = new fillin(titlearray[3], answerarray[3], imgArray[0], "layoutquestion");
+    question5 = new fillin(titlearray[4], answerarray[4], imgArray[1], "elementquestion");
     questions = [question1, question2, question3, question4, question5];
     question1.createOptions();
 
@@ -126,19 +155,22 @@ function layout()
     a.addEventListener("click", check, false);
     a.setAttribute("type", "button");
     a.setAttribute("value", "check");
-    a.setAttribute("class", "qbutton1");
+    a.setAttribute("class", "qbutton--disabled");
+    a.setAttribute("id","check");
 
     let b = document.createElement("INPUT");
     b.addEventListener("click", previous, false);
     b.setAttribute("type", "button");
     b.setAttribute("value", "previous");
-    b.setAttribute("class", "qbutton2");
+    b.setAttribute("class", "qbutton--disabled");
+    b.setAttribute("id","previous");
 
     let c = document.createElement("INPUT");
     c.addEventListener("click", next, false);
     c.setAttribute("type", "button");
     c.setAttribute("value", "next");
-    c.setAttribute("class", "qbutton3");
+    c.setAttribute("class", "qbutton--enabled");
+    c.setAttribute("id","next");
 
     section.appendChild(a);
     section.appendChild(b);
@@ -146,6 +178,47 @@ function layout()
 }
 
 layout();
+
+function checkEnabled()
+{
+    var x = document.getElementById("check");
+    x.setAttribute("class","qbutton--enabled");
+}
+
+function checkDisabled()
+{
+    var y = document.getElementById("check");
+    y.setAttribute("class","qbutton--disabled");
+}
+
+function test()
+{
+
+}
+
+function checkDisabledTextbox()
+{
+    var x = document.getElementsByClassName("textbox--styling")[0].value;
+    console.log(x);
+    if(x.length == 0)
+    {
+        var y = document.getElementById("check");
+        y.setAttribute("class","qbutton--disabled");
+    }
+}
+function clearOptionsRadio()
+{
+    var x = document.getElementsByName("qoptions");
+    for(var i=0 ; i < x.length ; i++)
+    {
+        x[i].checked = false;
+    }
+}
+
+function clearTextbox()
+{
+
+}
 
 function check()
 {
@@ -180,30 +253,80 @@ function previous()
     {
         case n == 0:
             break;
-        case n <= 3:
+        case n < 3:
+            if(n == 1)
+            {
+                var x = document.getElementById("previous");
+                x.setAttribute("class","qbutton--disabled");
+            }
             n--;
             var l = questions[n];
             l.changeOptions();
-            section.setAttribute("class", "question");
+            clearOptionsRadio();
+            checkDisabled();
+            section.setAttribute("class","question");
+            break;
+        case n == 3:
+            var b = questions[n];
+            b.deleteTextbox();
+            n--;
+            var c = questions[n];
+            c.createOptions();
+            section.setAttribute("class","question");
+            break;
+        case n > 3:
+            if(n == 4)
+            {
+                var x = document.getElementById("next");
+                x.setAttribute("class","qbutton--enabled");
+            }
+            n--;
+            var d = questions[n];
+            d.changeTextbox();
+            section.setAttribute("class","question");
             break;
     }
 }
 
 function next()
 {
+    
+    
     switch(true)
     {
-        case n == 4:
-            break;
         case n < 2:
+            if(n == 0)
+            {
+                var x = document.getElementById("previous");
+                x.setAttribute("class","qbutton--enabled");
+            }
             n++;
             var k = questions[n];
             k.changeOptions();
-            section.setAttribute("class", "question");
+            clearOptionsRadio();
+            checkDisabled();
+            section.setAttribute("class","question");
             break;
-        case n >= 2:
+        case n == 2:
+            var p = questions[n];
+            p.deleteOptions();
+            n++;
+            var s = questions[n];
+            s.createTextbox();
+            section.setAttribute("class","question");
+            break;
+        case n > 2:
+            if(n == 3)
+            {
+                var x = document.getElementById("next");
+                x.setAttribute("class","qbutton--disabled");
+            }
+            n++;
+            var t = questions[n];
+            t.changeTextbox();
+            section.setAttribute("class","question");
+            break;
+        case n == 4:
             break;
     }
 }
-
-
