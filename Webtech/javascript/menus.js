@@ -3,6 +3,8 @@ var lastSelectedelement, lastSelectedProperty;
 var pageAppearance;
 var headerArray, articleArray, sectionArray;
 
+//Two functions to make it easier to use sessionStorage to store the local variable describing the appearance.
+
 function saveToSession(id, object){
     sessionStorage.setItem(id, JSON.stringify(object));
 }
@@ -25,6 +27,8 @@ class selectionBox{
     }
 }
 
+//two prototypes to remove and create the options for the selectionboxes. 
+
 selectionBox.prototype.addOptions = function() {
     for(var i = 0; i < this.options.length; i++  )
     {
@@ -40,6 +44,7 @@ selectionBox.prototype.removeOptions = function(){
     }
 };
 
+//This functions removes an certain class from the classlist of the element which is about to change it apearance.
 function removeFromArray(element, remove){
         if (element.classList){
             element.classList.forEach(function (string){
@@ -53,6 +58,8 @@ function removeFromArray(element, remove){
         });
     }
 }
+
+//We Created for every element an different function, to keep it somewhat viewable.
 
 function presetsAppearance(property){
     var bodyAppearance = document.getElementsByTagName("BODY")[0];
@@ -154,6 +161,8 @@ function footerAppearance(property){
     }
 }
 
+//These two functions are used to change the css class, works for every element and number of elements.
+
 function changeBorder(property, semanticElement, n)
 {
     var getSections = document.getElementsByTagName(semanticElement)[n];
@@ -170,7 +179,6 @@ function changeBorder(property, semanticElement, n)
             break;
     }
 }
-
 
 function changeFont(property, semanticElement, n){
     var semanticAppearance = document.getElementsByTagName(semanticElement)[n];
@@ -265,9 +273,8 @@ function changeAppearance(){
     saveToSession("savedData", pageAppearance);
 }
 
-// Function to create the complete menu to change the appearance,
-// it is locted inside the footer and underneath the references.
-// We used insertBefore to insert the new elements in front the already excisting divider.
+// This Function creates the options for the first selectbox, 
+// by counting every header, article and section (if there are multiple).
 
 function createElementsmenu(){
     
@@ -319,7 +326,9 @@ function createElementsmenu(){
     return elementsArray;
 }
 
-//This function creates the 
+// Function to create the complete menu to change the appearance,
+// it is locted inside the footer and underneath the references.
+// We used insertBefore to insert the new elements in front the already excisting divider.
 
 function createAppearancemenu(){
     var footer = document.getElementsByTagName("FOOTER")[0];
@@ -347,6 +356,8 @@ function createAppearancemenu(){
     footer.insertBefore(document.createElement("BR"), footerDivider);  // can maybe be done with css
     footer.insertBefore(appearanceButton, footerDivider);
 }
+
+//Gets the storage from the sesion and intialize the already defined appearances.
 
 if(typeof(Storage) !== "undefined") {
     if (getFromSession("savedData"))
@@ -395,8 +406,4 @@ if(typeof(Storage) !== "undefined") {
         saveToSession("savedData", pageAppearance);
     }
 }
-else{
-    
-}
-
 createAppearancemenu();
