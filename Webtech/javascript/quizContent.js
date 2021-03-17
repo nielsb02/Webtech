@@ -1,24 +1,29 @@
+//creating the heading
 var article = document.getElementsByTagName("ARTICLE")[0];
+var heading = document.createElement("H1");
+var headingText = document.createTextNode("Questions");
+heading.setAttribute("class", "first_heading");
+heading.appendChild(headingText);
+article.appendChild(heading);
+
+//declaration of the global variables and arrays
 var section;
-
 choiceSpan = [];
-
 var strong;  
-
 var n = 0;
 const imgArray = ["Resources/Afbeelding.png", "Resources/list.png"];
-const titlearray = ["Question 1: Where does the feature 'Voice Recognition' belong to?",
+const titleArray = ["Question 1: Where does the feature 'Voice Recognition' belong to?",
  "Question 2: Where does the feature 'Colors with Good Contrast' belong to?",
  "Question 3: To which main reason does this sentence belong to?",
  "Question 4: What element should replace the dots?",
  "Question 5: What element should replace the dots?"];
-const answerarray = ["Physical Disability", "Visual Disability","Commercial reasons","ul", "aside"];
-const optionsarray = [["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
+const answerArray = ["Physical Disability", "Visual Disability","Commercial reasons","ul", "aside"];
+const optionsArray = [["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
 ["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
 ["Ethical reasons","Reputational reasons","Legal reasons","Commercial reasons"]];
 
 
-
+//this is the superclass of all the questions
 class question{
     constructor(qtitle, qanswer)
     {
@@ -27,7 +32,7 @@ class question{
     }
 }
 
-
+//this is a subclass of questions
 class multiplechoice extends question{
     constructor(qtitle, answer, options){
     super(qtitle, answer);
@@ -35,6 +40,7 @@ class multiplechoice extends question{
     }
 }
 
+//this functions creates the radiobuttons for the multiplechoice questions
 multiplechoice.prototype.createOptions = function()
 {
     var x = document.createTextNode(this.title);
@@ -61,6 +67,7 @@ multiplechoice.prototype.createOptions = function()
     }
 }
 
+//this function replaces all the options for every question
 multiplechoice.prototype.changeOptions = function()
 {
     var titleNode = document.createTextNode(this.title);
@@ -72,6 +79,7 @@ multiplechoice.prototype.changeOptions = function()
     }
 }
 
+//this functions deletes all the options from the multiplechoice questions
 multiplechoice.prototype.deleteOptions = function()
 {
     strong.removeChild(strong.childNodes[0]);
@@ -84,7 +92,7 @@ multiplechoice.prototype.deleteOptions = function()
     }
 }
 
-
+//this is a subclass of questions
 class fillin extends question{
     constructor(qtitle, answer, src, imgclass, placeholder){
         super(qtitle, answer);
@@ -94,6 +102,7 @@ class fillin extends question{
     }
 }
 
+//this function creates a textbox for fill in the blank questions
 fillin.prototype.createTextbox = function()
 {
 
@@ -114,6 +123,7 @@ fillin.prototype.createTextbox = function()
     section.insertBefore(img, textbox);
 }
 
+//this function changes the textboxes of the questions
 fillin.prototype.changeTextbox = function()
 {
     var titleNode = document.createTextNode(this.title);
@@ -123,6 +133,7 @@ fillin.prototype.changeTextbox = function()
     img.setAttribute("class",this.class);
 }
 
+//this function deletes textboxes
 fillin.prototype.deleteTextbox = function()
 {
     strong.removeChild(strong.childNodes[0]);
@@ -130,94 +141,96 @@ fillin.prototype.deleteTextbox = function()
     section.removeChild(section.childNodes[1]);
 }
 
+//this function creates the layout of the section
 function layout()
 {
-    
     section = document.createElement("SECTION");
     article.appendChild(section);
     section.setAttribute("class", "question");
-
-    var p = document.createElement("p");
-    section.appendChild(p);
-
+    var paragraph = document.createElement("p");
+    section.appendChild(paragraph);
     strong = document.createElement("STRONG");
-    p.appendChild(strong);
-    
+    paragraph.appendChild(strong);
 
-    question1 = new multiplechoice(titlearray[0], answerarray[0], optionsarray[0]);
-    question2 = new multiplechoice(titlearray[1], answerarray[1], optionsarray[1]);
-    question3 = new multiplechoice(titlearray[2], answerarray[2], optionsarray[2]);
-    question4 = new fillin(titlearray[3], answerarray[3], imgArray[0], "layoutquestion", "Example: header");
-    question5 = new fillin(titlearray[4], answerarray[4], imgArray[1], "elementquestion", "Example: header");
+    //the questions are created as objects
+    question1 = new multiplechoice(titleArray[0], answerArray[0], optionsArray[0]);
+    question2 = new multiplechoice(titleArray[1], answerArray[1], optionsArray[1]);
+    question3 = new multiplechoice(titleArray[2], answerArray[2], optionsArray[2]);
+    question4 = new fillin(titleArray[3], answerArray[3], imgArray[0], "layoutquestion", "Example: header");
+    question5 = new fillin(titleArray[4], answerArray[4], imgArray[1], "elementquestion", "Example: header");
     questions = [question1, question2, question3, question4, question5];
     question1.createOptions();
 
-    let a = document.createElement("INPUT");
-    a.addEventListener("click", check, false);
-    a.setAttribute("type", "button");
-    a.setAttribute("value", "check");
-    a.setAttribute("class", "qbutton--disabled");
-    a.setAttribute("id","check");
+    //the check, previous and next buttons are created here
+    let inputA = document.createElement("INPUT");
+    inputA.addEventListener("click", check, false);
+    inputA.setAttribute("type", "button");
+    inputA.setAttribute("value", "check");
+    inputA.setAttribute("class", "qbutton--disabled");
+    inputA.setAttribute("id","check");
 
-    let b = document.createElement("INPUT");
-    b.addEventListener("click", previous, false);
-    b.setAttribute("type", "button");
-    b.setAttribute("value", "previous");
-    b.setAttribute("class", "qbutton--disabled");
-    b.setAttribute("id","previous");
+    let inputB = document.createElement("INPUT");
+    inputB.addEventListener("click", previous, false);
+    inputB.setAttribute("type", "button");
+    inputB.setAttribute("value", "previous");
+    inputB.setAttribute("class", "qbutton--disabled");
+    inputB.setAttribute("id","previous");
 
-    let c = document.createElement("INPUT");
-    c.addEventListener("click", next, false);
-    c.setAttribute("type", "button");
-    c.setAttribute("value", "next");
-    c.setAttribute("class", "qbutton--enabled");
-    c.setAttribute("id","next");
+    let inputC = document.createElement("INPUT");
+    inputC.addEventListener("click", next, false);
+    inputC.setAttribute("type", "button");
+    inputC.setAttribute("value", "next");
+    inputC.setAttribute("class", "qbutton--enabled");
+    inputC.setAttribute("id","next");
 
-    section.appendChild(a);
-    section.appendChild(b);
-    section.appendChild(c);
+    section.appendChild(inputA);
+    section.appendChild(inputB);
+    section.appendChild(inputC);
 }
 
+//the function above is called here
 layout();
 
+//this function styles the Css for the enabled check button
 function checkEnabled()
 {
-    var x = document.getElementById("check");
-    x.setAttribute("class","qbutton--enabled");
+    let checkCss = document.getElementById("check");
+    checkCss.setAttribute("class","qbutton--enabled");
 }
 
+//this function styles the Css for the disabled check button
 function checkDisabled()
 {
-    var y = document.getElementById("check");
-    y.setAttribute("class","qbutton--disabled");
+    let checkCss = document.getElementById("check");
+    checkCss.setAttribute("class","qbutton--disabled");
 }
 
+//if the textbox is empty, the checkbutton will be disabled.
 function checkDisabledTextbox()
 {
-    var x = document.getElementsByClassName("textbox--styling")[0].value;
-    if(x.length == 0)
+    let textboxInput = document.getElementsByClassName("textbox--styling")[0].value;
+    if(textboxInput.length == 0)
     {
-        var y = document.getElementById("check");
-        y.setAttribute("class","qbutton--disabled");
+        let check = document.getElementById("check");
+        check.setAttribute("class","qbutton--disabled");
     }
 }
+
+//this function resets the radiobuttons
 function clearOptionsRadio()
 {
-    var x = document.getElementsByName("qoptions");
-    for(var i=0 ; i < x.length ; i++)
+    let radioButtons = document.getElementsByName("qoptions");
+    for(var i=0 ; i < radioButtons.length ; i++)
     {
-        x[i].checked = false;
+        radioButtons[i].checked = false;
     }
 }
 
-function clearTextbox()
-{
-
-}
-
+//this function checks wether the input is correct or incorrect
 function check()
 {
-    
+    if(n<3)
+    {
     var selected = document.getElementsByName('qoptions');
     for(var i = 0; i < selected.length; i++)
     {
@@ -225,22 +238,36 @@ function check()
         {
             var x = selected[i].nextSibling;
             var y = x.nextSibling;
-            if(y.childNodes[0].nodeValue == answerarray[n])
+            if(y.childNodes[0].nodeValue == answerArray[n])
             {
                 section.setAttribute("class","correct");
-                window.alert("goeie saus");
             }
             else
             {
                 section.setAttribute("class","incorrect");
             }
-            
         }
     }
-   
-
+    }
+    if(n>=3)
+    {
+        var input = document.getElementsByClassName("textbox--styling")[0].value;
+        if(n==3 && input == "aside")
+        {
+            section.setAttribute("class","correct");
+        }
+        else if(n==4 && input == "ul")
+            {
+                section.setAttribute("class","correct");
+            }
+            else
+            {
+                section.setAttribute("class","incorrect");
+            }
+    }
 }
 
+//this function controls the buttons if the previous button is clicked on
 function previous()
 {
     
@@ -285,10 +312,9 @@ function previous()
     }
 }
 
+//this function controls the buttons if the next button is clicked on
 function next()
 {
-    
-    
     switch(true)
     {
         case n < 2:

@@ -1,11 +1,11 @@
 //Header
 var header = document.getElementsByTagName("HEADER")[0];
 var heading = document.createElement("H1");
-var headername = document.createTextNode("Quiz");
+var headerName = document.createTextNode("Quiz");
 var img = document.createElement("IMG");
 img.setAttribute("src", "Resources/headerbgr1.png");
 img.setAttribute("alt", "Web Accesibility Banner");
-heading.appendChild(headername);
+heading.appendChild(headerName);
 header.appendChild(heading);
 header.appendChild(img);
 
@@ -16,8 +16,8 @@ href: ["index.html", "why.html", "perspectives.html", "standards.html", "guideli
 selected:["assessment.html"]};
 function createList(element, list, isNav)
 {
-    var ul = document.createElement("UL");
-for(var i = 0; i<list.text.length; i++)
+    var unorderedList = document.createElement("UL");
+    for(var i = 0; i<list.text.length; i++)
 {
     var listElement = document.createElement("LI");
     if(isNav)
@@ -40,9 +40,9 @@ for(var i = 0; i<list.text.length; i++)
      a.appendChild(text);
      }
     }
-    ul.appendChild(listElement);
+    unorderedList.appendChild(listElement);
 }
-element.appendChild(ul);
+element.appendChild(unorderedList);
 }
 createList(nav, navList, true);
 
