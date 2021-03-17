@@ -11,7 +11,7 @@ header.appendChild(img);
 
 //nav
 var nav = document.getElementsByTagName("NAV")[0];
-var navList = {text: ["Home", "Why is Web Accessibility important?", "Perspectives of Web Accessibility", "Standards for Web Accessibility", "Basic Web Accessibility Guidelines", "Quiz"],
+var navList = {text: ["Home", "Importance", "Perspectives", "Standards", "Basic Guidelines", "Quiz"],
 href: ["index.html", "why.html", "perspectives.html", "standards.html", "guidelines.html", "assessment.html"],
 selected:["assessment.html"]};
 function createList(element, list, isNav)
@@ -81,6 +81,7 @@ createAside(aside, asideList, true);
 //footer
 var body = document.getElementsByTagName("BODY")[0];
 body.setAttribute("id", "body");
+body.setAttribute("class", "body--default block--medium_font");
 var footer = document.getElementsByTagName("FOOTER")[0];
 var hr = document.createElement("HR");
 footer.appendChild(hr);
