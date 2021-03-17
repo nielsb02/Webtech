@@ -1,6 +1,6 @@
 //Creation of the heading.
 var article = document.getElementsByTagName("ARTICLE")[0];
-var heading = document.createElement("H1");
+var heading = document.createElement("H2");
 var headingText = document.createTextNode("Questions");
 heading.setAttribute("class", "first_heading");
 heading.appendChild(headingText);
@@ -8,9 +8,10 @@ article.appendChild(heading);
 
 //Declaration of the global variables and arrays.
 var section;
-choiceSpan = [];
+var choiceSpan = [];
 var strong;  
 var n = 0;
+var questions = [];
 const imgArray = ["Resources/Afbeelding.png", "Resources/list.png"];
 const titleArray = ["Question 1: Where does the feature 'Voice Recognition' belong to?",
  "Question 2: Where does the feature 'Colors with Good Contrast' belong to?",
@@ -65,19 +66,19 @@ multiplechoice.prototype.createOptions = function()
         label.appendChild(choiceSpan[i]);
         section.insertBefore(label, button);
     }
-}
+};
 
 //This function replaces the content with the content of a new multiplechoice question.
 multiplechoice.prototype.changeOptions = function()
 {
     var titleNode = document.createTextNode(this.title);
-    strong.replaceChild(titleNode, strong.firstChild)
+    strong.replaceChild(titleNode, strong.firstChild);
     for(var i = 0; i < this.options.length; i++)
     {
         var text = document.createTextNode(this.options[i]);
         choiceSpan[i].replaceChild(text, choiceSpan[i].firstChild);
     }
-}
+};
 
 //This function deletes the content of the multiplechoice questions.
 multiplechoice.prototype.deleteOptions = function()
@@ -90,7 +91,7 @@ multiplechoice.prototype.deleteOptions = function()
             section.removeChild(section.childNodes[i]);
         }
     }
-}
+};
 
 //A subclass of questions.
 class fillin extends question{
@@ -121,7 +122,7 @@ fillin.prototype.createTextbox = function()
     img.setAttribute("src",this.src);
     img.setAttribute("class",this.class);
     section.insertBefore(img, textbox);
-}
+};
 
 //This function changes the content for the fill-in-the-blank questions.
 fillin.prototype.changeTextbox = function()
@@ -131,7 +132,7 @@ fillin.prototype.changeTextbox = function()
     var img = document.getElementsByTagName("IMG")[1];
     img.setAttribute("src",this.src);
     img.setAttribute("class",this.class);
-}
+};
 
 //This function deletes the content of the fill-in-the-blank questions.
 fillin.prototype.deleteTextbox = function()
@@ -139,7 +140,7 @@ fillin.prototype.deleteTextbox = function()
     strong.removeChild(strong.childNodes[0]);
     section.removeChild(section.childNodes[1]);
     section.removeChild(section.childNodes[1]);
-}
+};
 
 //This function creates the layout of the section.
 function layout()
@@ -153,11 +154,11 @@ function layout()
     paragraph.appendChild(strong);
 
     //The questions are created as objects.
-    question1 = new multiplechoice(titleArray[0], answerArray[0], optionsArray[0]);
-    question2 = new multiplechoice(titleArray[1], answerArray[1], optionsArray[1]);
-    question3 = new multiplechoice(titleArray[2], answerArray[2], optionsArray[2]);
-    question4 = new fillin(titleArray[3], answerArray[3], imgArray[0], "layoutquestion", "Example: header");
-    question5 = new fillin(titleArray[4], answerArray[4], imgArray[1], "elementquestion", "Example: header");
+    var question1 = new multiplechoice(titleArray[0], answerArray[0], optionsArray[0]);
+    var question2 = new multiplechoice(titleArray[1], answerArray[1], optionsArray[1]);
+    var question3 = new multiplechoice(titleArray[2], answerArray[2], optionsArray[2]);
+    var question4 = new fillin(titleArray[3], answerArray[3], imgArray[0], "layoutquestion", "Example: header");
+    var question5 = new fillin(titleArray[4], answerArray[4], imgArray[1], "elementquestion", "Example: header");
     questions = [question1, question2, question3, question4, question5];
     question1.createOptions();
 
@@ -320,7 +321,7 @@ function next()
         case n < 2:
             if(n == 0)
             {
-                var nextCss = document.getElementById("previous");
+                let nextCss = document.getElementById("previous");
                 nextCss.setAttribute("class","qbutton--enabled");
             }
             n++;
@@ -339,9 +340,11 @@ function next()
             section.setAttribute("class","question");
             break;
         case n > 2:
+            if(n<4)
+            {
             if(n == 3)
             {
-                var nextCss = document.getElementById("next");
+                let nextCss = document.getElementById("next");
                 nextCss.setAttribute("class","qbutton--disabled");
             }
             n++;
@@ -350,6 +353,7 @@ function next()
             section.setAttribute("class","question");
             var textbox = document.getElementsByClassName("textbox--styling")[0];
             textbox.value = "";
+        }
             break;
         case n == 4:
             break;

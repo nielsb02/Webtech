@@ -25,7 +25,7 @@ function createList(element, list, isNav)
      var a = document.createElement("A");
      listElement.appendChild(a);
      a.setAttribute("href", list.href[i]);
-     var text = document.createTextNode(list.text[i])
+     var text = document.createTextNode(list.text[i]);
      if(list.selected[0] == list.href[i])
      {
          a.setAttribute("class", "active");
@@ -58,15 +58,15 @@ var asideList = {alt: ["picture of the instagram logo", "picture of the facebook
 href: ["https://www.instagram.com/", "https://www.facebook.com/sharer/sharer.php?u=https://webtech.nblonk.nl/Webtech/index.html", "https://twitter.com/intent/tweet?url=https://webtech.nblonk.nl/Webtech/index.html&text=", "https://www.linkedin.com/shareArticle?mini=true&url=https://webtech.nblonk.nl/Webtech/index.html"],
 src:["Resources/insta.png", "Resources/facebook.png", "Resources/twitter.png", "Resources/LinkedIn.png"]};
 
-function createAside(element, list, isaside)
+function createAside(element, list, isAside)
 {
     for(var i = 0; i<list.alt.length; i++)
     {
-    if(aside)
+    if(isAside)
     {
         let a = document.createElement("A");
         a.setAttribute("href", list.href[i]);
-        a.setAttribute("target", "_blank")
+        a.setAttribute("target", "_blank");
         let img = document.createElement("IMG");
         img.setAttribute("src", list.src[i]);
         img.setAttribute("alt", list.alt[i]);
@@ -76,7 +76,7 @@ function createAside(element, list, isaside)
     }
     }
 }
-createAside(aside, asideList, true)
+createAside(aside, asideList, true);
 
 //footer
 var body = document.getElementsByTagName("BODY")[0];
