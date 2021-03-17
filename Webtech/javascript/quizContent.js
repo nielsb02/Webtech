@@ -344,7 +344,7 @@ function next()
             {
             if(n == 3)
             {
-                var nextCss = document.getElementById("next");
+                let nextCss = document.getElementById("next");
                 nextCss.setAttribute("class","qbutton--disabled");
             }
             n++;
