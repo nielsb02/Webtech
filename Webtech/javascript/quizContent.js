@@ -258,13 +258,16 @@ function check()
             section.setAttribute("class","correct");
         }
         else if(n==4 && input == "ul")
-            {
-                section.setAttribute("class","correct");
-            }
-            else
-            {
-                section.setAttribute("class","incorrect");
-            }
+        {
+            section.setAttribute("class","correct");
+        }
+        else if(!input)
+        {
+        }
+        else
+        {
+            section.setAttribute("class","incorrect");
+        }  
     }
 }
 
