@@ -1,5 +1,5 @@
 var elementSelectionbox, propertySelectionbox, appearanceButton;
-var lastSelectedelement, lastSelectedProperty, selectedPreset = "Default", selectedBodyFont = "Medium Font";
+var lastSelectedelement, lastSelectedProperty;
 var pageAppearance;
 var headerArray, articleArray, sectionArray;
 
@@ -22,7 +22,7 @@ class selectionBox{
         this.options = arg; //removes name from the arguments list
         this.element = document.createElement("SELECT");
         this.element.setAttribute("class", "select--appearance");
-    };
+    }
 }
 
 selectionBox.prototype.addOptions = function() {
@@ -32,13 +32,13 @@ selectionBox.prototype.addOptions = function() {
         option.appendChild(document.createTextNode(this.options[i]));
         this.element.appendChild(option);
     }
-}
+};
 
 selectionBox.prototype.removeOptions = function(){
     while(this.element.firstChild){
         this.element.removeChild(this.element.lastChild);
     }
-}
+};
 
 function removeFromArray(element, remove){
         if (element.classList){
@@ -66,18 +66,18 @@ function presetsAppearance(property){
             var img = header.children[1];
             img.setAttribute("src", "Resources/headerbgr1.png");
             if(document.title == "Perspectives"){
-                var img = document.getElementsByClassName("img_full2")[0];
+                img = document.getElementsByClassName("img_full2")[0];
                 img.setAttribute("src", "Resources/accessibility-icons.jpg");
             }
             break;
         case "Dark Mode":
             bodyAppearance.setAttribute("class", "body--dark_mode "+ attributes.join(" "));
-            var header = document.getElementsByTagName("HEADER")[0];
-            var img = header.children[1];
+            header = document.getElementsByTagName("HEADER")[0];
+            img = header.children[1];
             img.setAttribute("src", "Resources/headerbgrdark.jpg");
 
             if(document.title == "Perspectives"){
-                var img = document.getElementsByClassName("img_full2")[0];
+                img = document.getElementsByClassName("img_full2")[0];
                 img.setAttribute("src", "Resources/accessibility-iconsdark.jpg");
             }
             break;
@@ -98,7 +98,7 @@ function bodyAppearance(property){
 }
 
 function headerAppearance(property, n){
-    var obj
+    var obj;
     if(property == "Small Font" || property == "Medium Font" || property ==  "Large Font" || property == "Extra Large Font"){
         
         changeFont(property, "HEADER", n);
@@ -109,6 +109,7 @@ function headerAppearance(property, n){
 }
 
 function articleAppearance(property, n){
+    var obj;
     if(property == "Small Font" || property == "Medium Font" || property ==  "Large Font" || property == "Extra Large Font" ){
         changeFont(property, "ARTICLE", n);
         obj = {font: property};
@@ -122,6 +123,7 @@ function articleAppearance(property, n){
 }
 
 function sectionAppearance(property, n){
+    var obj;
     if(property == "Small Font" || property == "Medium Font" || property ==  "Large Font" || property == "Extra Large Font" ){
         changeFont(property, "SECTION", n);
         obj = {font: property};
@@ -286,7 +288,7 @@ function createElementsmenu(){
     }
     else if ( document.getElementsByTagName("ARTICLE").length > 1)
     {
-        for (var i =0; i < document.getElementsByTagName("ARTICLE").length; i++)
+        for (let i =0; i < document.getElementsByTagName("ARTICLE").length; i++)
         {
             elementsArray.push("Article " + (i + 1));
         }
@@ -298,7 +300,7 @@ function createElementsmenu(){
     }
     else if ( document.getElementsByTagName("SECTION").length > 1)
     {
-        for (var i =0; i < document.getElementsByTagName("SECTION").length; i++)
+        for (let i =0; i < document.getElementsByTagName("SECTION").length; i++)
         {
             elementsArray.push("Section " + (i + 1));
         }
@@ -371,12 +373,12 @@ if(typeof(Storage) !== "undefined") {
 
         footerAppearance(pageAppearance.footer.font);
     }
-    catch{}
+    catch(Error){}
 
     }
     else
     {
-        lastSelectedelement = "Presets", lastSelectedProperty = "Default";
+        lastSelectedelement = "Presets"; lastSelectedProperty = "Default";
         headerArray = []; articleArray = []; sectionArray= [];
         pageAppearance = {
             preset: "Default",
@@ -386,7 +388,7 @@ if(typeof(Storage) !== "undefined") {
             article: {objectArray: []},
             section: {objectArray: []},
             footer: {font: ""}
-        }
+        };
         saveToSession("savedData", pageAppearance);
     }
 }
