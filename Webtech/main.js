@@ -107,8 +107,6 @@ function layout()
     article.appendChild(section);
     section.setAttribute("class", "question");
 
-    
-
     var p = document.createElement("p");
     section.appendChild(p);
 
