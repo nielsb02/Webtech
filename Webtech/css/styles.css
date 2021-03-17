@@ -11,10 +11,6 @@
 
 .body--dark_mode{ background:#121212;  color: rgba(255,255,255, 0.75);}
 
-.body--small_font{font-size: 1rem;}
-.body--medium_font{font-size: 1.3rem;}
-.body--large_font{font-size: 1.6rem;}
-  
 h1,h2,h3,h4 {margin: .1em 0;}
 
 h1 {font-size: 2.5em;}
@@ -35,19 +31,25 @@ header{
   color: black;
 }
 
+.block--small_font{font-size: 1rem;}
+.block--medium_font{font-size: 1.3rem;}
+.block--large_font{font-size: 1.6rem;}
+.block--extra_large_font{font-size: 1.8rem;}
+
 .body--dark_mode header{ background-color: rgb(1, 11, 43); color:rgba(255,255,255, 0.92); }
 
 header img{width:100%;}
 
+
 nav {
-    width: 100%;
-    Position: relative;
-    left:0%;
-    background-color: rgb(1,14,40);
-    font-size: 1em;
-    overflow: auto;
-    border-top: 7px solid rgb(1,14,30);
-    border-bottom: 7px solid rgb(1,14,30);
+  width: 100%;
+  Position: relative;
+  left:0%;
+  background-color: rgb(1,14,40);
+  font-size: 1em;
+  overflow: auto;
+  border-top: 7px solid rgb(1,14,30);
+  border-bottom: 7px solid rgb(1,14,30);
 }
 
 .body--dark_mode nav{ background-color:rgb(1, 75, 150); border-color: rgb(1, 75, 150);}
@@ -181,6 +183,8 @@ article section
   color: white;
 }
 
+.body--dark_mode #disabilities {color: rgba(255,255,255, 0.75);}
+
 #disabilities td, #disabilities th {
   border: 2px solid #ddd;
   padding: 8px;
@@ -195,9 +199,9 @@ article section
 
 #disabilities a{color:rgb(24,144,255);}
 
-#disabilities a:link { text-decoration: none;}
+#disabilities a:link {text-decoration: none;}
 
-#disabilities a:hover {  text-decoration: underline;}
+#disabilities a:hover {text-decoration: underline;}
 
 #disabilities tr:nth-child(even){background-color: #f2f2f2;}
 
@@ -387,13 +391,19 @@ footer hr{width: 50%;}
     left:0%;
   }
   
-  #disabilities {
-    table-layout: auto;
-    width: 90%;
-    text-align: left;
-    left: 0%;
-    font-size:85%;
-  }
+#disabilities {
+  table-layout: auto;
+  width: 100%;
+  text-align: left;
+  left: 0%;
+  font-size:0.65em;
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+#disabilities th{
+  padding: 8px;
+}
 
   aside{
     padding-bottom:15px;
