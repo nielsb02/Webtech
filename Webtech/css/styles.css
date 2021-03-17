@@ -36,8 +36,8 @@ header{
 .block--large_font{font-size: 1.6rem;}
 .block--extra_large_font{font-size: 1.8rem;}
 
-.section--border{  border: 10px solid rgb(24,144,255);}
-.body--dark_mode .section--border{border-color: rgb(1, 75, 150);}
+.section--border{  border: 10px solid rgb(1, 75, 150);}
+.body--dark_mode .section--border{border-color: rgb(24,144,255);}
 .section--noborder{  border: 0px;}
 
 .body--dark_mode header{ background-color: rgb(1, 11, 43); color:rgba(255,255,255, 0.92); }

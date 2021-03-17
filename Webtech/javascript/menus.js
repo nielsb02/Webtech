@@ -104,6 +104,10 @@ function headerAppearance(property, n){
         changeFont(property, "HEADER", n);
         obj = {font: property};
     }
+    else{
+        changeBorder(property, "HEADER", n);
+        obj = {border: property};
+    }
     headerArray[n] = obj;
     pageAppearance.header.objectArray = headerArray;
 }
@@ -197,16 +201,16 @@ function changeProperty(){
             propertySelectionbox.options = ["Default", "Dark Mode", "Inverted Colors"];
             break;
         case "Body":
-            propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font", "Default Scheme", "Dark Scheme"];
+            propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Header":
-            propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font"];
+            propertySelectionbox.options = ["Disable Border", "Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Article":
             propertySelectionbox.options = ["Disable Border", "Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Aside":
-            propertySelectionbox.options = ["Default Location", "On the Left", "At the Bottom", "Small Pictograms", "Default Pictograms", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
+            propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Footer":
             propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font"];
@@ -242,7 +246,6 @@ function changeAppearance(){
                 n = parseInt(n[1]) - 1;
                 if(Number.isNaN(n))
                     n = 0;
-                console.log(n);
                 break;
         }
         if(elementSelectionbox.element.value.includes("Article")){
@@ -316,6 +319,8 @@ function createElementsmenu(){
     return elementsArray;
 }
 
+//This function creates the 
+
 function createAppearancemenu(){
     var footer = document.getElementsByTagName("FOOTER")[0];
     var footerDivider = document.getElementsByTagName("HR")[0];
@@ -346,35 +351,33 @@ function createAppearancemenu(){
 if(typeof(Storage) !== "undefined") {
     if (getFromSession("savedData"))
     {
-        console.log("Data Found");
         pageAppearance = getFromSession("savedData");
         headerArray = pageAppearance.header.objectArray;
         articleArray = pageAppearance.article.objectArray;
         sectionArray = pageAppearance.section.objectArray;
 
        try{ 
-        console.log(getFromSession("savedData"));
-        presetsAppearance(pageAppearance.preset);
-        bodyAppearance(pageAppearance.body.font);
-        
-        headerArray.forEach(function (object, index){
-            headerAppearance(object.font, index);
-        });
-        articleArray.forEach(function (object, index){
-            console.log(object.font);
-            articleAppearance(object.font, index);
-        });
-        sectionArray.forEach(function (object, index){
-            console.log(object.font);
-            sectionAppearance(object.font, index);
-        });
+            presetsAppearance(pageAppearance.preset);
+            bodyAppearance(pageAppearance.body.font);
+            
+            headerArray.forEach(function (object, index){
+                headerAppearance(object.font, index);
+                headerAppearance(object.border, index);
+            });
+            articleArray.forEach(function (object, index){
+                articleAppearance(object.font, index);
+                articleAppearance(object.border, index);
+            });
+            sectionArray.forEach(function (object, index){
+                sectionAppearance(object.font, index);
+                sectionAppearance(object.border, index);
+            });
 
-        asideAppearance(pageAppearance.aside.font);
+            asideAppearance(pageAppearance.aside.font);
 
-        footerAppearance(pageAppearance.footer.font);
-    }
-    catch(Error){}
-
+            footerAppearance(pageAppearance.footer.font);
+        }
+        catch(Error){}
     }
     else
     {
@@ -396,5 +399,4 @@ else{
     
 }
 
-console.log(getFromSession("savedData"));
 createAppearancemenu();
