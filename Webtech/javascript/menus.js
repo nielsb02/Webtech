@@ -206,7 +206,7 @@ function changeProperty(){
 
     switch (elementSelectionbox.element.value){
         case "Presets":
-            propertySelectionbox.options = ["Default", "Dark Mode", "Inverted Colors"];
+            propertySelectionbox.options = ["Default", "Dark Mode"];
             break;
         case "Body":
             propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font"];

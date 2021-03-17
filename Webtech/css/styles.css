@@ -339,6 +339,8 @@ margin-top: 50px;
   border: 15px solid rgb(0, 16, 235);
 }
 
+.body--dark_mode .question{background-color: rgb(1, 75, 150)};
+
 .correct{
   border: 15px solid green;
 }
@@ -346,6 +348,7 @@ margin-top: 50px;
 .incorrect{
   border: 15px solid red;
 }
+ 
 
 label {
   display: flex;
