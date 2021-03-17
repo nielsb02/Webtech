@@ -86,10 +86,11 @@ multiplechoice.prototype.deleteOptions = function()
 
 
 class fillin extends question{
-    constructor(qtitle, answer, src, imgclass){
+    constructor(qtitle, answer, src, imgclass, placeholder){
         super(qtitle, answer);
         this.src = src;
         this.class = imgclass;
+        this.placeholder = placeholder;
     }
 }
 
@@ -101,8 +102,8 @@ fillin.prototype.createTextbox = function()
     var textbox = document.createElement("INPUT");
     textbox.setAttribute("type","text");
     textbox.setAttribute("value","");
-    var br = document.createElement("BR");
     textbox.setAttribute("class","textbox--styling");
+    textbox.setAttribute("placeholder",this.placeholder);
     textbox.addEventListener("input", checkEnabled, false);
     textbox.addEventListener("change", checkDisabledTextbox, false);
     var button = document.getElementById("check");
@@ -146,8 +147,8 @@ function layout()
     question1 = new multiplechoice(titlearray[0], answerarray[0], optionsarray[0]);
     question2 = new multiplechoice(titlearray[1], answerarray[1], optionsarray[1]);
     question3 = new multiplechoice(titlearray[2], answerarray[2], optionsarray[2]);
-    question4 = new fillin(titlearray[3], answerarray[3], imgArray[0], "layoutquestion");
-    question5 = new fillin(titlearray[4], answerarray[4], imgArray[1], "elementquestion");
+    question4 = new fillin(titlearray[3], answerarray[3], imgArray[0], "layoutquestion", "Example: header");
+    question5 = new fillin(titlearray[4], answerarray[4], imgArray[1], "elementquestion", "Example: header");
     questions = [question1, question2, question3, question4, question5];
     question1.createOptions();
 
@@ -191,15 +192,9 @@ function checkDisabled()
     y.setAttribute("class","qbutton--disabled");
 }
 
-function test()
-{
-
-}
-
 function checkDisabledTextbox()
 {
     var x = document.getElementsByClassName("textbox--styling")[0].value;
-    console.log(x);
     if(x.length == 0)
     {
         var y = document.getElementById("check");
@@ -284,6 +279,8 @@ function previous()
             var d = questions[n];
             d.changeTextbox();
             section.setAttribute("class","question");
+            var textbox = document.getElementsByClassName("textbox--styling")[0];
+            textbox.value = "";
             break;
     }
 }
@@ -325,6 +322,8 @@ function next()
             var t = questions[n];
             t.changeTextbox();
             section.setAttribute("class","question");
+            var textbox = document.getElementsByClassName("textbox--styling")[0];
+            textbox.value = "";
             break;
         case n == 4:
             break;
