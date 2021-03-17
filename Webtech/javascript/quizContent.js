@@ -1,4 +1,4 @@
-//creating the heading
+//Creation of the heading.
 var article = document.getElementsByTagName("ARTICLE")[0];
 var heading = document.createElement("H1");
 var headingText = document.createTextNode("Questions");
@@ -6,7 +6,7 @@ heading.setAttribute("class", "first_heading");
 heading.appendChild(headingText);
 article.appendChild(heading);
 
-//declaration of the global variables and arrays
+//Declaration of the global variables and arrays.
 var section;
 choiceSpan = [];
 var strong;  
@@ -23,7 +23,7 @@ const optionsArray = [["Visual Disability","Hearing Disability","Cognitive Disab
 ["Ethical reasons","Reputational reasons","Legal reasons","Commercial reasons"]];
 
 
-//this is the superclass of all the questions
+//The superclass of all the questions.
 class question{
     constructor(qtitle, qanswer)
     {
@@ -32,7 +32,7 @@ class question{
     }
 }
 
-//this is a subclass of questions
+//A subclass of questions.
 class multiplechoice extends question{
     constructor(qtitle, answer, options){
     super(qtitle, answer);
@@ -40,7 +40,7 @@ class multiplechoice extends question{
     }
 }
 
-//this functions creates the radiobuttons for the multiplechoice questions
+//This function creates the content for the multiplechoice questions.
 multiplechoice.prototype.createOptions = function()
 {
     var x = document.createTextNode(this.title);
@@ -67,7 +67,7 @@ multiplechoice.prototype.createOptions = function()
     }
 }
 
-//this function replaces all the options for every question
+//This function replaces the content with the content of a new multiplechoice question.
 multiplechoice.prototype.changeOptions = function()
 {
     var titleNode = document.createTextNode(this.title);
@@ -79,7 +79,7 @@ multiplechoice.prototype.changeOptions = function()
     }
 }
 
-//this functions deletes all the options from the multiplechoice questions
+//This function deletes the content of the multiplechoice questions.
 multiplechoice.prototype.deleteOptions = function()
 {
     strong.removeChild(strong.childNodes[0]);
@@ -92,7 +92,7 @@ multiplechoice.prototype.deleteOptions = function()
     }
 }
 
-//this is a subclass of questions
+//A subclass of questions.
 class fillin extends question{
     constructor(qtitle, answer, src, imgclass, placeholder){
         super(qtitle, answer);
@@ -102,7 +102,7 @@ class fillin extends question{
     }
 }
 
-//this function creates a textbox for fill in the blank questions
+//This function creates the content for fill-in-the-blank questions.
 fillin.prototype.createTextbox = function()
 {
 
@@ -123,7 +123,7 @@ fillin.prototype.createTextbox = function()
     section.insertBefore(img, textbox);
 }
 
-//this function changes the textboxes of the questions
+//This function changes the content for the fill-in-the-blank questions.
 fillin.prototype.changeTextbox = function()
 {
     var titleNode = document.createTextNode(this.title);
@@ -133,7 +133,7 @@ fillin.prototype.changeTextbox = function()
     img.setAttribute("class",this.class);
 }
 
-//this function deletes textboxes
+//This function deletes the content of the fill-in-the-blank questions.
 fillin.prototype.deleteTextbox = function()
 {
     strong.removeChild(strong.childNodes[0]);
@@ -141,7 +141,7 @@ fillin.prototype.deleteTextbox = function()
     section.removeChild(section.childNodes[1]);
 }
 
-//this function creates the layout of the section
+//This function creates the layout of the section.
 function layout()
 {
     section = document.createElement("SECTION");
@@ -152,7 +152,7 @@ function layout()
     strong = document.createElement("STRONG");
     paragraph.appendChild(strong);
 
-    //the questions are created as objects
+    //The questions are created as objects.
     question1 = new multiplechoice(titleArray[0], answerArray[0], optionsArray[0]);
     question2 = new multiplechoice(titleArray[1], answerArray[1], optionsArray[1]);
     question3 = new multiplechoice(titleArray[2], answerArray[2], optionsArray[2]);
@@ -161,7 +161,7 @@ function layout()
     questions = [question1, question2, question3, question4, question5];
     question1.createOptions();
 
-    //the check, previous and next buttons are created here
+    //The check, previous and next buttons are created here.
     let inputA = document.createElement("INPUT");
     inputA.addEventListener("click", check, false);
     inputA.setAttribute("type", "button");
@@ -188,24 +188,24 @@ function layout()
     section.appendChild(inputC);
 }
 
-//the function above is called here
+//The function above is called here.
 layout();
 
-//this function styles the Css for the enabled check button
+//This function styles the Css for the enabled check button.
 function checkEnabled()
 {
     let checkCss = document.getElementById("check");
     checkCss.setAttribute("class","qbutton--enabled");
 }
 
-//this function styles the Css for the disabled check button
+//This function styles the Css for the disabled check button.
 function checkDisabled()
 {
     let checkCss = document.getElementById("check");
     checkCss.setAttribute("class","qbutton--disabled");
 }
 
-//if the textbox is empty, the checkbutton will be disabled.
+//If the textbox is empty, the checkbutton will be disabled.
 function checkDisabledTextbox()
 {
     let textboxInput = document.getElementsByClassName("textbox--styling")[0].value;
@@ -216,7 +216,7 @@ function checkDisabledTextbox()
     }
 }
 
-//this function resets the radiobuttons
+//This function resets the radiobuttons.
 function clearOptionsRadio()
 {
     let radioButtons = document.getElementsByName("qoptions");
@@ -226,7 +226,7 @@ function clearOptionsRadio()
     }
 }
 
-//this function checks wether the input is correct or incorrect
+//This function checks whether the input is correct or incorrect.
 function check()
 {
     if(n<3)
@@ -267,7 +267,7 @@ function check()
     }
 }
 
-//this function controls the buttons if the previous button is clicked on
+//This function controls the actions that need to happen if the previous button is clicked.
 function previous()
 {
     
@@ -278,33 +278,33 @@ function previous()
         case n < 3:
             if(n == 1)
             {
-                var x = document.getElementById("previous");
-                x.setAttribute("class","qbutton--disabled");
+                let previousCss = document.getElementById("previous");
+                previousCss.setAttribute("class","qbutton--disabled");
             }
             n--;
-            var l = questions[n];
-            l.changeOptions();
+            var previous1 = questions[n];
+            previous1.changeOptions();
             clearOptionsRadio();
             checkDisabled();
             section.setAttribute("class","question");
             break;
         case n == 3:
-            var b = questions[n];
-            b.deleteTextbox();
+            var previous2 = questions[n];
+            previous2.deleteTextbox();
             n--;
-            var c = questions[n];
-            c.createOptions();
+            var previous3 = questions[n];
+            previous3.createOptions();
             section.setAttribute("class","question");
             break;
         case n > 3:
             if(n == 4)
             {
-                var x = document.getElementById("next");
-                x.setAttribute("class","qbutton--enabled");
+                let previousCss = document.getElementById("next");
+                previousCss.setAttribute("class","qbutton--enabled");
             }
             n--;
-            var d = questions[n];
-            d.changeTextbox();
+            var previous4 = questions[n];
+            previous4.changeTextbox();
             section.setAttribute("class","question");
             var textbox = document.getElementsByClassName("textbox--styling")[0];
             textbox.value = "";
@@ -312,7 +312,7 @@ function previous()
     }
 }
 
-//this function controls the buttons if the next button is clicked on
+//This function controls the actions that need to happen if the next button is clicked.
 function next()
 {
     switch(true)
@@ -320,33 +320,33 @@ function next()
         case n < 2:
             if(n == 0)
             {
-                var x = document.getElementById("previous");
-                x.setAttribute("class","qbutton--enabled");
+                var nextCss = document.getElementById("previous");
+                nextCss.setAttribute("class","qbutton--enabled");
             }
             n++;
-            var k = questions[n];
-            k.changeOptions();
+            var next1 = questions[n];
+            next1.changeOptions();
             clearOptionsRadio();
             checkDisabled();
             section.setAttribute("class","question");
             break;
         case n == 2:
-            var p = questions[n];
-            p.deleteOptions();
+            var next2 = questions[n];
+            next2.deleteOptions();
             n++;
-            var s = questions[n];
-            s.createTextbox();
+            var next3 = questions[n];
+            next3.createTextbox();
             section.setAttribute("class","question");
             break;
         case n > 2:
             if(n == 3)
             {
-                var x = document.getElementById("next");
-                x.setAttribute("class","qbutton--disabled");
+                var nextCss = document.getElementById("next");
+                nextCss.setAttribute("class","qbutton--disabled");
             }
             n++;
-            var t = questions[n];
-            t.changeTextbox();
+            var next4 = questions[n];
+            next4.changeTextbox();
             section.setAttribute("class","question");
             var textbox = document.getElementsByClassName("textbox--styling")[0];
             textbox.value = "";
