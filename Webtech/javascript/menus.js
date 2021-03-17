@@ -11,7 +11,6 @@ function getFromSession(id){
     return JSON.parse(sessionStorage.getItem(id));
 }
 
-
 // A Class to create selection boxes. By transforming the arguments object into an array,
 // we can use shift to get the name of the selectionbox (note that the name is always the first given parameter)
 // and the remaining ellements of the array are used in the prototype to create all the options.
@@ -41,22 +40,18 @@ selectionBox.prototype.removeOptions = function(){
     }
 }
 
-function removeFromArray(array, remove){
-    var newArray = array;
-        if (array){
-        array.forEach(function (string){
+function removeFromArray(element, remove){
+        if (element.classList){
+            element.classList.forEach(function (string){
             for(var i = 0; i < remove.length; i++ )
             {
                 if(string === remove[i])
                 {
-                    array.splice(array.indexOf(remove[i], 1));
-                    newArray = array;
-                    return newArray;
+                   element.classList.remove(string);
                 }
             }
         });
     }
-    return newArray;
 }
 
 function presetsAppearance(property){
@@ -118,6 +113,10 @@ function articleAppearance(property, n){
         changeFont(property, "ARTICLE", n);
         obj = {font: property};
     }
+    else{
+        changeBorder(property, "SECTION", n);
+        obj = {border: property};
+    }
     articleArray[n] = obj;
     pageAppearance.article.objectArray = articleArray;
 }
@@ -126,6 +125,10 @@ function sectionAppearance(property, n){
     if(property == "Small Font" || property == "Medium Font" || property ==  "Large Font" || property == "Extra Large Font" ){
         changeFont(property, "SECTION", n);
         obj = {font: property};
+    }
+    else{
+        changeBorder(property, "SECTION", n);
+        obj = {border: property};
     }
     sectionArray[n] = obj;
     pageAppearance.section.objectArray = sectionArray;
@@ -145,39 +148,39 @@ function footerAppearance(property){
     }
 }
 
+function changeBorder(property, semanticElement, n)
+{
+    var getSections = document.getElementsByTagName(semanticElement)[n];
+    removeFromArray(getSections,["section--border","section--noborder"]);
+    switch(property)
+    {
+        case "Enable Border":
+            getSections.classList.add("section--border");
+            break;
+        case "Disable Border":
+            getSections.classList.add("section--noborder");
+            break;
+        default:
+            break;
+    }
+}
+
 
 function changeFont(property, semanticElement, n){
     var semanticAppearance = document.getElementsByTagName(semanticElement)[n];
-    var attributes = "";
-    if(semanticAppearance.getAttribute("class"))
-    {
-        attributes = semanticAppearance.getAttribute("class").split(" ");
-    }
-    var addAttributes = removeFromArray(attributes, ["block--small_font", "block--medium_font", "block--large_font", "block--extra_large_font"])
+    removeFromArray(semanticAppearance, ["block--small_font", "block--medium_font", "block--large_font", "block--extra_large_font"]);
     switch(property){
         case "Small Font":
-            if(addAttributes)
-                semanticAppearance.setAttribute("class", addAttributes.join(" ") + " block--small_font");
-            else
-                semanticAppearance.setAttribute("class", "block--small_font");
+            semanticAppearance.classList.add("block--small_font");
             break;
         case "Medium Font":
-            if(addAttributes)
-                semanticAppearance.setAttribute("class", addAttributes.join(" ") + " block--medium_font");
-            else
-                semanticAppearance.setAttribute("class","block--medium_font");
+            semanticAppearance.classList.add("block--medium_font");
             break;
         case "Large Font":
-            if(addAttributes)   
-                semanticAppearance.setAttribute("class", addAttributes.join(" ") + " block--large_font");
-            else
-                semanticAppearance.setAttribute("class","block--large_font");
+            semanticAppearance.classList.add("block--large_font");
             break;
         case "Extra Large Font":
-            if(addAttributes)   
-                semanticAppearance.setAttribute("class", addAttributes.join(" ") + " block--extra_large_font");
-            else
-                semanticAppearance.setAttribute("class","block--extra_large_font");
+            semanticAppearance.classList.add("block--extra_large_font");
             break;
         default:
             break;
@@ -198,7 +201,7 @@ function changeProperty(){
             propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Article":
-            propertySelectionbox.options = ["Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
+            propertySelectionbox.options = ["Disable Border", "Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Aside":
             propertySelectionbox.options = ["Default Location", "On the Left", "At the Bottom", "Small Pictograms", "Default Pictograms", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
@@ -347,9 +350,28 @@ if(typeof(Storage) !== "undefined") {
         articleArray = pageAppearance.article.objectArray;
         sectionArray = pageAppearance.section.objectArray;
 
-        
+       try{ 
+        console.log(getFromSession("savedData"));
         presetsAppearance(pageAppearance.preset);
         bodyAppearance(pageAppearance.body.font);
+        
+        headerArray.forEach(function (object, index){
+            headerAppearance(object.font, index);
+        });
+        articleArray.forEach(function (object, index){
+            console.log(object.font);
+            articleAppearance(object.font, index);
+        });
+        sectionArray.forEach(function (object, index){
+            console.log(object.font);
+            sectionAppearance(object.font, index);
+        });
+
+        asideAppearance(pageAppearance.aside.font);
+
+        footerAppearance(pageAppearance.footer.font);
+    }
+    catch{}
 
     }
     else
@@ -365,8 +387,6 @@ if(typeof(Storage) !== "undefined") {
             section: {objectArray: []},
             footer: {font: ""}
         }
-
-        console.log(pageAppearance.objectArray)
         saveToSession("savedData", pageAppearance);
     }
 }
