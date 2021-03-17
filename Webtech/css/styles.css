@@ -98,16 +98,6 @@ article section
   margin-bottom:25px;
 }
 
-.section--border
-{
-  border: 10px solid rgb(24,144,255);
-}
-
-.section--noborder
-{
-  border: 0px;
-}
-
 .article__links{ color:rgb(24,144,255); }
 
 .article__links:link{ text-decoration: none;}

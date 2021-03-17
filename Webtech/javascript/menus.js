@@ -49,10 +49,8 @@ function removeFromArray(array, remove){
             {
                 if(string === remove[i])
                 {
-                    
                     array.splice(array.indexOf(remove[i], 1));
                     newArray = array;
-                    console.log(newArray);
                     return newArray;
                 }
             }
@@ -120,11 +118,6 @@ function articleAppearance(property, n){
         changeFont(property, "ARTICLE", n);
         obj = {font: property};
     }
-    else
-    {
-        changeBorder(property, "ARTICLE", n);
-        obj = {border: property};
-    }
     articleArray[n] = obj;
     pageAppearance.article.objectArray = articleArray;
 }
@@ -133,11 +126,6 @@ function sectionAppearance(property, n){
     if(property == "Small Font" || property == "Medium Font" || property ==  "Large Font" || property == "Extra Large Font" ){
         changeFont(property, "SECTION", n);
         obj = {font: property};
-    }
-    else
-    {
-        changeBorder(property, "SECTION", n);
-        obj = {border: property};
     }
     sectionArray[n] = obj;
     pageAppearance.section.objectArray = sectionArray;
@@ -157,46 +145,6 @@ function footerAppearance(property){
     }
 }
 
-function changeBorder(property, semanticElement, n)
-{
-
-    var getSections = document.getElementsByTagName(semanticElement)[n];
-    var attributes = "";
-    var consists = true;
-    if(getSections.getAttribute("class"))
-    {
-        attributes = getSections.getAttribute("class").split(" ");
-    }
-    var addAttributes = removeFromArray(attributes,["section--border","section--noborder"]);
-
-    switch(property)
-    {
-        case "Enable Border":
-            if(addAttributes)
-            {
-                getSections.setAttribute("class", addAttributes.join(" ") + " section--border");
-            }
-            else
-            {
-                getSections.setAttribute("class","section--border");
-            }
-            break;
-        case "Disable Border":
-            if(addAttributes)
-            {
-                getSections.setAttribute("class", addAttributes.join(" ") + " section--noborder");
-            }
-            else
-            {
-                getSections.setAttribute("class","section--noborder");
-            }
-            break;
-    }
-
-    
-}
-
-
 
 function changeFont(property, semanticElement, n){
     var semanticAppearance = document.getElementsByTagName(semanticElement)[n];
@@ -205,7 +153,7 @@ function changeFont(property, semanticElement, n){
     {
         attributes = semanticAppearance.getAttribute("class").split(" ");
     }
-    var addAttributes = removeFromArray(attributes, ["block--small_font", "block--medium_font", "block--large_font", "block--extra_large_font"]);
+    var addAttributes = removeFromArray(attributes, ["block--small_font", "block--medium_font", "block--large_font", "block--extra_large_font"])
     switch(property){
         case "Small Font":
             if(addAttributes)
@@ -250,7 +198,7 @@ function changeProperty(){
             propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Article":
-            propertySelectionbox.options = ["Disable Border", "Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
+            propertySelectionbox.options = ["Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Aside":
             propertySelectionbox.options = ["Default Location", "On the Left", "At the Bottom", "Small Pictograms", "Default Pictograms", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
