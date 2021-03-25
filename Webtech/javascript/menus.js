@@ -29,7 +29,7 @@ class selectionBox{
 
 //two prototypes to remove and create the options for the selectionboxes. 
 
-selectionBox.prototype.addOptions = function() {
+selectionBox.prototype.addOptions =  function() {
     for(var i = 0; i < this.options.length; i++  )
     {
         var option = document.createElement("OPTION");
@@ -111,7 +111,11 @@ function headerAppearance(property, n){
         changeFont(property, "HEADER", n);
         obj = {font: property};
     }
-    else{
+    else if (property == "Dark Scheme")
+    {
+        changeScheme(property, "HEADER", n);
+    }
+    else {
         changeBorder(property, "HEADER", n);
         obj = {border: property};
     }
@@ -163,17 +167,64 @@ function footerAppearance(property){
 
 //These two functions are used to change the css class, works for every element and number of elements.
 
+function changeScheme(property, semanticElement, n)
+{
+    var getSemantic = document.getElementsByTagName(semanticElement)[n];
+    removeFromArray(getSemantic,["body--dark_mode"]);
+    switch(property)
+    {
+        case "Dark Scheme":
+            getSemantic.classList.add("body--dark_mode");
+            if(semanticElement === "HEADER")
+            {
+                if(getSemantic.classList.contains("section--border"))
+                {
+                    console.log("border found");
+                    getSemantic.classList.remove("section--border");
+                    let img = getSemantic.children[1];
+                    img.setAttribute("src", "Resources/headerbgrdark.jpg");
+                    getSemantic.classList.add("section--border");
+                }
+                else
+                {
+                    let img = getSemantic.children[1];
+                    img.setAttribute("src", "Resources/header.jpg");
+                }
+            }
+            else if(document.title == "Perspectives" && document.getElementsByClassName("img_full2")[0])
+            {
+                let img = document.getElementsByClassName("img_full2")[0];
+                img.setAttribute("src", "Resources/accessibility-iconsdark.jpg");
+            }
+            break;
+        case "Default Scheme":
+            if(semanticElement === "HEADER")
+            {
+                let img = chidldren[1];
+                img.setAttribute("src", "Resources/headerbgr1.png");
+            }
+            else if(document.title == "Perspectives" && document.getElementsByClassName("img_full2")[0])
+            {
+                let img = document.getElementsByClassName("img_full2")[0];
+                img.setAttribute("src", "Resources/accessibility-icons.jpg");
+            }
+            break;
+        default:
+            break;
+    }
+}
+
 function changeBorder(property, semanticElement, n)
 {
-    var getSections = document.getElementsByTagName(semanticElement)[n];
-    removeFromArray(getSections,["section--border","section--noborder"]);
+    var getSemantic = document.getElementsByTagName(semanticElement)[n];
+    removeFromArray(getSemantic,["section--border","section--noborder"]);
     switch(property)
     {
         case "Enable Border":
-            getSections.classList.add("section--border");
+            getSemantic.classList.add("section--border");
             break;
         case "Disable Border":
-            getSections.classList.add("section--noborder");
+            getSemantic.classList.add("section--noborder");
             break;
         default:
             break;
@@ -212,7 +263,7 @@ function changeProperty(){
             propertySelectionbox.options = ["Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Header":
-            propertySelectionbox.options = ["Disable Border", "Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
+            propertySelectionbox.options = ["Disable Border", "Default Scheme", "Dark Scheme", "Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
             break;
         case "Article":
             propertySelectionbox.options = ["Disable Border", "Enable Border", "Small Font", "Medium Font", "Large Font", "Extra Large Font"];
@@ -332,7 +383,7 @@ function createElementsmenu(){
 
 function createAppearancemenu(){
     var footer = document.getElementsByTagName("FOOTER")[0];
-    var footerDivider = document.getElementsByTagName("HR")[0];
+    var footerDivider = document.getElementById("footerDivider");
    
     var heading = document.createElement("H4");
     heading.appendChild(document.createTextNode("Change the Appearance"));
@@ -353,11 +404,12 @@ function createAppearancemenu(){
     footer.insertBefore(heading, footerDivider);
     footer.insertBefore(elementSelectionbox.element, footerDivider);
     footer.insertBefore(propertySelectionbox.element, footerDivider);
-    footer.insertBefore(document.createElement("BR"), footerDivider);  // can maybe be done with css
+    footer.insertBefore(document.createElement("BR"), footerDivider);
     footer.insertBefore(appearanceButton, footerDivider);
 }
 
 //Gets the storage from the sesion and intialize the already defined appearances.
+
 
 if(typeof(Storage) !== "undefined") {
     if (getFromSession("savedData"))
@@ -367,6 +419,7 @@ if(typeof(Storage) !== "undefined") {
         articleArray = pageAppearance.article.objectArray;
         sectionArray = pageAppearance.section.objectArray;
 
+        
        try{ 
             presetsAppearance(pageAppearance.preset);
             bodyAppearance(pageAppearance.body.font);
@@ -404,6 +457,8 @@ if(typeof(Storage) !== "undefined") {
             footer: {font: ""}
         };
         saveToSession("savedData", pageAppearance);
-    }
-}
+    } 
+} 
+
+
 createAppearancemenu();
