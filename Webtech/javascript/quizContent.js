@@ -1,13 +1,5 @@
-//Creation of the heading.
-var article = document.getElementsByTagName("ARTICLE")[0];
-var heading = document.createElement("H2");
-var headingText = document.createTextNode("Questions");
-heading.setAttribute("class", "first_heading");
-heading.appendChild(headingText);
-article.appendChild(heading);
-
 //Declaration of the global variables and arrays.
-var section, activeQuestion, strong; 
+var activeQuestion, strong; 
 var choiceSpan = [], questions = []; 
 var n = 0, progressBarCounter = 0;
 
@@ -20,7 +12,7 @@ const titleArray = ["Question 1: Where does the feature 'Voice Recognition' belo
  "Question 4: What element should replace the dots?",
  "Question 5: What element should replace the dots?"];
 const answerArray = ["Physical Disability", "Visual Disability","Commercial reasons", "aside","ul"];
-const optionsArray = [["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
+const optionsArray = [["Hearing Disability","Cognitive Disability","Physical Disability"],
 ["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
 ["Ethical reasons","Reputational reasons","Legal reasons","Commercial reasons"]];
 
@@ -39,7 +31,6 @@ class question{
     }
 }
 question.prototype.create = function(){};
-question.prototype.change = function(){};
 question.prototype.delete = function(){};
 
 //A subclass of questions.
@@ -77,13 +68,12 @@ multiplechoice.prototype.create = function()
         input.setAttribute("id", i );
 
         
-
-        if(this.guess.answer === null)
+        if(this.guess.answer === null || this.guess.answer === undefined)
         {
             input.disabled = false;
             input.checked = false;
         }
-        else if(this.guess.answer.id === input.id)
+        else if(this.guess.answer.id === input.id )
         {
             input.disabled = true;
             input.checked = true;
@@ -112,55 +102,6 @@ multiplechoice.prototype.create = function()
     }
 };
 
-//This function replaces the content with the content of a new multiplechoice question.
-multiplechoice.prototype.change = function()
-{
-    strong.replaceChild(document.createTextNode(this.problem), strong.firstChild);
-    var input = document.getElementsByTagName("INPUT");
-    var label = document.getElementsByTagName("LABEL");
-    var radioDiv = section.getElementsByClassName("radioBlock")[0];
-    document.getElementById("check").setAttribute("class", "qbutton--disabled");
-
-    for(var i = 0; i < this.options.length; i++)
-    {
-        var text = document.createTextNode(this.options[i]);
-        label[i].replaceChild(text, label[i].firstChild);
-        if(this.guess.answer === null)
-        {
-            input[i].disabled = false;
-            input[i].checked = false;
-        }
-        else if(this.guess.answer.id === input[i].id)
-        {
-            input[i].disabled = true;
-            input[i].checked = true;
-        }
-        else
-        {
-            input[i].disabled = true;
-        }
-    }
-    if(this.image != null)
-    {
-        var img = section.getElementsByTagName("IMG")[0];
-        if(!img)
-        {
-            var img = document.createElement("IMG");
-            section.insertBefore(img, radioDiv);
-        }
-        img.setAttribute("src",this.image);
-        img.setAttribute("class",this.imageClass);
-    }
-    else
-    {
-        var img = section.getElementsByTagName("IMG")[0];
-        if(img)
-        {
-            img.remove();
-        }
-    }
-};
-
 //This function deletes the content of the multiplechoice questions.
 multiplechoice.prototype.delete = function()
 {
@@ -178,6 +119,8 @@ multiplechoice.prototype.delete = function()
 //This function creates the content for fill-in-the-blank questions.
 fillin.prototype.create = function()
 {
+    heading.replaceChild(document.createTextNode(this.title), heading.firstChild);
+
     var x = document.createTextNode(this.problem);
     strong.appendChild(x);
     document.getElementById("check").setAttribute("class", "qbutton--disabled");
@@ -213,58 +156,6 @@ fillin.prototype.create = function()
     }
 };
 
-//This function changes the content for the fill-in-the-blank questions.
-fillin.prototype.change = function()
-{
-    var textBox = document.getElementsByClassName("textbox--styling")[0];
-    strong.replaceChild(document.createTextNode(this.problem), strong.firstChild);
-    document.getElementById("check").setAttribute("class", "qbutton--disabled");
-
-    console.log(this.guess);
-
-    if(this.guess.answer == null)
-    { 
-        textBox.value = '';
-        console.log('has not been answered');
-        textBox.setAttribute("placeholder", this.placeholder);
-        textBox.disabled = false;
-    }
-    else
-    {
-        textBox.value = this.guess.answer;
-        textBox.disabled = true;
-        if(this.guess.correct)
-        {
-            textBox.setAttribute("class","textbox--styling");
-        }
-        else
-        {
-            textBox.setAttribute("class","textbox--styling");
-        }
-    }
-
-
-    if(this.image != null)
-    {
-        var img = section.getElementsByTagName("IMG")[0];
-        if(!img)
-        {
-            var img = document.createElement("IMG");
-            section.insertBefore(img, textBox);
-        }
-        img.setAttribute("src",this.image);
-        img.setAttribute("class",this.imageClass);
-    }
-    else
-    {
-        var img = section.getElementsByTagName("IMG")[0];
-        if(img)
-        {
-            img.remove();
-        }
-    }
-};
-
 //This function deletes the content of the fill-in-the-blank questions.
 fillin.prototype.delete = function()
 {
@@ -296,7 +187,7 @@ function createButton(questionButton, index, div)
 }
 
 //This function creates the layout of the section.
-function layout()
+function quizLayout()
 {
     section = document.createElement("SECTION");
     article.appendChild(section);
@@ -369,7 +260,7 @@ function layout()
 }
 
 //The function above is called here.
-layout();
+
 
 function calculateResult()
 {
@@ -668,15 +559,9 @@ function newQuestion(index, newIndex){
         nextCss.setAttribute("class","qbutton--enabled");
     }
 
-    if(activeQuestion.constructor.name == questions[index].constructor.name)
-    {
-        activeQuestion.change();
-    }
-    else 
-    {
-        questions[index].delete();
-        activeQuestion.create();
-    }
+    
+    questions[index].delete();
+    activeQuestion.create();
 
     if(activeQuestion.guess.correct !== null)
     {

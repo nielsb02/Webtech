@@ -11,21 +11,94 @@ function createList(element, list, type)
         {
             listElement.appendChild(a);
             a.setAttribute("href", list.href[i]);
-            var text = document.createTextNode(list.text[i]);
-            unorderedList.setAttribute("id", "references");
-            
-            if(list.selected[0] == list.href[i])
+
+            if(list.text[i] == "Account")
             {
-                a.setAttribute("class", "active");
-                var strong = document.createElement("STRONG");
-                var em = document.createElement("EM");
-                em.appendChild(text);
-                strong.appendChild(em);
-                a.appendChild(strong);
+                /*<li class= "login_li"><a href="account.html" class = "login" tabindex="0"> <img src ="Resources/user.jpg" class="login_img" alt = "User Icon, to redirect to login page."></a>
+                    <div class="login_screen" id="log">
+                        <p> Already have an Account? Log in... </p>
+                        <input type="text" name="" class="login_input--popup" id="username_input" placeholder="Username or Email"> 
+                        <input type="text" name="" class="login_input--popup" id="password_input" placeholder="Password"> 
+                        <button id="login_button" class="login_input--popup"> Log In </button>
+                        <button id="create_acc_button" class="login_input--popup">Or create an account</button>
+                    </div>
+                </li>*/
+                listElement.setAttribute("class", "login_li");
+                a.setAttribute("class", "login");
+                a.setAttribute("tabindex", "0");
+
+                let img = document.createElement("IMG");
+                img.setAttribute("src", "Resources/user-selected.jpg");
+                img.setAttribute("class", "login_img");
+                img.setAttribute("alt", "User Icon, to redirect to login page.");
+                a.appendChild(img);
+
+                if(document.title !== "Account")
+                {
+                    img.setAttribute("src", "Resources/user.jpg");
+
+                    let account_div = document.createElement("DIV");
+                    account_div.setAttribute("class", "login_screen");
+                    account_div.appendChild(document.createElement("P").appendChild(document.createTextNode("Already have an Account? Log in...")));
+                    listElement.appendChild(account_div);
+
+                    
+
+                    let username = document.createElement("INPUT");
+                    username.setAttribute("type", "text");
+                    username.setAttribute("name", "");
+                    username.setAttribute("class", "login_input--popup");
+                    username.setAttribute("id", "username_input");
+                    username.setAttribute("placeholder", "Username or Email");
+                    account_div.appendChild(username);
+                
+                    let password = document.createElement("INPUT");
+                    password.setAttribute("type", "password");
+                    password.setAttribute("name", "");
+                    password.setAttribute("class", "login_input--popup");
+                    password.setAttribute("id", "password_input");
+                    password.setAttribute("placeholder", "Password");
+                    account_div.appendChild(password);
+
+                    //<input type="checkbox" onclick="myFunction()">Show Password 
+                    let showPass = document.createElement("INPUT");
+                    showPass.setAttribute("type", "checkbox");
+                    showPass.appendChild(document.createTextNode("Show Password"));
+                    showPass.setAttribute("id", "showPass");
+                    account_div.appendChild(showPass);
+                    account_div.appendChild(document.createTextNode("Show Password"));
+
+                
+                    let logButton = document.createElement("BUTTON");
+                    logButton.setAttribute("class", "login_input--popup");
+                    logButton.appendChild(document.createTextNode("Log In"));
+                    logButton.setAttribute("id", "login_button")
+                    account_div.appendChild(logButton);
+                
+                    let create = document.createElement("BUTTON");
+                    create.setAttribute("class", "login_input--popup");
+                    create.setAttribute("id", "create_acc_button");
+                    create.appendChild(document.createTextNode("Or create an account"));
+                    account_div.appendChild(create);
+                }
             }
             else
             {
-                a.appendChild(text);
+                var text = document.createTextNode(list.text[i]);
+                
+                if(document.title == list.text[i])
+                {
+                    a.setAttribute("class", "active");
+                    var strong = document.createElement("STRONG");
+                    var em = document.createElement("EM");
+                    em.appendChild(text);
+                    strong.appendChild(em);
+                    a.appendChild(strong);
+                }
+                else
+                {
+                    a.appendChild(text);
+                }
             }
             unorderedList.appendChild(listElement);
         }
@@ -64,7 +137,16 @@ function createLayout()
 {
     var header = document.getElementsByTagName("HEADER")[0];
     var heading = document.createElement("H1");
-    var headerName = document.createTextNode("Quiz");
+    var headerName;
+    
+    if(document.title == "Quiz")
+    {
+        headerName = document.createTextNode("Quiz");
+    }
+    else if(document.title == "Account")
+    {
+        headerName = document.createTextNode("Account");
+    }
     var headerImg = document.createElement("IMG");
     headerImg.setAttribute("src", "Resources/headerbgr1.png");
     headerImg.setAttribute("alt", "Web Accesibility Banner");
@@ -78,9 +160,9 @@ function createLayout()
 
     var nav = document.getElementsByTagName("NAV")[0];
     var navList = {
-        text: ["Home", "Importance", "Perspectives", "Standards", "Basic Guidelines", "Quiz"],
-        href: ["index.html", "why.html", "perspectives.html", "standards.html", "guidelines.html", "assessment.html"],
-        selected:["assessment.html"]
+        text: ["Home", "Importance", "Perspectives", "Standards", "Basic Guidelines", "Quiz", "Account"],
+        href: ["index.html", "why.html", "perspectives.html", "standards.html", "guidelines.html", "assessment.html", "account.html"],
+        img: ["Resources/user.jpg"]
     };
     createList(nav, navList, "nav");
 
@@ -118,47 +200,5 @@ function createLayout()
     footer.appendChild(copyright);
 }
 
-function createAside(element, list, isAside)
-{
-    for(var i = 0; i<list.alt.length; i++)
-    {
-        if(isAside)
-        {
-            let a = document.createElement("A");
-            a.setAttribute("href", list.href[i]);
-            a.setAttribute("target", "_blank");
-            let img = document.createElement("IMG");
-            img.setAttribute("src", list.src[i]);
-            img.setAttribute("alt", list.alt[i]);
-            img.setAttribute("class", "imgaside");
-            a.appendChild(img);
-            element.appendChild(a);
-        }
-    }
-}
-
-function createFooter(element, list, isFooter)
-{
-    var ul = document.createElement("UL");
-    for(var i = 0; i<list.title.length; i++)
-    {
-        if(isFooter)
-        {
-            let li = document.createElement("LI");
-            let a = document.createElement("A");
-            let text = document.createTextNode(list.text[i]);
-            a.setAttribute("title", list.title[i]);
-            a.setAttribute("href", list.href[i]);
-            if(i!==0)
-            {
-                a.setAttribute("target", "_blank");
-            }
-            a.appendChild(text);
-            li.appendChild(a);
-            ul.appendChild(li);
-        }
-    }
-    element.appendChild(ul);
-}
 
 createLayout();

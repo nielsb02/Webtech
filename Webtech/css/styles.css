@@ -7,6 +7,7 @@
   width: 100vw;
   max-width: 100%;
   background:rgb(251,251,251);
+  z-index: 0;
 }
 
 .body--dark_mode{ background:#121212;  color: rgba(255,255,255, 0.75);}
@@ -45,46 +46,85 @@ header{
 header img{width:100%;}
 
 
-nav {
-    width: 100%;
-    Position: relative;
-    left:0%;
-    background-color: rgb(1,14,40);
-    font-size: 1.30rem;
-    overflow: auto;
-    border-top: 7px solid rgb(1,14,30);
-    border-bottom: 7px solid rgb(1,14,30);
-    text-align: center;
-  }
-  .body--dark_mode nav{ background-color:rgb(1, 75, 150); border-color: rgb(1, 75, 150);}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color:rgb(1,14,30);
+nav{
+  background-color: rgb(1,14,40);
+  border-top: 7px solid rgb(1,14,30);
+  border-bottom: 7px solid rgb(1,14,30);
+  font-size: 1.30rem;
 }
-.body--dark_mode nav ul{ background-color:rgb(1, 11, 43);}
 
-nav li {float: left;}
+.body--dark_mode nav { background-color:rgb(1, 75, 150); border-color: rgb(1, 75, 150);}
 
-nav li a {
+nav ul{
+  list-style: none;
+  
+  margin:0px;
+  padding:0px;
+}
+
+nav li{
+  display: inline-block;
+}
+
+nav a{
+  text-decoration: none;
+  color: white;
   display: block;
   text-align: center;
   padding: 14px 16px;
+}
+nav button a{
   text-decoration: none;
+  color:unset;
+  display:initial;
+  text-align: center;
+  padding: 0px;
+}
+
+nav button a:hover, .body--dark_mode nav button a:hover{background-color: unset;}
+
+nav a:hover {background-color: rgb(1, 75, 150);}
+.body--dark_mode nav a:hover {background-color: rgba(24, 143, 255, 0.808);}
+
+nav a.active {background-color: rgb(24,144,255);}
+.body--dark_mode nav a.active {background-color: rgb(1, 75, 150);}
+
+nav .login_img{ 
+  height: 2em;  
+  border: none;
+  outline: none;
   color: white;
+  
+  margin: 0px;
+  padding: 0px;
+}
+nav .login_li{
+  float: right;
+  padding-right: 2%;
+}
+nav .login {
+  margin: 0px;
+  padding: 0px;
+}
+
+nav .login_screen {
+  display: none;
+  position: absolute;
+  right: 1%;
+  padding-bottom: 0.5em;
+
+  background-color: #f9f9f9;
+  min-width: 500px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,1);
+  text-align: center;
+  z-index: 1;
 } 
 
+nav li:hover .login_screen, nav .login:focus+.login_screen{
+display: block;
+position: absolute;
+}
 
-nav li a:hover {background-color: rgb(1, 75, 150);}
-.body--dark_mode nav li a:hover {background-color: rgba(24, 143, 255, 0.808);}
-
-nav li a.active {background-color: rgb(24,144,255);}
-.body--dark_mode nav li a.active {background-color: rgb(1, 75, 150);}
-
-.body--dark_mode nav li a{color: rgba(255,255,255, 0.75);} 
 
 article {   
   float: left;
@@ -93,7 +133,7 @@ article {
   left:7.5%;
 }
 
-article  .first_heading{  text-align: center; color: rgb(24,144,255); margin-top: 30px;}
+article .first_heading{  text-align: center; color: rgb(24,144,255); margin-top: 30px;}
 
 article section
 {
@@ -101,6 +141,37 @@ article section
   margin-top:25px;
   margin-bottom:25px;
 }
+
+.login_section{
+  background-color: rgb(24,144,255);
+  margin-top: 50px;
+  text-align: center;
+  
+  border: 15px solid rgb(0, 16, 235);
+}
+
+.login_input, .login_input--inline{
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0.5em;
+  padding: 0.5em 0.5em 0.5em 0.5em; 
+  font-size: 1em;
+}
+
+.login_input--inline{
+  display: inline-block;
+}
+
+.login_input--popup{
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.5em 0.5em 0.5em 0.5em; 
+  margin-bottom: 0.75em;
+  font-size: 0.75em;
+}
+
 
 
 .article__links{ color:rgb(24,144,255); }
@@ -322,7 +393,7 @@ footer #copyright{
 footer hr{width: 50%;}
 
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
 
 body {
   font-size: 1rem;
@@ -339,7 +410,28 @@ nav{
   width:100%;
   left:0%;
 }
-nav li {float: none;}
+nav li {
+  display: block;
+  float: none;
+}
+
+nav .login_li{ 
+  padding-right: 0;
+  float:none;
+}
+
+nav .login_screen{
+  position:relative;
+  display: none;
+  right: 0%;
+  z-index: 0;
+  
+  min-width:0px;
+}
+nav li:hover .login_screen {
+  display: block;
+  position:relative;
+}
 
 article{
 width:90%;
@@ -444,18 +536,4 @@ footer ul{
   padding-left:5%;
   padding-right:5%; 
 }
-
-.question, .correct, .incorrect{text-align: center;}
-
-.radioBlock label {
-  display: block;
-  width: 75%;
-  position: relative;
-  left: 12.5%;
-
-  margin: 0.3em 0;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-}
-article .layoutquestion ,article .elementquestion{width: 95%;}
 }

@@ -138,7 +138,7 @@ article .elementquestion
   background-color: rgb(0, 16, 235);
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
      .question, .correct, .incorrect{text-align: center;}
     
     .radioBlock label {

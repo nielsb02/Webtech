@@ -17,12 +17,23 @@
 
     <nav>
         <ul> 
-            <li><a class="active" href= "index.html"> <strong> <em> Home </em></strong>  </a>  </li>
+            <li><a class="active"  href= "index.html"> <strong> Home </strong>  </a>  </li>
             <li><a href= "why.html"> Importance </a> </li>
             <li><a href= "perspectives.html"> Perspectives </a></li>
-            <li><a href= "standards.html"> Standards</a></li>
+            <li><a href= "standards.html"> <strong><em> Standards</em> </strong></a></li>
             <li><a href= "guidelines.html"> Basic Guidelines </a></li>
             <li><a href= "assessment.html"> Quiz </a></li>
+            
+            <li class= "login_li"><a href="account.html" class = "login" tabindex="0"> <img src ="Resources/user.jpg" class="login_img" alt = "User Icon, to redirect to login page."></a>
+                <div class="login_screen" id="log">
+                    <p> Already have an Account? Log in... </p>
+                    <input type="text" name="" class="login_input--popup" id="username_input" placeholder="Username or Email"> 
+                    <input type="password" name="" class="login_input--popup" id="password_input" placeholder="Password"> 
+                    <input type="checkbox" id ="showPass"> Show Password 
+                    <button id="login_button" class="login_input--popup"> Log In </button>
+                    <button id="create_acc_button" class="login_input--popup">Or create an account</button>
+                </div>
+            </li>
         </ul>
     </nav>
     
@@ -31,7 +42,7 @@
         <section>
         <h3>Introduction to Web Accessibility</h3>
             <p>
-               The World Wide Web, invented by <a class="article__links" href="https://nl.wikipedia.org/wiki/Tim_Berners-Lee" target="_blank"><em>Tim Berners-Lee</em></a>, is an information retrieval service of the internet.
+               The World Wide Web, invented by <a class="article__links" href="https://nl.wikipedia.org/wiki/Tim_Berners-Lee" target="_blank" tabindex="2"><em>Tim Berners-Lee</em></a>, is an information retrieval service of the internet.
                Users are able to access a wide variety of documents that are published on the Web.
                Since the Web has many advantages, it is essential that everybody can use it, which is made clear by a quote of tim berners-lee. (see image)
                The practice of making a website usable by as many people as possible is called <strong>Web Accessibility</strong>. 
@@ -65,6 +76,7 @@
         <a href="https://www.facebook.com/sharer/sharer.php?u=https://webtech.nblonk.nl/Webtech/index.html" target="_blank"><img src="Resources/facebook.png" alt="picture of the facebook logo" class="imgaside"></a>
         <a href="https://twitter.com/intent/tweet?url=https://webtech.nblonk.nl/Webtech/index.html&text=" target="_blank"><img src="Resources/twitter.png" alt="picture of the twitter logo" class="imgaside"></a>
         <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://webtech.nblonk.nl/Webtech/index.html" target="_blank"><img src="Resources/LinkedIn.png" alt="picture of the linkedIn logo" class="imgaside"></a>
+        
     </aside>
 
     <footer>
@@ -83,6 +95,6 @@
         </ul>
         <p id="copyright">© 2021 - All Rights Reserved.</p>
     </footer>
-    <script src="javascript/menus.js"></script>
+    <script src="javascript/account.js"></script>
 </body>
 </html>
