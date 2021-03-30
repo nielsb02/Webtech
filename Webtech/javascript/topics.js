@@ -18,9 +18,12 @@ function topicsLayout()
 
     subHeading.appendChild(document.createTextNode("Topic 1"));
 
-    
-
-    
+    let createQuiz = document.createElement("BUTTON");
+    createQuiz.addEventListener("click", function(){
+        section.remove();
+        quizLayout();
+    })
+    section.appendChild(createQuiz);
 }
 
 topicsLayout();
