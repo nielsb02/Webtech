@@ -15,6 +15,20 @@
             "request": "launch",
             "name": "Launch Chrome",
             "file": "${workspaceFolder}/Webtech/index.html"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Webtech application",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/webtechapp/main.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Rendered express",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/webtechApplication/webtechApplication/app.js"
         }
     ]
 }

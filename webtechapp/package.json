@@ -1,0 +1,15 @@
+{
+  "name": "webtechapp",
+  "version": "1.0.0",
+  "description": "webtech assignment by group 31",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Niels Blonk, Gabriël Shamon, Vincenct Pattinama",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.2"
+  }
+}

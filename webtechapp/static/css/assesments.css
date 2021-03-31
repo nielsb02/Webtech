@@ -1,0 +1,155 @@
+/* all the extra css classes used within the assesments.html page can be found here */
+
+.question_problem{font-size: 1.3em;}
+
+.radioBlock input[type="radio"] {
+  opacity: 0;
+  width: 0;
+  cursor: pointer;
+  position: fixed;
+}
+
+.radioBlock label {
+  display: block;
+  width: 35%;
+  position: relative;
+  left: 32.5%;
+
+  background-color: #ddd;
+  font-family: sans-serif, Arial;
+  font-size: 1em;
+
+  margin: 0.5em 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border: 2px solid #444;
+  border-radius: 4px;
+
+}
+
+.radioBlock input[type="radio"]:checked + label{
+  background-color:#bfb;
+  border-color: #4c4;
+}
+
+.radioBlock input[type="radio"]:focus + label {
+  border: 2px dashed #444;
+}
+
+.question, .correct, .incorrect{
+  background-color: rgb(24,144,255);
+  margin-top: 50px;
+  text-align: center;
+}
+
+.question{
+  border: 15px solid rgb(0, 16, 235);
+}
+
+.body--dark_mode .question, .body--dark_mode .correct, .body--dark_mode .incorrect{background-color: rgb(1, 75, 150);}
+
+.correct{  border: 15px solid green;}
+
+.incorrect{border: 15px solid red;}
+ 
+.qbutton--disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  font-size: 1.2em;
+  margin-right: 0.5em;
+  margin-bottom: 0.8em;
+}
+
+.qbutton--enabled, .questionButton--default, .questionButton--selected{
+  font-size: 1.2em;
+  margin-right: 0.5em;
+  margin-bottom: 0.8em;
+}
+
+.questionButton--selected{ 
+  padding: 0.3em;
+  font-weight:bold ;
+}
+
+.questionButton--correct{background-color: green;}
+.questionButton--false{background-color: red;}
+
+.textbox--styling
+{
+  width: 98%;
+  font-size: 1.2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+article .layoutquestion, article .elementquestion, article .quiz-image--mpg
+{
+  width: 65%;
+  position: relative;
+  border: 5px solid black;
+  border-radius: 4px;
+}
+
+article .elementquestion
+{
+  width: 80%;
+}
+
+.qbutton--disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  font-size: 1.3em;
+}
+
+.qbutton--enabled{font-size: 1.3em;}
+.textbox--styling{width: 99%;}
+
+.progress_bar {
+    width: 100%;
+    background-color: black;
+    
+    border-top: 1px solid black;
+    border-right: 3px solid black;
+    border-bottom: 1px solid black;
+    border-left: 3px solid black;
+    border-radius: 4px;
+}
+  
+.result_bar{
+  display: inline-block;
+  width: 0%;
+  height: 100%;
+  background-color: #4CAF50;
+  text-align: center;
+  font-size: 100%;
+  line-height: 100%;
+  color: white;
+}
+
+.correct--percentage{ 
+  background-color: #4CAF50;
+}
+
+.incorrect--percentage{
+  background-color: red;
+}
+
+.unanswered--percentage{
+  background-color: rgb(0, 16, 235);
+}
+
+@media screen and (max-width: 900px) {
+     .question, .correct, .incorrect{text-align: center;}
+    
+    .radioBlock label {
+      display: block;
+      width: 75%;
+      position: relative;
+      left: 12.5%;
+    
+      margin: 0.3em 0;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
+    }
+    article .layoutquestion ,article .elementquestion{width: 95%;}
+    }
