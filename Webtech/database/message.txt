@@ -1,0 +1,160 @@
+CREATE TABLE User (
+UserID INTEGER PRIMARY KEY AUTOINCREMENT,
+first_name TEXT NOT NULL,
+last_name TEXT NOT NULL,
+email TEXT NOT NULL UNIQUE,
+Is_superUser BOOLEAN DEFAULT FALSE
+);
+CREATE TABLE Topic (
+TopicID INTEGER PRIMARY KEY,
+Title TEXT NOT NULL
+);
+CREATE TABLE Quiz (
+QuizID INTEGER PRIMARY KEY,
+topicID INTEGER NOT NULL,
+     linkDescription TEXT NOT NULL,
+     FOREIGN KEY(topicID)REFERENCES Topic(topicID)
+);
+CREATE TABLE Question (
+QuestionID INTEGER PRIMARY KEY,
+QuizID INTEGER NOT NULL,
+     Type TEXT NOT NULL,
+     Question TEXT NOT NULL,
+     Quote TEXT,
+     Source TEXT,
+     FOREIGN KEY(QuizID)REFERENCES Quiz(QuizID)
+);
+CREATE TABLE Option (
+OptionID INTEGER PRIMARY KEY,
+QuestionID INTEGER NOT NULL,
+     option TEXT NOT NULL,
+     Is_correct BOOLEAN DEFAULT FALSE,
+     FOREIGN KEY(QuestionID)REFERENCES Question(QuestionID)
+);
+CREATE TABLE UserAnswer (
+AnswerID INTEGER PRIMARY KEY,
+QuestionID INTEGER NOT NULL,
+     optionID INTEGER NOT NULL,
+     UserID INTEGER NOT NULL,
+     FOREIGN KEY(QuestionID)REFERENCES Question(QuestionID),
+     FOREIGN KEY(OptionID)REFERENCES Option(OptionID),
+     FOREIGN KEY(UserID)REFERENCES User(UserID)
+);
+
+INSERT INTO Topic (TopicID,Title)
+VALUES 
+   (1,"Importance and Standards"),
+   (2,"Perspectives of Web Accessibility"),
+   (3,"Basic Web Accessibility tips and tricks");
+INSERT INTO User (first_name, last_name, email, Is_superUser)
+VALUES 
+   ("Jan", "Blok", "janblok@uu.nl", true),
+   ("Piet", "Paulusma", "Piet@uu.nl", false),
+   ("Kees", "Spek", "kees@uu.nl", false),
+   ("Mo", "Ali", "mo@uu.nl", false),
+   ("Chatmo", "You", "chatmo@uu.nl", false);
+INSERT INTO Quiz (QuizID,topicID, linkDescription)
+VALUES 
+   (1, 1, "#importance"),
+   (2, 1, "#standards"),   
+   (3, 2, "#disabilities"),
+   (4, 2, "#table"),
+   (5, 3, "#layout"),
+   (6, 3, "#attributes") ;
+
+INSERT INTO Question (QuizID, QuestionID, type, Question, Quote, source)
+VALUES 
+   (1, 1, "mcq", "Which main reason is false in the following choices?", NULL, NULL),
+   (1, 2, "mcq", "To which main reason does this belong to?", "The Web is built on ideas of free access to anything for anyone. For this reason, no one should be excluded from the Web.", NULL),   
+   (1, 3, "mcq", "To which main reason does this belong to?", "It will improve the brand images of organisations. Having more people on the Web will ultimately lead to a better brand image.", NULL),
+   (1, 4, "mcq", "To which main reason does WCAG 2.1 belong to?", NULL, NULL),
+   (1, 5, "mcq", "To which main reason does this belong to", "websites will be made device independant, meaning every device is able to use the website.", NULL),
+   (2, 6, "mcq", "What is WCAG", NULL, NULL),
+   (2, 7, "mcq", "To which grade does this belong to?", "This level makes content accessible to people with a wider range of disabilities by providing guidance on elements such as color contrast and error identification. Regulators prefer this level.", NULL),
+   (2, 8, "mcq", "To which principle does this belong to", "Information and user interface components must be presentable to users in ways they can perceive. This means that users must be able to perceive the information being presented (it can't be invisible to all of their senses).", NULL),
+   (3, 9, "mcq", "Which disability does not belong between the other answers?", NULL, NULL),
+   (3, 10, "mcq", "What question should website developers not need to question their selves?", NULL, NULL),   
+   (3, 11, "mcq", "What is sometimes called motor disability?", NULL, NULL),
+   (4, 12, "mcq", "Where does the feature ’Voice Recognition’ belong to?", NULL, NULL),
+   (4, 13, "mcq", "Where does the feature ’Colors with Good Contrast’ belong to?", NULL, NULL),   
+   (4, 14, "mcq", "Where does the feature ’Video captions’ belong to?", NULL, NULL),
+   (4, 15, "mcq", "Where does the feature ‘Understandable Content’ belong to?", NULL, NULL),
+   (5,  16, "fillin", "What element should replace the dots?", NULL, "list.png"),
+   (5, 17 , "fillin", "What element should replace the dots?", NULL, "afbeelding.png"),
+   (5, 18, "mcq", "What element should replace the dots?", NULL ,"paragraph.png"),
+   (6,  19, "mcq", "What element should replace the dots?", NULL, "title.png"),
+   (6, 20 , "fillin", "What element should replace the question sign?", NULL, "alt3.png"),
+   (6, 21, "mcq", "An image should always have:", NULL ,NULL);
+
+
+
+INSERT INTO Option (OptionID, QuestionID, option, Is_correct)
+VALUES 
+   (1, 1, "Epical reasons", true),
+   (2, 1, "Reputational reasons", false),
+   (3, 1, "Legal reasons", false),
+   (4, 1, "Commercial reasons", false),
+   (5, 2, "Ethical reasons", true),
+   (6, 2, "Reputational reasons", false),
+   (7, 2, "Legal reasons", false),
+   (8, 2, "Commercial reasons", false),
+   (9, 3, "Ethical reasons", false),
+   (10, 3, "Reputational reasons", false),
+   (11, 3, "Legal reasons", true),
+   (12, 3, "Commercial reasons", false),
+   (13, 4, "Ethical reasons", false),
+   (14, 4, "Reputational reasons", false),
+   (15, 4, "Legal reasons", true),
+   (16, 4, "Commercial reasons", false),
+   (17, 5, "Ethical reasons", false),
+   (18, 5, "Reputational reasons", false),
+   (19, 5, "Legal reasons", false),
+   (20, 5, "Commercial reasons", true),
+   (21, 6, "Web Content Accessibility Guidelines", true),
+   (22, 6, "Web Content Availability Guidelines", false),
+   (23, 6, "Who Can Access Guidelines", false),
+   (24, 6, "World Content Accessibility Guidelines", false),
+   (25, 7, "A", false),
+   (26, 7, "AA", true),
+   (27, 7, "AAA", false),
+   (28, 8, "Perceivable", true),
+   (29, 8, "Operable", false),
+   (30, 8, "Understandable", false),
+   (31, 8, "Robust", false),
+   (32, 9, "Smell Disability", true),
+   (33, 9, "Hearing Disability", false),
+   (34, 9, "Cognitive Disability", false),
+   (35, 9, "Physical Disability", false),
+   (36, 10, "How do people who cannot move their arms use your website?", false),
+   (37, 10, "What about people who cannot see well or at all", false),
+   (38, 10, "Or people who have difficulty hearing or understanding?", false),
+   (39, 10, "or are drug addict?", true),
+   (40, 12, "Physical Disability", false), 
+   (41, 12, "Hearing Disability", false), 
+   (42, 12, "Cognitive Disability", false),
+   (43, 12, "Physical Disability", true),
+   (44, 13, "Physical Disability", true), 
+   (45, 13, "Hearing Disability", false), 
+   (46, 13, "Cognitive Disability", false),
+   (47, 13, "Physical Disability", false),
+   (48, 14, "Physical Disability", false), 
+   (49, 14, "Hearing Disability", true), 
+   (50, 14, "Cognitive Disability", false),
+   (51, 14, "Physical Disability", false), 
+   (52, 15, "Physical Disability", false), 
+   (53, 15, "Hearing Disability", false), 
+   (54, 15, "Cognitive Disability", true),
+   (55, 15, "Physical Disability", false), 
+   (56, 18, "H1", false),
+   (57, 18, "P", true),
+   (58, 18, "Div", false),
+   (59, 18, "Alt", false),
+   (60, 19, "Title", true),
+   (61, 19, "Input", false),
+   (62, 19, "Label", false),
+   (63, 19, "Alt", false),
+   (64, 21, "Title", false),
+   (65, 21, "Input", false),
+   (66, 21, "Label", false),
+   (67, 21, "Alt", true);
+
