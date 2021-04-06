@@ -1,14 +1,19 @@
 const apiError = require("./api_error");
+var express = require('express');
+const apiLogger = require("../log/api_logger");
+
+const app = express();
+app.use(apiLogger);
 
 function apiErrorHandler(err, req, res, next){
-    console.log(err); // own logging 
-
-    // if it is in the error class 
     if (err instanceof apiError){
-        res.status(err.code).json(err.message);
+        res.statusCode = err.code;
+        res.json(err.message);
         return;
     }
-    res.status(500).json("something went wrong");
+    res.status(500);
+    res.json("something went wrong");
 }
 
 module.exports = apiErrorHandler;
+

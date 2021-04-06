@@ -7,6 +7,9 @@ class apiError{
     static badRequest(msg){
         return new apiError(400, msg);
     }
+    static notFound(msg){
+        return new apiError(404, msg);
+    }
 
     static internal(msg)
     {

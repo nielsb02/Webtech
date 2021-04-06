@@ -19,7 +19,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Webtech application",
+            "name": "Webtech app",
             "skipFiles": ["<node_internals>/**"],
             "program": "${workspaceFolder}/webtechapp/main.js"
         },
