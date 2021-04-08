@@ -20,12 +20,21 @@ router.get("/assessment.html", function (req, res, next) {
 });
 
 router.get("/gettopics.js", function (req, res){
-   // res.send(req.query."iets", req.query."nogiets");
-   // get query by req
-    res.contentType('application/json')
+    res.contentType('application/json');
     var sql = "SELECT TopicID as tid, Title FROM Topic";
-    
-    console.log( "get data...");
+
+    dbHandler.getQuizData(sql, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    });
+   
+});
+
+router.get("/getQuiz.js", function (req, res){
+    res.contentType('application/json');
+    let topicID = req.query.topicID;
+    var sql =  "SELECT * FROM quiz WHERE topicID=" + topicID;
+    console.log(sql);
 
     dbHandler.getQuizData(sql, function(data){
         console.log("send data...", data);

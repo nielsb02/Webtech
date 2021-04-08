@@ -1,5 +1,8 @@
 /* all the extra css classes used within the assesments.html page can be found here */
 
+.hideTopic{display:none};
+.showTopic{display:block};
+
 .question_problem{font-size: 1.3em;}
 
 .radioBlock input[type="radio"] {

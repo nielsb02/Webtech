@@ -11,7 +11,12 @@ var section;
 function topicsLayout()
 {   
     let url = "gettopics.js";
-    getTopics(url);
+    getFromDB(url, function(obj){
+        let topicArray = obj.dbData;
+        topicArray.forEach(Topic => {
+           createTopic(Topic);
+        });
+    });
 }
 
 function createTopic(topic){
@@ -21,27 +26,49 @@ function createTopic(topic){
     let subHeading = document.createElement("H2");
     topicSection.appendChild(subHeading);
 
-    subHeading.appendChild(document.createTextNode("Topic " + topic.tid + " " + topic.Title));
+    subHeading.appendChild(document.createTextNode("Topic " + topic.tid + ": " + topic.Title));
 
-
-    let createQuiz = document.createElement("BUTTON");
-    createQuiz.addEventListener("click", function(){
-        topicSection.remove(); //Should remove more than one topicSection...
-        quizLayout();
+    let hiddenDiv = document.createElement("DIV");
+    hiddenDiv.setAttribute("class", "hideTopic");
+    topicSection.addEventListener("click", function(){
+        console.log(hiddenDiv.getAttribute("class"));
+        if(hiddenDiv.getAttribute("class") == "hideTopic")
+        {
+            hiddenDiv.setAttribute("class", "showTopic");
+        }
+        else    
+        {
+            hiddenDiv.setAttribute("class", "hideTopic");
+        }
     });
-    topicSection.appendChild(createQuiz);
+
+    topicSection.appendChild(hiddenDiv);
+
+    
+
+    let url = "getQuiz.js?topicID=" + topic.tid;
+    getFromDB(url, function(obj){
+        let quizArray = obj.dbData;
+        console.log(quizArray);
+        quizArray.forEach(Quiz => {
+            let createQuiz = document.createElement("BUTTON");
+            createQuiz.appendChild(document.createTextNode(Quiz.linkDescription));
+            createQuiz.addEventListener("click", function(){
+                article.remove();
+                quizLayout(Quiz.QuizID);
+            });
+            hiddenDiv.appendChild(createQuiz);
+        });
+    });
 }
 
-function getTopics(url){  //AJAX function
+function getFromDB(url, callback){  //AJAX function
     var req = new XMLHttpRequest();
     req.open("GET", url, true);
     req.onreadystatechange = function () {
         if (req.readyState === 4 && req.status === 200) {
-            var jsonObj = JSON.parse(req.responseText);
-            let topicArray = jsonObj.dbData;
-            topicArray.forEach(Topic => {
-               createTopic(Topic);
-            });
+            var obj = JSON.parse(req.responseText);
+            callback(obj);
         }
     }
     req.send();

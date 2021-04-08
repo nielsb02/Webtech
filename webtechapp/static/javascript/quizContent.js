@@ -187,8 +187,10 @@ function createButton(questionButton, index, div)
 }
 
 //This function creates the layout of the section.
-function quizLayout()
+function quizLayout(quizID)
 {
+    // get quiz out of database by quiz id
+
     section = document.createElement("SECTION");
     article.appendChild(section);
     section.setAttribute("class", "question");
@@ -464,6 +466,9 @@ function check()
             {
                 notBlank = true;
                 activeQuestion.guess.answer = selected[i];
+
+                // call ajax function wich returns answer 
+
                 if(selected[i].nextSibling.childNodes[0].nodeValue == activeQuestion.answer)
                 {
                     section.setAttribute("class","correct");
@@ -474,6 +479,8 @@ function check()
                     section.setAttribute("class","incorrect");
                     correctQuestion = false;
                 }
+                
+                //call ajax function which stores the users answer, using corretQuestion bool
             }
         }
         if(!notBlank)
