@@ -85,7 +85,7 @@
   margin-bottom: 0.5em;
 }
 
-article .layoutquestion, article .elementquestion, article .quiz-image--mpg
+article .quiz-image--wide, article .quiz-image--smaller
 {
   width: 65%;
   position: relative;
@@ -93,7 +93,7 @@ article .layoutquestion, article .elementquestion, article .quiz-image--mpg
   border-radius: 4px;
 }
 
-article .elementquestion
+article .quiz-image--wide
 {
   width: 80%;
 }
@@ -154,5 +154,5 @@ article .elementquestion
       padding-top: 0.3em;
       padding-bottom: 0.3em;
     }
-    article .layoutquestion ,article .elementquestion{width: 95%;}
+    article .quiz-image--wide ,article .quiz-image--smaller{width: 95%;}
     }

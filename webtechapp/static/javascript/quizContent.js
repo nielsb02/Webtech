@@ -1,5 +1,5 @@
 //Declaration of the global variables and arrays.
-var activeQuestion, strong; 
+var section, activeQuestion, strong; 
 var choiceSpan = [], questions = []; 
 var n = 0, progressBarCounter = 0;
 
@@ -19,12 +19,12 @@ const optionsArray = [["Hearing Disability","Cognitive Disability","Physical Dis
 
 //The superclass of all the questions.
 class question{
-    constructor(qtype, qtitle, qproblem ,qanswer, qimage)
+    constructor(qtype, qtitle, qproblem, qQuote, qimage)
     {
         this.type = qtype;
         this.title = qtitle;
         this.problem = qproblem;
-        this.answer = qanswer;
+        this.quote = qQuote;
         this.image = qimage.img;
         this.imageClass = qimage.class;
         this.guess = {answer: null, correct: null};
@@ -35,16 +35,16 @@ question.prototype.delete = function(){};
 
 //A subclass of questions.
 class multiplechoice extends question{
-    constructor(qtype, qtitle, qproblem ,qanswer, qimage, qoptions){
-    super(qtype, qtitle, qproblem ,qanswer, qimage);
+    constructor(qtype, qtitle, qproblem ,qQuote, qimage, qoptions){
+    super(qtype, qtitle, qproblem ,qQuote, qimage);
     this.options = qoptions;
     }
 }
 
 //A subclass of questions.
 class fillin extends question{
-    constructor(qtype, qtitle, qproblem ,qanswer, qimage, qplaceholder){
-        super(qtype, qtitle, qproblem ,qanswer, qimage);
+    constructor(qtype, qtitle, qproblem, qQuote, qimage, qplaceholder){
+        super(qtype, qtitle, qproblem, qQuote, qimage);
         this.placeholder = qplaceholder;
     }
 }
@@ -187,33 +187,111 @@ function createButton(questionButton, index, div)
 }
 
 //This function creates the layout of the section.
-function quizLayout(quizID)
+function quizLayout(quizID, quizTitle)
 {
     // get quiz out of database by quiz id
 
+    let url = "getQuestion.js?quizID=" + quizID;
+    getFromDB(url, function(obj){
+        let questionArray = obj.dbData;
+        console.log(questionArray);
+        
+        
+        var await = new Promise((resolve, reject) => {
+            questionArray.forEach((quest, index, array) => { 
+                console.log(index);
+                var q;
+                if(quest.Type == "mcq")
+                {
+                    q = new multiplechoice(quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, null);
+                    questions.push(q);
+
+                    let url = "getOptions.js?questionID=" + quest.QuestionID;
+                    getFromDB(url, function(obj){
+                        let optionArray = obj.dbData;
+                        let options = [];
+                        optionArray.forEach(element => {
+                            options.push(element.option);
+                        });
+                        console.log(options);
+                        q.options = options;
+            
+            
+                        if (index === array.length -1) resolve();
+                    });
+            
+                    
+                }
+                else if (quest.Type == "fillin")
+                {
+                    q = new fillin(quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, " ");
+                    questions.push(q);
+                    
+                    if (index === array.length -1) resolve();
+                }
+
+                if(q)
+                {
+                    if(quest.Source !== null)
+                    {
+                        q.image = "Resources/" + quest.Source;
+                        var img = new Image();
+                        // 2/3 height pixel verhouding
+                        img.onload = function() {
+                            console.log(this.height , this.width);
+                            console.log(this.height / this.width);
+
+                            if(this.height / this.width > 0.65)
+                            {
+                                q.imageClass = ".quiz-image--smaller";
+                            }
+                            else
+                            {
+                                q.imageClass = ".quiz-image--wide";
+                            }
+                        }
+                        img.src = "Resources/" + quest.Source;
+                    }
+                    if(quest.Quote !== null)
+                    {
+                        q.quote = quest.Quote;
+                    }
+                }
+            });
+        });
+        
+        await.then(() => {
+            
+            console.log("Await");
+            activeQuestion = questions[0];
+            
+            var numberedButtonsDiv = document.createElement("DIV");
+            numberedButtonsDiv.setAttribute("id","numberedButtons");
+            numberedButtonsDiv.addEventListener("click", event => {
+                if (event.target.tagName === "INPUT")
+                    {
+                        newQuestion(questions.indexOf(activeQuestion), parseInt(event.target.getAttribute("id")));
+                    }}, false);
+            section.appendChild(numberedButtonsDiv);
+        
+            questions.forEach((item, index) => createButton(item, index, numberedButtonsDiv));
+            
+            activeQuestion.create();
+        });
+    });
+
     section = document.createElement("SECTION");
+    let article = document.createElement("ARTICLE")
     article.appendChild(section);
+    let body = document.getElementsByTagName("BODY")[0];
+    body.insertBefore(article, document.getElementsByTagName("FOOTER")[0]);
+
     section.setAttribute("class", "question");
     let paragraph = document.createElement("p");
     paragraph.setAttribute("class", "question_problem")
     section.appendChild(paragraph);
     strong = document.createElement("STRONG");
     paragraph.appendChild(strong);
-
-
-    //questionContent = {type: "mpc / fillin", title: "Title of The Quiz", problem: "Actual Question", answer: "single value" 
-        //image: "OPTIONAL, either src/"" ", options: ["ONLY FOR MPC", "answer","2","3","4"] (must contain answer)};
-    //The questions are created as objects.
-    var question1 = new multiplechoice("mpc", "General Quiz", titleArray[0], answerArray[0], {img: null, class: null}, optionsArray[0]);
-    var question2 = new multiplechoice("mpc", "General Quiz", titleArray[1], answerArray[1], {img: null, class: null}, optionsArray[1]);
-    var question3 = new multiplechoice("mpc", "General Quiz", titleArray[2], answerArray[2], {img: null, class: null}, optionsArray[2]);
-    var question4 = new fillin("fillin", "General Quiz", titleArray[3], answerArray[3], {img: imgArray[0], class: "layoutquestion"}, "Example: header");
-    var question5 = new fillin("fillin", "General Quiz", titleArray[4], answerArray[4], {img: imgArray[1], class: "elementquestion"}, "Example: header");
-    var question6 = new fillin("fillin", "General Quiz", titleArray[4], answerArray[4], {img: null, class: null}, "Example: header");
-    var question7 = new multiplechoice("fillin", "General Quiz", titleArray[4], answerArray[4], {img: null, class: null}, optionsArray[2]);
-    var question8 = new multiplechoice("mpc", "General Quiz", titleArray[0], answerArray[0], {img: imgArray[1], class: "elementquestion"}, optionsArray[0]);
-    questions = [question1, question2, question3, question4, question5, question6, question7, question8];
-    activeQuestion = questions[0];
     
     let hr = document.createElement("HR");
     hr.setAttribute("id", "questionDivider");
@@ -246,19 +324,6 @@ function quizLayout(quizID)
     section.appendChild(inputC);
     
     section.appendChild(document.createElement("HR"));
-
-    var numberedButtonsDiv = document.createElement("DIV");
-    numberedButtonsDiv.setAttribute("id","numberedButtons");
-    numberedButtonsDiv.addEventListener("click", event => {
-        if (event.target.tagName === "INPUT")
-            {
-                newQuestion(questions.indexOf(activeQuestion), parseInt(event.target.getAttribute("id")));
-            }}, false);
-    section.appendChild(numberedButtonsDiv);
-
-    questions.forEach((item, index) => createButton(item, index, numberedButtonsDiv));
-    
-   activeQuestion.create();
 }
 
 //The function above is called here.
@@ -267,14 +332,15 @@ function quizLayout(quizID)
 function calculateResult()
 {
     var count = {correct : 0.0, incorrect: 0.0, unanswered: 0.0};
-    questions.forEach(quest => {
-        if (quest.guess.correct)
+    questions.forEach(Quest => {
+        if (Quest.guess.correct)
         {
             count.correct++;
         }
-        else if (quest.guess.correct == false)
+        else if (Quest.guess.correct == false)
         {
             count.incorrect++;
+
         }
         else
         {

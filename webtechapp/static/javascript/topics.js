@@ -51,28 +51,23 @@ function createTopic(topic){
         let quizArray = obj.dbData;
         console.log(quizArray);
         quizArray.forEach(Quiz => {
+            let description = document.createElement("A");
+            description.setAttribute("href", Quiz.linkDescription);
+            description.appendChild(document.createTextNode("Find more about this topic"));
+            hiddenDiv.appendChild(description);
+
             let createQuiz = document.createElement("BUTTON");
-            createQuiz.appendChild(document.createTextNode(Quiz.linkDescription));
+            createQuiz.appendChild(document.createTextNode(Quiz.title));
+            
             createQuiz.addEventListener("click", function(){
                 article.remove();
-                quizLayout(Quiz.QuizID);
+                quizLayout(Quiz.QuizID, Quiz.title);
             });
             hiddenDiv.appendChild(createQuiz);
         });
     });
 }
 
-function getFromDB(url, callback){  //AJAX function
-    var req = new XMLHttpRequest();
-    req.open("GET", url, true);
-    req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status === 200) {
-            var obj = JSON.parse(req.responseText);
-            callback(obj);
-        }
-    }
-    req.send();
-}
 
 topicsLayout();
 

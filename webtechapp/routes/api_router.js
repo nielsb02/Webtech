@@ -43,6 +43,30 @@ router.get("/getQuiz.js", function (req, res){
    
 });
 
+router.get("/getQuestion.js", function (req, res){
+    res.contentType('application/json');
+    let quizID = req.query.quizID;
+    var sql =  "SELECT * FROM Question WHERE quizID=" + quizID;
+
+    dbHandler.getQuizData(sql, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    });
+   
+});
+
+router.get("/getOptions.js", function (req, res){
+    res.contentType('application/json');
+    let questionID = req.query.questionID;
+    var sql =  "SELECT * FROM Option WHERE QuestionID=" + questionID;
+
+    dbHandler.getQuizData(sql, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    });
+   
+});
+
 router.get("/" , function (req, res, next){
     console.log("get..");
     //next();
