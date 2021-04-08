@@ -283,8 +283,8 @@ function createAccLayout()
 
 if(document.title !== "Account")
 {
-    let loginButton = document.getElementById("login_button");
-    loginButton.addEventListener("click", login, false);
+    //let loginButton = document.getElementById("login_button");
+    //loginButton.addEventListener("click", login, false);
 
     let createButton = document.getElementById("create_acc_button");
     createButton.addEventListener("click", function() {
