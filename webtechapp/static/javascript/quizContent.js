@@ -19,8 +19,9 @@ const optionsArray = [["Hearing Disability","Cognitive Disability","Physical Dis
 
 //The superclass of all the questions.
 class question{
-    constructor(qtype, qtitle, qproblem, qQuote, qimage)
+    constructor(qid, qtype, qtitle, qproblem, qQuote, qimage)
     {
+        this.id = qid;
         this.type = qtype;
         this.title = qtitle;
         this.problem = qproblem;
@@ -35,16 +36,16 @@ question.prototype.delete = function(){};
 
 //A subclass of questions.
 class multiplechoice extends question{
-    constructor(qtype, qtitle, qproblem ,qQuote, qimage, qoptions){
-    super(qtype, qtitle, qproblem ,qQuote, qimage);
+    constructor(qid, qtype, qtitle, qproblem ,qQuote, qimage, qoptions){
+    super(qid, qtype, qtitle, qproblem ,qQuote, qimage);
     this.options = qoptions;
     }
 }
 
 //A subclass of questions.
 class fillin extends question{
-    constructor(qtype, qtitle, qproblem, qQuote, qimage, qplaceholder){
-        super(qtype, qtitle, qproblem, qQuote, qimage);
+    constructor(qid, qtype, qtitle, qproblem, qQuote, qimage, qplaceholder){
+        super(qid, qtype, qtitle, qproblem, qQuote, qimage);
         this.placeholder = qplaceholder;
     }
 }
@@ -92,6 +93,16 @@ multiplechoice.prototype.create = function()
         radioDiv.appendChild(input);
         radioDiv.appendChild(label);
     }
+    console.log(this.quote);
+    if(this.quote != null)
+    {
+        let quote = document.createElement("P");
+        quote.setAttribute("id", "quote");
+        let em = document.createElement("EM");
+        em.appendChild(document.createTextNode(this.quote));
+        quote.appendChild(em);
+        section.insertBefore(quote, radioDiv);
+    }
 
     if(this.image != null)
     {
@@ -108,6 +119,13 @@ multiplechoice.prototype.delete = function()
     strong.removeChild(strong.childNodes[0]);
     var radioDiv = section.getElementsByClassName("radioBlock")[0];
     radioDiv.remove();
+
+    
+    var quote = document.getElementById("quote");
+    if(quote)
+    {
+        quote.remove();
+    }
 
     var img = section.getElementsByTagName("IMG")[0];
     if(img)
@@ -147,6 +165,15 @@ fillin.prototype.create = function()
     var divider = document.getElementById("questionDivider");
     section.insertBefore(textBox, divider);
 
+    if(this.quote != null)
+    {
+        let quote = document.createElement("P");
+        quote.setAttribute("id", "quote");
+        let em = document.createElement("EM");
+        em.appendChild(document.createElement(this.quote));
+        quote.appendChild(em);
+        section.insertBefore(quote, textBox);
+    }
     if(this.image != null)
     {
         var img = document.createElement("IMG");
@@ -161,6 +188,12 @@ fillin.prototype.delete = function()
 {
     document.getElementsByClassName("textbox--styling")[0].remove();
     strong.removeChild(strong.childNodes[0]);
+
+    var quote = document.getElementById("quote");
+    if(quote)
+    {
+        quote.remove();
+    }
 
     var img = section.getElementsByTagName("IMG")[0];
     if(img)
@@ -203,7 +236,7 @@ function quizLayout(quizID, quizTitle)
                 var q;
                 if(quest.Type == "mcq")
                 {
-                    q = new multiplechoice(quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, null);
+                    q = new multiplechoice(quest.QuestionID, quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, null);
                     questions.push(q);
 
                     let url = "getOptions.js?questionID=" + quest.QuestionID;
@@ -224,7 +257,7 @@ function quizLayout(quizID, quizTitle)
                 }
                 else if (quest.Type == "fillin")
                 {
-                    q = new fillin(quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, " ");
+                    q = new fillin(quest.QuestionID, quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, " ");
                     questions.push(q);
                     
                     if (index === array.length -1) resolve();
@@ -243,11 +276,11 @@ function quizLayout(quizID, quizTitle)
 
                             if(this.height / this.width > 0.65)
                             {
-                                q.imageClass = ".quiz-image--smaller";
+                                q.imageClass = "quiz-image--smaller";
                             }
                             else
                             {
-                                q.imageClass = ".quiz-image--wide";
+                                q.imageClass = "quiz-image--wide";
                             }
                         }
                         img.src = "Resources/" + quest.Source;
@@ -483,7 +516,8 @@ function createResults()
 //This function styles the Css for the enabled check button.
 function checkEnabled()
 {
-    if(activeQuestion.guess.answer === null)
+    
+    if(false)//ctiveQuestion.guess.answer === null)
     {
         let checkCss = document.getElementById("check");
         checkCss.setAttribute("class","qbutton--enabled");
@@ -511,96 +545,109 @@ function checkDisabledTextbox()
 //This function checks whether the input is correct or incorrect.
 function check()
 {   
-    if(activeQuestion.guess.answer !== null)
-    {
-        return
-    }
+    //if(activeQuestion.guess.answer !== null)
+    //{
+    //    return
+   // }
 
-    
     var correctQuestion = null; 
     var notBlank = false;
 
-    if(activeQuestion instanceof multiplechoice)
-    {
-        var radioDiv = document.getElementsByClassName("radioBlock")[0];
-        var selected = radioDiv.getElementsByTagName("INPUT");
-
-        for(var i = 0; i < selected.length; i++)
+    let url = "getAnswer.js?questionID=" + activeQuestion.id;
+    getFromDB(url, function(obj){
+        let questionArray = obj.dbData;
+        var answer;
+        if(questionArray[0].option)
         {
-            selected[i].disabled = true;
-            if(selected[i].checked)
-            {
-                notBlank = true;
-                activeQuestion.guess.answer = selected[i];
-
-                // call ajax function wich returns answer 
-
-                if(selected[i].nextSibling.childNodes[0].nodeValue == activeQuestion.answer)
-                {
-                    section.setAttribute("class","correct");
-                    correctQuestion = true;
-                }
-                else
-                {
-                    section.setAttribute("class","incorrect");
-                    correctQuestion = false;
-                }
-                
-                //call ajax function which stores the users answer, using corretQuestion bool
-            }
-        }
-        if(!notBlank)
-        {
-            for(var i = 0; i < selected.length; i++)
-            {
-                selected[i].disabled = false;
-            }
-        }
-    }
-    else if(activeQuestion instanceof fillin && document.getElementsByClassName("textbox--styling")[0].value !== "")
-    {
-        notBlank = true;
-        document.getElementsByClassName("textbox--styling")[0].disabled = true;
-
-        var input = document.getElementsByClassName("textbox--styling")[0].value;
-        if(activeQuestion.answer == input)
-        {
-            section.setAttribute("class","correct");
-            correctQuestion = true;
-            activeQuestion.guess.answer = input;
-        }
-        else if(!input)
-        {
-            correctQuestion = null;
+            answer = questionArray[0].option;
         }
         else
         {
-            section.setAttribute("class","incorrect");
-            correctQuestion = false;
-            activeQuestion.guess.answer = input;
-        }  
-    }
-
-    if(notBlank)
-    {
-        document.getElementById("check").setAttribute("class", "qbutton--disabled");
-
-        var index = questions.indexOf(activeQuestion);
-        var numberedButtons = document.getElementById("numberedButtons");
-
-        if(correctQuestion)
-        {
-            numberedButtons.childNodes[index].classList.add("questionButton--correct");
-            activeQuestion.guess.correct = true;
+            // no option will be correct
+            answer = null;
         }
-        else if(!correctQuestion && correctQuestion !== null)
+        console.log(answer);
+    
+
+        if(activeQuestion instanceof multiplechoice)
         {
-            numberedButtons.childNodes[index].classList.add("questionButton--false");
-            activeQuestion.guess.correct = false;
+            console.log("check ")
+            var radioDiv = document.getElementsByClassName("radioBlock")[0];
+            var selected = radioDiv.getElementsByTagName("INPUT");
+
+            for(var i = 0; i < selected.length; i++)
+            {
+                selected[i].disabled = true;
+                if(selected[i].checked)
+                {
+                    notBlank = true;
+                    //answer = selected[i];
+
+                    if(selected[i].nextSibling.childNodes[0].nodeValue == answer)
+                    {
+                        section.setAttribute("class","correct");
+                        correctQuestion = true;
+                    }
+                    else
+                    {
+                        section.setAttribute("class","incorrect");
+                        correctQuestion = false;
+                    }
+                    
+                    //call ajax function which stores the users answer, using corretQuestion bool
+                }
+            }
+            if(!notBlank)
+            {
+                for(var i = 0; i < selected.length; i++)
+                {
+                    selected[i].disabled = false;
+                }
+            }
         }
-    }
-    
-    
+        else if(activeQuestion instanceof fillin && document.getElementsByClassName("textbox--styling")[0].value !== "")
+        {
+            notBlank = true;
+            document.getElementsByClassName("textbox--styling")[0].disabled = true;
+
+            var input = document.getElementsByClassName("textbox--styling")[0].value;
+            if(answer == input)
+            {
+                section.setAttribute("class","correct");
+                correctQuestion = true;
+                //answer = input;
+            }
+            else if(!input)
+            {
+                correctQuestion = null;
+            }
+            else
+            {
+                section.setAttribute("class","incorrect");
+                correctQuestion = false;
+                //activeQuestion.guess.answer = input;
+            } 
+        }
+
+        if(notBlank)
+        {
+            document.getElementById("check").setAttribute("class", "qbutton--disabled");
+
+            var index = questions.indexOf(activeQuestion);
+            var numberedButtons = document.getElementById("numberedButtons");
+
+            if(correctQuestion)
+            {
+                numberedButtons.childNodes[index].classList.add("questionButton--correct");
+                activeQuestion.guess.correct = true;
+            }
+            else if(!correctQuestion && correctQuestion !== null)
+            {
+                numberedButtons.childNodes[index].classList.add("questionButton--false");
+                activeQuestion.guess.correct = false;
+            }
+        }
+    });
 }
 
 //This function controls the actions that need to happen if the previous button is clicked.

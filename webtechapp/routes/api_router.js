@@ -67,6 +67,19 @@ router.get("/getOptions.js", function (req, res){
    
 });
 
+router.get("/getAnswer.js", function (req, res){
+    res.contentType('application/json');
+    let questionID = req.query.questionID;
+    var sql =  "SELECT option FROM Option WHERE Is_correct = true AND QuestionID=" + questionID;
+
+    dbHandler.getQuizData(sql, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    });
+   
+});
+
+
 router.get("/" , function (req, res, next){
     console.log("get..");
     //next();
