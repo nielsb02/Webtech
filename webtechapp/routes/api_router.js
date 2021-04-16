@@ -4,11 +4,15 @@ var bodyParser = require("body-parser");
 const apiError = require("../error/api_error");
 var session = require('express-session');
 var sqlsession = require('session-file-store')(session);
+const { 
+    v1: uuidv1,
+    v4: uuidv4,
+  } = require('uuid');
 
 var options = {
     store: new sqlsession(),
     genid: function(req){
-        return uuid();
+        return uuidv4();
     },
     cookie: {
         path: "/",
@@ -112,8 +116,29 @@ router.get("/checkUserAnswered.js", function (req, res, next){
 
 router.get("/getUserAnswer.js", function (req, res, next){
     var values = [req.query.userID, req.query.questionID];
+    var sql = "SELECT OptionID, Is_correct FROM Option WHERE OptionID IN (SELECT OptionID FROM UserAnswer WHERE UserID =? AND QuestionID =?)";
+    
+    dbHandler.getQuizData(sql, values, next, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    })
+});
+
+router.get("/getFillUserAnswer.js", function (req, res, next){
+    var values = [req.query.userID, req.query.questionID];
     console.log(values);
-    var sql = "SELECT * FROM UserAnswer WHERE UserID =? AND QuestionID =?";
+    var sql = "SELECT OptionID, Option FROM UserAnswer WHERE UserID=? AND QuestionID=?";
+    
+    dbHandler.getQuizData(sql, values, next, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    })
+});
+
+router.get("/getQuizResults", function (req, res, next){
+    var values = [req.query.userID, req.query.quizID];
+    console.log("values..", values)
+    var sql = "SELECT OptionID, Is_correct FROM Option WHERE OptionID IN (SELECT OptionID FROM UserAnswer WHERE UserID =? AND QuestionID IN (SELECT QuestionID FROM Question WHERE QuizID =?))";
     
     dbHandler.getQuizData(sql, values, next, function(data){
         console.log("send data...", data);
@@ -125,8 +150,8 @@ router.post("/storeUserAnswer.js", function (req, res, next){
     currentSession = req.session;
 
     console.log("store answer:", req.body);
-    var values = [req.body.QuestionID, req.body.optionID, req.body.userID];
-    var sql = "INSERT INTO UserAnswer (QuestionID, OptionID, UserID) VALUES (?, ?, ?)";
+    var values = [req.body.QuestionID, req.body.optionID, req.body.userID, req.body.option];
+    var sql = "INSERT INTO UserAnswer (QuestionID, OptionID, UserID, Option) VALUES (?, ?, ?, ?)";
     
     dbHandler.storeQuizData(sql, values, next, function(){
         res.send(200, "answer stored");

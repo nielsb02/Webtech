@@ -1,21 +1,7 @@
 //Declaration of the global variables and arrays.
-var section, activeQuestion, strong; 
+var section, activeQuestion, strong, quiz; 
 var choiceSpan = [], questions = []; 
 var n = 0, progressBarCounter = 0;
-
-
-//questionContent = {type: "mpc / fillin", title: "Title of The Quiz", problem: "Actual Question", image: "OPTIONAL, either src/"" ", options: ["ONLY FOR MPC", "1","2","3","4"]};
-const imgArray = ["Resources/Afbeelding.png", "Resources/list.png"];
-const titleArray = ["Question 1: Where does the feature 'Voice Recognition' belong to?",
- "Question 2: Where does the feature 'Colors with Good Contrast' belong to?",
- "Question 3: To which main reason does this sentence belong to?",
- "Question 4: What element should replace the dots?",
- "Question 5: What element should replace the dots?"];
-const answerArray = ["Physical Disability", "Visual Disability","Commercial reasons", "aside","ul"];
-const optionsArray = [["Hearing Disability","Cognitive Disability","Physical Disability"],
-["Visual Disability","Hearing Disability","Cognitive Disability","Physical Disability"],
-["Ethical reasons","Reputational reasons","Legal reasons","Commercial reasons"]];
-
 
 //The superclass of all the questions.
 class question{
@@ -61,55 +47,48 @@ multiplechoice.prototype.create = function()
     var divider = document.getElementById("questionDivider");
     section.insertBefore(radioDiv, divider);
 
-    let url = "./getUserAnswer.js?userID="+3+"&questionID="+this.id;
-    var await = new Promise((resolve, reject) => {getFromDB(url, function(o){
-        var userAnswerArray = o.dbData;
-        if(userAnswerArray[0])
-        {
-        console.log("kaas: ", userAnswerArray);
-        getFromDB("./getAnswer.js?questionID=" + userAnswerArray[0].QuestionID, function(ob)
-        {
-            console.log(ob.dbData);
-            var AID = ob.dbData[0];
-            console.log("worst: ", AID.OptionID);
-            resolve(userAnswerArray, AID.OptionID);
+    let url = "./getUserAnswer.js?userID="+1+"&questionID="+this.id;
+    var await = new Promise((resolve, reject) => 
+    {
+        getFromDB(url, function(obj){
+            resolve(obj.dbData); 
         });
-        }
- 
-    });});
+    });
 
-    await.then((userAnswerArray, AID) => {
+    await.then((userAnswerArray) => {
         for(var i = 0; i < this.options.length; i++)
         {
             var input = document.createElement("INPUT");
             input.setAttribute("type", "radio");
             input.setAttribute("name", "qoptions");
             input.setAttribute("id", i );
-
-            console.log(userAnswerArray);
-            if(!userAnswerArray[0])
+            if(userAnswerArray)
             {
-                input.disabled = false;
-                input.checked = false;
-            }
-            else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
-            {
-               console.log("AID: ", AID, userAnswerArray[0].OptionID);
-                if(AID.OptionID == userAnswerArray[0].OptionID)
+                document.getElementById("check").setAttribute("class", "qbutton--disabled");
+                if(!userAnswerArray[0])
                 {
-                    section.setAttribute("class", "correct");
+                    input.disabled = false;
+                    input.checked = false;
                 }
-                else
+                else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
                 {
-                    section.setAttribute("class", "incorrect");
+                    if(userAnswerArray[0].Is_correct)
+                    {
+                        section.setAttribute("class", "correct");
+                    }
+                    else
+                    {
+                        section.setAttribute("class", "incorrect");
+                    }
+                    input.disabled = true;
+                    input.checked = true;
                 }
-                input.disabled = true;
-                input.checked = true;
             }
             else
             {
                 input.disabled = true;
                 input.checked = false;
+                document.getElementById("check").setAttribute("class", "qbutton--enabled");
             }
 
             let label = document.createElement("LABEL");
@@ -176,41 +155,60 @@ fillin.prototype.create = function()
     var textBox = document.createElement("INPUT");
     textBox.setAttribute("type","text");
 
-    if(this.guess.answer !== null)
+    var await = new Promise((resolve, reject) => 
     {
-        textBox.setAttribute("value", this.guess.answer);
-        textBox.disabled = true;
-    }
-    else
-    {
-        textBox.setAttribute("value", "");
-        textBox.disabled = false;
-    }
-    
-    textBox.setAttribute("class","textbox--styling");
-    textBox.setAttribute("placeholder",this.placeholder);
-    textBox.addEventListener("input", checkEnabled, false);
-    textBox.addEventListener("change", checkDisabledTextbox, false);
+        let url = "/getFillUserAnswer.js?userID="+1+"&questionID="+this.id;
+        getFromDB(url, function(obj){
+            resolve(obj.dbData); 
+        });
+    });
 
-    var divider = document.getElementById("questionDivider");
-    section.insertBefore(textBox, divider);
+    await.then((userAnswer) => {
+        if(userAnswer[0])
+        {
+            textBox.setAttribute("value", userAnswer[0].Option.toString());
+            textBox.disabled = true;
+            console.log("kaas" , userAnswer[0]);
+            if(userAnswer[0].OptionID !== null)
+            {
+                section.setAttribute("class", "correct");
+            }
+            else
+            {
+                section.setAttribute("class", "incorrect");
+            }
+        }
+        else
+        {
+            textBox.setAttribute("value", "");
+            textBox.disabled = false;
+        }
+        
+        textBox.setAttribute("class","textbox--styling");
+        textBox.setAttribute("placeholder",this.placeholder);
+        textBox.addEventListener("input", checkEnabled, false);
+        textBox.addEventListener("change", checkDisabledTextbox, false);
 
-    if(this.quote != null)
-    {
-        let quote = document.createElement("P");
-        quote.setAttribute("id", "quote");
-        let em = document.createElement("EM");
-        em.appendChild(document.createElement(this.quote));
-        quote.appendChild(em);
-        section.insertBefore(quote, textBox);
-    }
-    if(this.image != null)
-    {
-        var img = document.createElement("IMG");
-        img.setAttribute("src",this.image);
-        img.setAttribute("class",this.imageClass);
-        section.insertBefore(img, textBox);
-    }
+        var divider = document.getElementById("questionDivider");
+        section.insertBefore(textBox, divider);
+
+        if(this.quote != null)
+        {
+            let quote = document.createElement("P");
+            quote.setAttribute("id", "quote");
+            let em = document.createElement("EM");
+            em.appendChild(document.createElement(this.quote));
+            quote.appendChild(em);
+            section.insertBefore(quote, textBox);
+        }
+        if(this.image != null)
+        {
+            var img = document.createElement("IMG");
+            img.setAttribute("src",this.image);
+            img.setAttribute("class",this.imageClass);
+            section.insertBefore(img, textBox);
+        }
+    });
 };
 
 //This function deletes the content of the fill-in-the-blank questions.
@@ -247,13 +245,30 @@ function createButton(questionButton, index, div)
     button.setAttribute("id", index); 
 
     div.appendChild(button);
+
+    let url = "./getUserAnswer.js?userID="+1+"&questionID="+questionButton.id;
+    getFromDB(url, function(obj){
+        console.log("button data" , obj.dbData);
+        if(obj.dbData[0])
+        {
+            if(obj.dbData[0].Is_correct)
+            {
+                button.classList.add("questionButton--correct");
+            }
+            else
+            {
+                button.classList.add("questionButton--false");
+            }
+        }
+    });
+
 }
 
 //This function creates the layout of the section.
 function quizLayout(quizID, quizTitle)
 {
     // get quiz out of database by quiz id
-
+    quiz = quizID;
     let url = "getQuestion.js?quizID=" + quizID;
     getFromDB(url, function(obj){
         let questionArray = obj.dbData;
@@ -294,7 +309,7 @@ function quizLayout(quizID, quizTitle)
                     {
                         q.image = "Resources/" + quest.Source;
                         var img = new Image();
-                        // 2/3 height pixel verhouding
+                        // 2/1 height pixel verhouding
                         img.onload = function() {
                             console.log(this.height , this.width);
                             console.log(this.height / this.width);
@@ -355,7 +370,6 @@ function quizLayout(quizID, quizTitle)
     hr.setAttribute("id", "questionDivider");
     section.appendChild(hr);
 
-    //The check, previous and next buttons are created here.
     let inputA = document.createElement("INPUT");
     inputA.addEventListener("click", check, false);
     inputA.setAttribute("type", "button");
@@ -386,27 +400,33 @@ function quizLayout(quizID, quizTitle)
 
 //The function above is called here.
 
-function calculateResult()
+function calculateResult(bar)
 {
-    var count = {correct : 0.0, incorrect: 0.0, unanswered: 0.0};
-    questions.forEach(Quest => {
-        if (Quest.guess.correct)
-        {
-            count.correct++;
-        }
-        else if (Quest.guess.correct == false)
-        {
-            count.incorrect++;
-
-        }
-        else
-        {
-            count.unanswered++;
-        }
+    let url = "/getQuizResults?userID="+1+"&quizID="+quiz;
+    getFromDB(url, function(obj){
+        var count = {correct : 0.0, incorrect: 0.0, unanswered: 0.0};
+        var questionArray = obj.dbData;
+        console.log("quiz Results...", questionArray);
+        for(let index = 0; index <questions.length; index++){
+            if(questionArray[index])
+            {
+                if (questionArray[index].Is_correct === 1)
+                {
+                    count.correct++;
+                }
+                else if (questionArray[index].Is_correct === 0)
+                {
+                    count.incorrect++;
+                }
+            }
+            else
+            {
+                count.unanswered++;
+            }
+        };
+        let result = [count.correct, count.incorrect, count.unanswered];
+        resultBar(bar, result, heading, false);
     });
-
-    
-    return [count.correct, count.incorrect, count.unanswered];
 }
 
 function resultBar(barArray, resultArray, heading, lastBar)
@@ -422,15 +442,18 @@ function resultBar(barArray, resultArray, heading, lastBar)
         var string = "";
         var bool = false;
         var id = setInterval(frame, 30);
-        //bar.innerHTML = width  + "%";
 
         function frame() 
         {
             if (width >= result -1) 
             {
                 bar.style.width = result + "%";
+                if(result != 0)
+                    bar.innerHTML = result.toString() + "%";
+                else
+                    bar.innerHTML = "";
+                    
                 
-                bar.innerHTML = result.toString() + "%";
                 clearInterval(id);
                 move = true;
                 
@@ -528,9 +551,8 @@ function createResults()
 
     section.appendChild(progressBar);
 
-    let result = calculateResult();
     let bar = [resultCorrect, resultIncorrect, resultUnanswered];
-    resultBar(bar, result, heading, false);
+    let result = calculateResult(bar);
 
     var paragraph = document.createElement("P");
 
@@ -540,17 +562,16 @@ function createResults()
 //This function styles the Css for the enabled check button.
 function checkEnabled()
 {
-    let url = "./getUserAnswer.js?userID="+3+"&questionID="+activeQuestion.id;
-    // for user id, an answer stored for this question id?
-    if( 
-   getFromDB(url, function(obj){
+    let url = "./getUserAnswer.js?userID="+1+"&questionID="+activeQuestion.id;
+    getFromDB(url, function(obj){
+        console.log("enable", obj.dbData)
         var userAnswerArray = obj.dbData;
-       return userAnswerArray;
-    }))//ctiveQuestion.guess.answer === null)
-    {
-        let checkCss = document.getElementById("check");
-        checkCss.setAttribute("class","qbutton--enabled");
-    }
+        if(userAnswerArray)
+        {
+            let checkCss = document.getElementById("check");
+            checkCss.setAttribute("class","qbutton--enabled");
+        }});
+    
 }
 
 //This function styles the Css for the disabled check button.
@@ -574,19 +595,12 @@ function checkDisabledTextbox()
 //This function checks whether the input is correct or incorrect.
 function check()
 {   
-    //if(activeQuestion.guess.answer !== null)
-    //{
-    //    return
-   // }
-
     var correctQuestion = null; 
     var notBlank = false;
 
-    let url = "checkUserAnswered.js?userID="+ 3 +"&questionID="+activeQuestion.id;
+    let url = "checkUserAnswered.js?userID="+ 1 +"&questionID="+activeQuestion.id;
     var await = new Promise((resolve, reject) => { 
-            console.log("is this question already answered?");
             getFromDB(url, function(obj){
-            console.log(obj.dbData[0].bool);
             if(obj.dbData[0].bool == 1) //already answered...
             {
                 console.log("already answered");
@@ -608,7 +622,7 @@ function check()
         let url = "getAnswer.js?questionID=" + activeQuestion.id;
         getFromDB(url, function(obj)
         {
-            let optionArray = obj.dbData;
+            var optionArray = obj.dbData;
             var answer;
 
             if(optionArray[0].option)
@@ -620,21 +634,21 @@ function check()
                 answer = null;
                 
             }
-            console.log(answer);
+            console.log("array: ", optionArray);
         
 
             if(activeQuestion instanceof multiplechoice)
             {
-                console.log("check")
                 var radioDiv = document.getElementsByClassName("radioBlock")[0];
-                var selected = radioDiv.getElementsByTagName("INPUT");
+                var selected = radioDiv.getElementsByTagName("INPUT"); 
+                var selectedoption;
 
                 for(var i = 0; i < selected.length; i++)
                 {
                     selected[i].disabled = true;
                     if(selected[i].checked)
                     {
-                        var selectedoption = activeQuestion.options[i].OptionID; 
+                        selectedoption = activeQuestion.options[i]; 
                         console.log(selectedoption, activeQuestion.options[i]);
                         notBlank = true;
                         if(selected[i].nextSibling.childNodes[0].nodeValue == answer)
@@ -662,9 +676,12 @@ function check()
                 notBlank = true;
                 document.getElementsByClassName("textbox--styling")[0].disabled = true;
 
+                
                 var input = document.getElementsByClassName("textbox--styling")[0].value;
                 if(answer == input)
                 {
+                    
+                    selectedoption = {optionID: optionArray[0].OptionID, option: input};
                     section.setAttribute("class","correct");
                     correctQuestion = true;
                 }
@@ -675,6 +692,8 @@ function check()
                 else
                 {
                     section.setAttribute("class","incorrect");
+                    
+                    selectedoption = {optionID: null, option: input};
                     correctQuestion = false;
                 } 
             }
@@ -687,7 +706,7 @@ function check()
                 var numberedButtons = document.getElementById("numberedButtons");
 
                 let url = "/storeUserAnswer.js";
-                sendToDB(url, {userID: 3, QuestionID: activeQuestion.id, optionID: selectedoption});
+                sendToDB(url, {userID: 1, QuestionID: activeQuestion.id, optionID: selectedoption.OptionID, option: selectedoption.option});
 
                 if(correctQuestion)
                 {

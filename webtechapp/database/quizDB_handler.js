@@ -18,12 +18,11 @@ getQuizData = function(query, array, next, callback){
     var data = []; //for storing the rows.
 
     db.serialize(function() {
-        let stmt = db.prepare(query);
+        let stmt = db.prepare(query, (err) => { if (err) {next(apiError.database(err.message));}});
         stmt.each(array, (err, row) => {
             if (err) {
                 next(apiError.database(err.message));
-            }
-            
+            }            
             data.push(row); //pushing rows into array
         }, function(){ // calling function when all rows have been pulled
             stmt.finalize((err) => {
