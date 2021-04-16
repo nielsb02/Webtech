@@ -15,6 +15,11 @@ class apiError{
     {
         return new apiError(500, msg);
     }
+
+    static database(msg)
+    {
+        return new apiError(500, msg);
+    }
 }
 
 module.exports = apiError;

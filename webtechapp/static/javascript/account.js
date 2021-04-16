@@ -18,7 +18,7 @@ function logIn(name, pass)
     let passInput = document.getElementById("password_input");
     console.log(logInput, passInput);
 
-    if("correct" && document.title == "Account")
+    if("correct" && document.title == "Quiz")
     {
         //status = LoggedIn;
         sessionStorage.setItem("status","LoggedIn");
@@ -30,7 +30,7 @@ function logIn(name, pass)
 }
 
 function logOut(){
-    if(document.title == "Account")
+    if(document.title == "Quiz")
     {
         //status = LoggedIn;
         sessionStorage.setItem("status","LogIn");
@@ -281,7 +281,7 @@ function createAccLayout()
 
 }
 
-if(document.title !== "Account")
+if(document.title !== "Quiz")
 {
     //let loginButton = document.getElementById("login_button");
     //loginButton.addEventListener("click", login, false);
@@ -325,7 +325,7 @@ else
     }
     else if(status == "LoggedIn")
     {
-        logedInLayout()
+        logedInLayout();
     }
     else if(status == "LogIn")
     {

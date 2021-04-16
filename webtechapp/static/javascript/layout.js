@@ -14,15 +14,6 @@ function createList(element, list, type)
 
             if(list.text[i] == "Account")
             {
-                /*<li class= "login_li"><a href="account.html" class = "login" tabindex="0"> <img src ="Resources/user.jpg" class="login_img" alt = "User Icon, to redirect to login page."></a>
-                    <div class="login_screen" id="log">
-                        <p> Already have an Account? Log in... </p>
-                        <input type="text" name="" class="login_input--popup" id="username_input" placeholder="Username or Email"> 
-                        <input type="text" name="" class="login_input--popup" id="password_input" placeholder="Password"> 
-                        <button id="login_button" class="login_input--popup"> Log In </button>
-                        <button id="create_acc_button" class="login_input--popup">Or create an account</button>
-                    </div>
-                </li>*/
                 listElement.setAttribute("class", "login_li");
                 a.setAttribute("class", "login");
                 a.setAttribute("tabindex", "0");

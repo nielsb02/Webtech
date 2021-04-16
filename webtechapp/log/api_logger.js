@@ -13,16 +13,21 @@ function apiLogger(req, res, next) {
         ":" +
         date.getSeconds();
 
+  try{
   let method = req.method;
   let url = req.url;
   let status = res.statusCode;
-  let log = formatted_date +" "+ url.toString()+" "+ status.toString();
+  let log = formatted_date +" "+ method.toString() + url.toString()+" "+ status.toString();
   fs.appendFile("webtechapp/log/request_logs.txt", log + "\n", err => { 
     if (err) {
       console.log(err);
     }
   });
   console.log(log);
+  }
+  catch{
+    console.log("logger error caught...")
+  }
   next();
 }
 

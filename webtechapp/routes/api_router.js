@@ -1,102 +1,138 @@
 const express = require("express");
 const dbHandler = require("../database/quizDB_handler");
-const apiLogger = require("../log/api_logger");
 var bodyParser = require("body-parser");
-
 const apiError = require("../error/api_error");
+var session = require('express-session');
+var sqlsession = require('session-file-store')(session);
+
+var options = {
+    store: new sqlsession(),
+    cookie: {
+        path: "/",
+        httpOnly: true,
+        maxAge: 60*60*24*365
+    },
+    name: "webtechG31.sid",
+    secret: "my secret"
+};
 
 var router = express.Router();
-//router.use(bodyParser.urlencoded({extended: false}));
- 
-//router.use(apiLogger);
+router.use(bodyParser.json());
 
-router.get('/test', function (req, res, next) {
-    res.send(200, 'test succesfull!');
-    //next(apiError.notFound(req.url + " not found"));
+router.use(session(options));
+var currentSession;
+
+router.get("/" , function (req, res, next){
+    currentSession = req.session;
+    if(currentSession.id) 
+    {
+       console.log(currentSession);
+    }
+    else 
+    {
+       console.log("no sessions");
+    }
+
+    next();
 });
 
-router.get("/assessment.html", function (req, res, next) {
-    //next(apiError.notFound(req.url + " not found"));
-});
-
-router.get("/gettopics.js", function (req, res){
+router.get("/gettopics.js", function (req, res, next){
     res.contentType('application/json');
     var sql = "SELECT TopicID as tid, Title FROM Topic";
 
-    dbHandler.getQuizData(sql, function(data){
+    dbHandler.getQuizData(sql, [], next, function(data){
         console.log("send data...", data);
         res.status(200).json({dbData:  data});
     });
-   
 });
 
-router.get("/getQuiz.js", function (req, res){
+router.get("/getQuiz.js", function (req, res, next){
     res.contentType('application/json');
     let topicID = req.query.topicID;
-    var sql =  "SELECT * FROM quiz WHERE topicID=" + topicID;
-    console.log(sql);
+    var sql =  "SELECT * FROM quiz WHERE topicID=?";
 
-    dbHandler.getQuizData(sql, function(data){
+    dbHandler.getQuizData(sql, [topicID], next, function(data){
         console.log("send data...", data);
         res.status(200).json({dbData:  data});
     });
-   
 });
 
-router.get("/getQuestion.js", function (req, res){
+router.get("/getQuestion.js", function (req, res, next){
     res.contentType('application/json');
     let quizID = req.query.quizID;
-    var sql =  "SELECT * FROM Question WHERE quizID=" + quizID;
+    var sql = "SELECT * FROM Question WHERE quizID=?";
 
-    dbHandler.getQuizData(sql, function(data){
+    dbHandler.getQuizData(sql, [quizID], next, function(data){
         console.log("send data...", data);
         res.status(200).json({dbData:  data});
     });
    
 });
 
-router.get("/getOptions.js", function (req, res){
+router.get("/getOptions.js", function (req, res, next){
     res.contentType('application/json');
     let questionID = req.query.questionID;
-    var sql =  "SELECT * FROM Option WHERE QuestionID=" + questionID;
+    var sql = "SELECT * FROM Option WHERE QuestionID=?";
 
-    dbHandler.getQuizData(sql, function(data){
+    dbHandler.getQuizData(sql, [questionID], next, function(data){
         console.log("send data...", data);
         res.status(200).json({dbData:  data});
     });
    
 });
 
-router.get("/getAnswer.js", function (req, res){
+router.get("/getAnswer.js", function (req, res, next){
     res.contentType('application/json');
     let questionID = req.query.questionID;
-    var sql =  "SELECT option FROM Option WHERE Is_correct = true AND QuestionID=" + questionID;
+    var sql =  ("SELECT * FROM Option WHERE Is_correct = true AND QuestionID=?");
 
-    dbHandler.getQuizData(sql, function(data){
+    dbHandler.getQuizData(sql, [questionID], next, function(data){
         console.log("send data...", data);
         res.status(200).json({dbData:  data});
     });
    
 });
 
-
-router.get("/" , function (req, res, next){
-    console.log("get..");
-    //next();
+router.get("/checkUserAnswered.js", function (req, res, next){
+    res.contentType('application/json');
+    let questionID = req.query.questionID;
+    let userID = req.query.userID;
+    console.log(questionID, userID);
+    var sql =  "SELECT EXISTS (SELECT * FROM UserAnswer WHERE QuestionID =? AND UserID =?) AS bool";
+    
+    dbHandler.getQuizData(sql, [questionID, userID], next, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    });
+   
 });
 
-router.post('/create an account', function (req, res) {
-    //res.send('Got a POST request')
-    let user = req.body.username;
-    let pass = req.body.password;
-})
+router.get("/getUserAnswer.js", function (req, res, next){
+    console.log("store answer:", req.body);
+    var values = [req.body.userID, req.body.QuestionID];
+    var sql = "SELECT * FROM UserAnswer ? AND ?";
+    
+    dbHandler.storeQuizData(sql, values, next, function(){
+        res.send(200, "answer stored");
+    })
+});
 
-router.put('/user', function (req, res) {
-     res.send(200, 'Got a PUT request at /user')
-})
+router.post("/storeUserAnswer.js", function (req, res, next){
+    console.log("store answer:", req.body);
+    var values = [req.body.userID, req.body.QuestionID, req.body.optionID];
+    var sql = "INSERT INTO UserAnswer (QuestionID, OptionID, UserID) VALUES (?, ?, ?)";
+    
+    dbHandler.storeQuizData(sql, values, next, function(){
+        res.send(200, "answer stored");
+    })
+});
 
-router.delete('/user', function (req, res) {
-     res.send('Got a DELETE request at /user')
-})
+router.put('/', function (req, res) {
+    res.send(200, 'Got a PUT request at /user')
+});
+
+router.delete('/', function (req, res) {
+    res.send('Got a DELETE request at /user')
+});
 
 module.exports = router;
