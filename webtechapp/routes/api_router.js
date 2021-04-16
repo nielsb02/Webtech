@@ -7,6 +7,9 @@ var sqlsession = require('session-file-store')(session);
 
 var options = {
     store: new sqlsession(),
+    genid: function(req){
+        return uuid();
+    },
     cookie: {
         path: "/",
         httpOnly: true,
@@ -119,6 +122,8 @@ router.get("/getUserAnswer.js", function (req, res, next){
 });
 
 router.post("/storeUserAnswer.js", function (req, res, next){
+    currentSession = req.session;
+
     console.log("store answer:", req.body);
     var values = [req.body.QuestionID, req.body.optionID, req.body.userID];
     var sql = "INSERT INTO UserAnswer (QuestionID, OptionID, UserID) VALUES (?, ?, ?)";
