@@ -108,18 +108,19 @@ router.get("/checkUserAnswered.js", function (req, res, next){
 });
 
 router.get("/getUserAnswer.js", function (req, res, next){
-    console.log("store answer:", req.body);
-    var values = [req.body.userID, req.body.QuestionID];
-    var sql = "SELECT * FROM UserAnswer ? AND ?";
+    var values = [req.query.userID, req.query.questionID];
+    console.log(values);
+    var sql = "SELECT * FROM UserAnswer WHERE UserID =? AND QuestionID =?";
     
-    dbHandler.storeQuizData(sql, values, next, function(){
-        res.send(200, "answer stored");
+    dbHandler.getQuizData(sql, values, next, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
     })
 });
 
 router.post("/storeUserAnswer.js", function (req, res, next){
     console.log("store answer:", req.body);
-    var values = [req.body.userID, req.body.QuestionID, req.body.optionID];
+    var values = [req.body.QuestionID, req.body.optionID, req.body.userID];
     var sql = "INSERT INTO UserAnswer (QuestionID, OptionID, UserID) VALUES (?, ?, ?)";
     
     dbHandler.storeQuizData(sql, values, next, function(){

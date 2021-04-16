@@ -61,10 +61,24 @@ multiplechoice.prototype.create = function()
     var divider = document.getElementById("questionDivider");
     section.insertBefore(radioDiv, divider);
 
-    let url = "./getUsersAnswer?userID="+3+"&questionID="+this.id;
-    getFromDB(url, function(obj){
-        let userAnswerArray = obj.dbData;
+    let url = "./getUserAnswer.js?userID="+3+"&questionID="+this.id;
+    var await = new Promise((resolve, reject) => {getFromDB(url, function(o){
+        var userAnswerArray = o.dbData;
+        if(userAnswerArray[0])
+        {
+        console.log("kaas: ", userAnswerArray);
+        getFromDB("./getAnswer.js?questionID=" + userAnswerArray[0].QuestionID, function(ob)
+        {
+            console.log(ob.dbData);
+            var AID = ob.dbData[0];
+            console.log("worst: ", AID.OptionID);
+            resolve(userAnswerArray, AID.OptionID);
+        });
+        }
+ 
+    });});
 
+    await.then((userAnswerArray, AID) => {
         for(var i = 0; i < this.options.length; i++)
         {
             var input = document.createElement("INPUT");
@@ -72,14 +86,23 @@ multiplechoice.prototype.create = function()
             input.setAttribute("name", "qoptions");
             input.setAttribute("id", i );
 
-            
+            console.log(userAnswerArray);
             if(!userAnswerArray[0])
             {
                 input.disabled = false;
                 input.checked = false;
             }
-            else if(userAnswerArray[0].optionID === this.options[i].id)
+            else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
             {
+               console.log("AID: ", AID, userAnswerArray[0].OptionID);
+                if(AID.OptionID == userAnswerArray[0].OptionID)
+                {
+                    section.setAttribute("class", "correct");
+                }
+                else
+                {
+                    section.setAttribute("class", "incorrect");
+                }
                 input.disabled = true;
                 input.checked = true;
             }
@@ -114,9 +137,10 @@ multiplechoice.prototype.create = function()
             img.setAttribute("src", this.image);
             img.setAttribute("class", this.imageClass);
             section.insertBefore(img, radioDiv);
-        }
+        }});
+        
     
-    });
+    
 };
 
 //This function deletes the content of the multiplechoice questions.
@@ -248,12 +272,7 @@ function quizLayout(quizID, quizTitle)
                     let url = "getOptions.js?questionID=" + quest.QuestionID;
                     getFromDB(url, function(obj){
                         let optionArray = obj.dbData;
-                        let options = [];
-                        optionArray.forEach(element => {
-                            options.push({id: element.id, option: element.option} );
-                        });
-                        console.log(options);
-                        q.options = options;
+                        q.options = optionArray;
             
             
                         if (index === array.length -1) resolve();
@@ -521,8 +540,13 @@ function createResults()
 //This function styles the Css for the enabled check button.
 function checkEnabled()
 {
+    let url = "./getUserAnswer.js?userID="+3+"&questionID="+activeQuestion.id;
     // for user id, an answer stored for this question id?
-    if(false)//ctiveQuestion.guess.answer === null)
+    if( 
+   getFromDB(url, function(obj){
+        var userAnswerArray = obj.dbData;
+       return userAnswerArray;
+    }))//ctiveQuestion.guess.answer === null)
     {
         let checkCss = document.getElementById("check");
         checkCss.setAttribute("class","qbutton--enabled");
@@ -558,7 +582,7 @@ function check()
     var correctQuestion = null; 
     var notBlank = false;
 
-    let url = "checkUserAnswered.js?userID="+ 1 +"&questionID="+activeQuestion.id;
+    let url = "checkUserAnswered.js?userID="+ 3 +"&questionID="+activeQuestion.id;
     var await = new Promise((resolve, reject) => { 
             console.log("is this question already answered?");
             getFromDB(url, function(obj){
@@ -610,6 +634,8 @@ function check()
                     selected[i].disabled = true;
                     if(selected[i].checked)
                     {
+                        var selectedoption = activeQuestion.options[i].OptionID; 
+                        console.log(selectedoption, activeQuestion.options[i]);
                         notBlank = true;
                         if(selected[i].nextSibling.childNodes[0].nodeValue == answer)
                         {
@@ -661,7 +687,7 @@ function check()
                 var numberedButtons = document.getElementById("numberedButtons");
 
                 let url = "/storeUserAnswer.js";
-                sendToDB(url, {userID: 3, QuestionID: activeQuestion.id, optionID: optionArray[0].OptionID});
+                sendToDB(url, {userID: 3, QuestionID: activeQuestion.id, optionID: selectedoption});
 
                 if(correctQuestion)
                 {
