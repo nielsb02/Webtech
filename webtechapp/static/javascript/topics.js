@@ -53,9 +53,11 @@ function createTopic(topic){
         quizArray.forEach(Quiz => {
             let description = document.createElement("A");
             description.setAttribute("href", Quiz.linkDescription);
-            description.appendChild(document.createTextNode("Find more about this topic"));
+            let image = document.createElement("IMG");
+            image.setAttribute("src", "resources/information.png");
+            
+            description.appendChild(image);
             hiddenDiv.appendChild(description);
-
             let createQuiz = document.createElement("BUTTON");
             createQuiz.appendChild(document.createTextNode(Quiz.title));
             
