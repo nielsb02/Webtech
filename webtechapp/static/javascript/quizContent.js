@@ -696,7 +696,7 @@ function check()
                 else if(!input)
                 {
                     correctQuestion = null;
-                    //section.setAttribute("class", "default");
+                    //section.setAttribute("class", "question");
                 }
                 else
                 {
@@ -789,8 +789,33 @@ function retry()
 {
     let url = "/clearAnswer.js";
     sendToDB(url, {userID: 1, QuestionID: activeQuestion.id});
-   // check();
+    questions[questions.indexOf(activeQuestion)].delete();
+    activeQuestion.create();
+    numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--correct");
+    numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--false");
     
+setTimeout(function cb(){
+    if(activeQuestion.type.toString() == "mcq")
+    {
+        var radioDiv = document.getElementsByClassName("radioBlock")[0];
+        let selected = radioDiv.getElementsByTagName("INPUT");
+        for(var i = 0; i < selected.length; i++)
+        {
+          selected[i].checked = false;
+          selected[i].disabled = false;
+        }
+    }
+
+    else
+    {
+        var questionbox = document.getElementsByClassName("textbox--styling")[0];
+        questionbox.disabled = false;
+        questionbox.value = "";
+    }
+        
+    section.setAttribute("class", "question");
+}, 100);
+
 }
 
 function previous()

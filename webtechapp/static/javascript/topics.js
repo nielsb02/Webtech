@@ -60,7 +60,7 @@ function createTopic(topic){
             hiddenDiv.appendChild(description);
             let createQuiz = document.createElement("BUTTON");
             createQuiz.appendChild(document.createTextNode(Quiz.title));
-            
+            console.log(Quiz.QuizID);
             createQuiz.addEventListener("click", function(){
                 article.remove();
                 quizLayout(Quiz.QuizID, Quiz.title);
