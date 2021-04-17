@@ -65,6 +65,7 @@ storeQuizData = function(query, values, next, callback){
         }); //closing connection
         callback();
     });
+    
 }
 
 module.exports = {getQuizData, storeQuizData};

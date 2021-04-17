@@ -158,6 +158,17 @@ router.post("/storeUserAnswer.js", function (req, res, next){
     })
 });
 
+router.post("/clearAnswer.js", function (req, res, next){
+    currentSession = req.session;
+    console.log("delete answer:", req.body);
+    var values = [req.body.QuestionID, req.body.userID];
+    var sql = "DELETE FROM UserAnswer WHERE QuestionID =? AND UserID =?";
+    
+    dbHandler.storeQuizData(sql, values, next, function(){
+        res.send(200, "answer deleted");
+    })
+});
+
 router.put('/', function (req, res) {
     res.send(200, 'Got a PUT request at /user')
 });

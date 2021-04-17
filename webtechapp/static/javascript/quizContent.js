@@ -391,9 +391,17 @@ function quizLayout(quizID, quizTitle)
     inputC.setAttribute("class", "qbutton--enabled");
     inputC.setAttribute("id","next");
 
+    let inputD = document.createElement("INPUT");
+    inputD.addEventListener("click", retry, false);
+    inputD.setAttribute("type", "button");
+    inputD.setAttribute("value", "retry");
+    inputD.setAttribute("class", "qbutton--enabled");
+    inputD.setAttribute("id","retry");
+
     section.appendChild(inputA);
     section.appendChild(inputB);
     section.appendChild(inputC);
+    section.appendChild(inputD);
     
     section.appendChild(document.createElement("HR"));
 }
@@ -688,6 +696,7 @@ function check()
                 else if(!input)
                 {
                     correctQuestion = null;
+                    //section.setAttribute("class", "default");
                 }
                 else
                 {
@@ -775,6 +784,13 @@ function newQuestion(index, newIndex){
     numberedButtons.childNodes[index].classList.add("questionButton--default");
     numberedButtons.childNodes[newIndex].classList.remove("questionButton--default");
     numberedButtons.childNodes[newIndex].classList.add("questionButton--selected");
+}
+function retry()
+{
+    let url = "/clearAnswer.js";
+    sendToDB(url, {userID: 1, QuestionID: activeQuestion.id});
+   // check();
+    
 }
 
 function previous()
