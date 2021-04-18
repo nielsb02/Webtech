@@ -39,6 +39,11 @@ class fillin extends question{
 //This function creates the content for the multiplechoice questions.
 multiplechoice.prototype.create = function()
 {
+    if(loggedIn)
+    {
+     document.getElementById("retry").setAttribute("class", "qbutton--enabled");
+    }
+
     heading.replaceChild(document.createTextNode(this.title), heading.firstChild);
     var x = document.createTextNode(this.problem);
     strong.appendChild(x);
@@ -66,34 +71,39 @@ multiplechoice.prototype.create = function()
             input.setAttribute("type", "radio");
             input.setAttribute("name", "qoptions");
             input.setAttribute("id", i );
-
-            if(!userAnswerArray[0])
+            if(loggedIn)
             {
-                input.disabled = false;
-                input.checked = false;
-            }
-            else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
-            {
-                
-                if(userAnswerArray[0].Is_correct)
+                if(!userAnswerArray[0])
+                {
+                    input.disabled = false;
+                    input.checked = false;
+                }
+                else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
                 {
                     
-                    section.setAttribute("class", "correct");
+                    if(userAnswerArray[0].Is_correct)
+                    {
+                        
+                        section.setAttribute("class", "correct");
+                    }
+                    else
+                    {
+                        
+                        section.setAttribute("class", "incorrect");
+                    }
+                    input.disabled = true;
+                    input.checked = true;
                 }
                 else
                 {
-                    
-                    section.setAttribute("class", "incorrect");
+                    input.disabled = true;
+                    input.checked = false;
                 }
-                input.disabled = true;
-                input.checked = true;
             }
             else
             {
                 input.disabled = true;
-                input.checked = false;
             }
-
             let label = document.createElement("LABEL");
             label.setAttribute("for", i);
             label.appendChild(document.createTextNode(this.options[i].option));
@@ -181,6 +191,10 @@ multiplechoice.prototype.delete = function()
 //This function creates the content for fill-in-the-blank questions.
 fillin.prototype.create = function()
 {
+    if(loggedIn)
+    {
+     document.getElementById("retry").setAttribute("class", "qbutton--enabled");
+    }
     heading.replaceChild(document.createTextNode(this.title), heading.firstChild);
 
     var x = document.createTextNode(this.problem);
@@ -189,6 +203,12 @@ fillin.prototype.create = function()
 
     var textBox = document.createElement("INPUT");
     textBox.setAttribute("type","text");
+   
+    if(loggedIn)
+    {
+        textBox.setAttribute("disabled", "false");
+    }
+  
 
     var await = new Promise((resolve, reject) => 
     {
@@ -220,6 +240,7 @@ fillin.prototype.create = function()
         
         textBox.setAttribute("class","textbox--styling");
         textBox.setAttribute("placeholder",this.placeholder);
+        textBox.setAttribute("disabled", "true");
         textBox.addEventListener("input", checkEnabled, false);
         textBox.addEventListener("change", checkDisabledTextbox, false);
 
@@ -424,7 +445,7 @@ function quizLayout(quizID, quizTitle)
     inputD.addEventListener("click", retry, false);
     inputD.setAttribute("type", "button");
     inputD.setAttribute("value", "retry");
-    inputD.setAttribute("class", "qbutton--enabled");
+    inputD.setAttribute("class", "qbutton--disabled");
     inputD.setAttribute("id","retry");
 
     section.appendChild(inputA);
@@ -599,15 +620,17 @@ function createResults()
 //This function styles the Css for the enabled check button.
 function checkEnabled()
 {
-    let url = "./getUserAnswer.js?userID="+2+"&questionID="+activeQuestion.id;
-    getFromDB(url, function(obj){
-    var userAnswerArray = obj.dbData;
-    if(!userAnswerArray[0])
+    if(loggedIn)
     {
-        let checkCss = document.getElementById("check");
-        checkCss.setAttribute("class","qbutton--enabled");
-    }});
-    
+        let url = "./getUserAnswer.js?userID="+2+"&questionID="+activeQuestion.id;
+        getFromDB(url, function(obj){
+        var userAnswerArray = obj.dbData;
+        if(!userAnswerArray[0])
+        {
+            let checkCss = document.getElementById("check");
+            checkCss.setAttribute("class","qbutton--enabled");
+        }});
+    }
 }
 
 //This function styles the Css for the disabled check button.
@@ -642,124 +665,127 @@ function link()
 //This function checks whether the input is correct or incorrect.
 function check()
 {   
-    var correctQuestion = null; 
-    var notBlank = false;
-    let url = "checkUserAnswered.js?userID="+ 2 +"&questionID="+activeQuestion.id;
-    var await = new Promise((resolve, reject) => { 
-            getFromDB(url, function(obj){
-            if(obj.dbData[0].bool == 1) //already answered...
-            {
-                resolve(true);
-            }
-            else
-            {                
-                resolve(false);
-            }
-        })
-    });
-
-    await.then((bool) => {
-        if(bool)
-        {
-            return;
-        }
-        let url = "getAnswer.js?questionID=" + activeQuestion.id;
-        getFromDB(url, function(obj)
-        {
-            var optionArray = obj.dbData;
-            var selectedoption = {id: null, option: " "};
-            var answer;
-
-            if(optionArray[0].option)
-            {
-                answer = optionArray[0].option;
-            }
-            else
-            {
-                answer = null;
-                
-            }
-        
-
-            if(activeQuestion instanceof multiplechoice)
-            {
-                var radioDiv = document.getElementsByClassName("radioBlock")[0];
-                var selected = radioDiv.getElementsByTagName("INPUT"); 
-
-                for(var i = 0; i < selected.length; i++)
+    if(loggedIn)
+    {
+        var correctQuestion = null; 
+        var notBlank = false;
+        let url = "checkUserAnswered.js?userID="+ 2 +"&questionID="+activeQuestion.id;
+        var await = new Promise((resolve, reject) => { 
+                getFromDB(url, function(obj){
+                if(obj.dbData[0].bool == 1) //already answered...
                 {
-                    selected[i].disabled = true;
-                    if(selected[i].checked)
-                    {
-                        selectedoption.id = activeQuestion.options[i].OptionID; 
-                        selectedoption.option = selected[i].nextSibling.childNodes[0].nodeValue;
-                        notBlank = true;
-                        if(selected[i].nextSibling.childNodes[0].nodeValue == answer)
-                        {
-                            section.setAttribute("class","correct");
-                            correctQuestion = true;
-                        }
-                        else
-                        {
-                            section.setAttribute("class","incorrect");
-                            correctQuestion = false;
-                            link();
-                        }                       
-                    }
+                    resolve(true);
                 }
-                if(!notBlank)
-                {
-                    for(var i = 0; i < selected.length; i++)
-                    {
-                        selected[i].disabled = false;
-                    }
+                else
+                {                
+                    resolve(false);
                 }
-            }
-            else if(activeQuestion instanceof fillin && document.getElementsByClassName("textbox--styling")[0].value !== "")
-            {
-                notBlank = true;
-                document.getElementsByClassName("textbox--styling")[0].disabled = true;
+            })
+        });
 
-                var input = document.getElementsByClassName("textbox--styling")[0].value;
-                selectedoption.option = input;
-                if(answer == input)
+        await.then((bool) => {
+            if(bool)
+            {
+                return;
+            }
+            let url = "getAnswer.js?questionID=" + activeQuestion.id;
+            getFromDB(url, function(obj)
+            {
+                var optionArray = obj.dbData;
+                var selectedoption = {id: null, option: " "};
+                var answer;
+
+                if(optionArray[0].option)
                 {
-                    selectedoption.id = optionArray[0].OptionID;
-                    section.setAttribute("class","correct");
-                    correctQuestion = true;
-                }
-                else if(!input)
-                {
-                    correctQuestion = null;
+                    answer = optionArray[0].option;
                 }
                 else
                 {
-                    section.setAttribute("class","incorrect");
-                    correctQuestion = false;
-                } 
-            }
-
-            if(notBlank)
-            {
-                document.getElementById("check").setAttribute("class", "qbutton--disabled");
-
-                var index = questions.indexOf(activeQuestion);
-                var numberedButtons = document.getElementById("numberedButtons");
-
-                let url = "/storeUserAnswer.js";
-                sendToDB(url, {userID: 2, QuestionID: activeQuestion.id, optionID: selectedoption.id, option: selectedoption.option});
-
-                if(correctQuestion)
-                {
-                    numberedButtons.childNodes[index].classList.add("questionButton--correct");
+                    answer = null;
+                    
                 }
-                else if(!correctQuestion && correctQuestion !== null)
+            
+
+                if(activeQuestion instanceof multiplechoice)
                 {
-                    numberedButtons.childNodes[index].classList.add("questionButton--false");
+                    var radioDiv = document.getElementsByClassName("radioBlock")[0];
+                    var selected = radioDiv.getElementsByTagName("INPUT"); 
+
+                    for(var i = 0; i < selected.length; i++)
+                    {
+                        selected[i].disabled = true;
+                        if(selected[i].checked)
+                        {
+                            selectedoption.id = activeQuestion.options[i].OptionID; 
+                            selectedoption.option = selected[i].nextSibling.childNodes[0].nodeValue;
+                            notBlank = true;
+                            if(selected[i].nextSibling.childNodes[0].nodeValue == answer)
+                            {
+                                section.setAttribute("class","correct");
+                                correctQuestion = true;
+                            }
+                            else
+                            {
+                                section.setAttribute("class","incorrect");
+                                correctQuestion = false;
+                                link();
+                            }                       
+                        }
+                    }
+                    if(!notBlank)
+                    {
+                        for(var i = 0; i < selected.length; i++)
+                        {
+                            selected[i].disabled = false;
+                        }
+                    }
                 }
-            }
+                else if(activeQuestion instanceof fillin && document.getElementsByClassName("textbox--styling")[0].value !== "")
+                {
+                    notBlank = true;
+                    document.getElementsByClassName("textbox--styling")[0].disabled = true;
+
+                    var input = document.getElementsByClassName("textbox--styling")[0].value;
+                    selectedoption.option = input;
+                    if(answer == input)
+                    {
+                        selectedoption.id = optionArray[0].OptionID;
+                        section.setAttribute("class","correct");
+                        correctQuestion = true;
+                    }
+                    else if(!input)
+                    {
+                        correctQuestion = null;
+                    }
+                    else
+                    {
+                        section.setAttribute("class","incorrect");
+                        correctQuestion = false;
+                    } 
+                }
+
+                if(notBlank)
+                {
+                    document.getElementById("check").setAttribute("class", "qbutton--disabled");
+
+                    var index = questions.indexOf(activeQuestion);
+                    var numberedButtons = document.getElementById("numberedButtons");
+
+                    let url = "/storeUserAnswer.js";
+                    sendToDB(url, {userID: 2, QuestionID: activeQuestion.id, optionID: selectedoption.id, option: selectedoption.option});
+
+                    if(correctQuestion)
+                    {
+                        numberedButtons.childNodes[index].classList.add("questionButton--correct");
+                    }
+                    else if(!correctQuestion && correctQuestion !== null)
+                    {
+                        numberedButtons.childNodes[index].classList.add("questionButton--false");
+                    }
+                }
+            });
         });
-    });
+    }
 }
 
 //This function controls the actions that need to happen if the previous button is clicked.
@@ -797,7 +823,7 @@ function newQuestion(index, newIndex){
     questions[index].delete();
     activeQuestion.create();
 
-    if(activeQuestion.guess.correct !== null)
+    if(activeQuestion.guess.correct !== null && loggedIn)
     {
         if(activeQuestion.guess.correct)
         {
@@ -821,6 +847,8 @@ function newQuestion(index, newIndex){
 }
 function retry()
 {
+    if(loggedIn)
+    {
     let url = "/clearAnswer.js";
     sendToDB(url, {userID: 2, QuestionID: activeQuestion.id});
     activeQuestion.delete();
@@ -854,7 +882,7 @@ setTimeout(function cb(){
         
     section.setAttribute("class", "question");
 }, 100);
-
+    }
 }
 
 function previous()
@@ -883,8 +911,15 @@ function next()
         var index = questions.indexOf(activeQuestion);
         var newIndex;
 
-        if(index >= questions.length)
+        if(index >= questions.length-1)
         { 
+            let art = document.getElementsByTagName("ARTICLE")[0];
+            art.remove();
+            questions = [];
+            let aside = document.getElementsByTagName("ASIDE")[0];
+            let body = document.getElementsByTagName("BODY")[0];
+            article = body.insertBefore(document.createElement("ARTICLE"), aside);
+            topicsLayout();
             return
         }
         else

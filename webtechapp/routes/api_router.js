@@ -4,8 +4,10 @@ var bodyParser = require("body-parser");
 const apiError = require("../error/api_error");
 var session = require('express-session');
 var sqlsession = require('session-file-store')(session);
-var cookieParser = require('cookie-parser');
-const { v1: uuidv1, v4: uuidv4 } = require('uuid');
+const { 
+    v1: uuidv1,
+    v4: uuidv4,
+  } = require('uuid');
 
 var options = {
     store: new sqlsession(),
@@ -18,58 +20,27 @@ var options = {
         maxAge: 60*60*24*365
     },
     name: "webtechG31.sid",
-    secret: "my secret" //what should we put in secret?
+    secret: "my secret"
 };
 
 var router = express.Router();
 router.use(bodyParser.json());
-router.use(cookieParser());
-router.use(session(options));
+
+//router.use(session(options));
 var currentSession;
 
-router.get("/", function (req, res, next){
-    res.redirect("/index.html");
-});
+router.get("/" , function (req, res, next){
+    //currentSession = req.session;
+    //if(currentSession.id) 
+    //{
+   //    console.log(currentSession);
+   // }
+    //else 
+   // {
+    //   console.log("no sessions");
+   // }
 
-router.get("/*.html$/" , function (req, res, next){
-    currentSession = req.session;
-    if(currentSession.id) 
-    {
-        res.cookie("accountStatus", "notLoggedIn", {
-            expires: new Date(Date.now() + 365*24*60*60*1000),
-            httpOnly: true
-        });
-
-        /* if we want to stay logged in
-        if (currentSession.userID)
-        {
-            res.cookie("accountStatus",  encodeURIComponent("loggedIn"), {
-                expires: new Date(Date.now() + 365*24*60*60*1000),
-                httpOnly: true
-            });get user info from database
-            let accountInfo = {firstName: "name", lastName: "name"};//["firstName", "=", JSON.stringify('naam'), "; ", "lastName", "=", JSON.stringify("lastname"), ";"].join('');
-            res.cookie("account", JSON.stringify(accountInfo), {
-                expires: new Date(Date.now() + 365*24*60*60*1000),
-                httpOnly: true
-            });
-        }
-        */
-    }
-    else 
-    {
-        console.log("no sessions");
-    }
     next();
-});
-
-router.get("/test", function(req, res, next){
-    res.send(200, "hello world");
-    currentSession = req.session;
-    console.log(currentSession);
-});
-
-router.get("/favicon.ico",function (req, res, next){
-    res.send(200, "no favicon has been set yet");
 });
 
 router.get("/gettopics.js", function (req, res, next){
@@ -182,39 +153,12 @@ router.get("/getQuizResults", function (req, res, next){
     
     dbHandler.getQuizData(sql, values, next, function(data){
         console.log("send data...", data);
-        res.status(200).json({dbData: data});
+        res.status(200).json({dbData:  data});
     })
 });
 
-router.post("/login.js", function (req, res, next){
-    currentSession = req.session;
-
-    console.log("try logging in:", req.body);
-    var values = [req.body.QuestionID, req.body.optionID, req.body.userID, req.body.option];
-    var sql = "SELECT UserID, first_name, last_name FROM User WHERE email=? AND Password=?";
-    
-    dbHandler.getQuizData(sql, values, next, function(data){
-        if(data[0])
-        {
-            currentSession.userID = data[0].UserID;
-            let userData = data[0];
-            delete userData.UserID;
-            res.status(200).json({dbData: userData}).cookie("accountStatus", "loggedIn", {
-                expires: new Date(Date.now() + 365*24*60*60*1000),
-                httpOnly: true
-            });
-        }
-        else
-        {
-            res.status(401).json("login was not succesfull").cookie("accountStatus", "notLoggedIn", {
-                expires: new Date(Date.now() + 365*24*60*60*1000),
-                httpOnly: true
-            });;
-        }
-    });
-});
-
 router.post("/storeUserAnswer.js", function (req, res, next){
+    currentSession = req.session;
 
     console.log("store answer:", req.body);
     var values = [req.body.QuestionID, req.body.optionID, req.body.userID, req.body.option];
@@ -234,6 +178,14 @@ router.post("/clearAnswer.js", function (req, res, next){
     dbHandler.storeQuizData(sql, values, next, function(){
         res.send(200, "answer deleted");
     })
+});
+
+router.put('/', function (req, res) {
+    res.send(200, 'Got a PUT request at /user')
+});
+
+router.delete('/', function (req, res) {
+    res.send('Got a DELETE request at /user')
 });
 
 module.exports = router;
