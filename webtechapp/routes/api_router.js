@@ -26,19 +26,19 @@ var options = {
 var router = express.Router();
 router.use(bodyParser.json());
 
-router.use(session(options));
+//router.use(session(options));
 var currentSession;
 
 router.get("/" , function (req, res, next){
-    currentSession = req.session;
-    if(currentSession.id) 
-    {
-       console.log(currentSession);
-    }
-    else 
-    {
-       console.log("no sessions");
-    }
+    //currentSession = req.session;
+    //if(currentSession.id) 
+    //{
+   //    console.log(currentSession);
+   // }
+    //else 
+   // {
+    //   console.log("no sessions");
+   // }
 
     next();
 });

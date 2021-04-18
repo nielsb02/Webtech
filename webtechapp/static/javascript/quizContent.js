@@ -47,7 +47,7 @@ multiplechoice.prototype.create = function()
     var divider = document.getElementById("questionDivider");
     section.insertBefore(radioDiv, divider);
 
-    let url = "./getUserAnswer.js?userID="+1+"&questionID="+this.id;
+    let url = "./getUserAnswer.js?userID="+2+"&questionID="+this.id;
     var await = new Promise((resolve, reject) => 
     {
         getFromDB(url, function(obj){
@@ -157,7 +157,7 @@ fillin.prototype.create = function()
 
     var await = new Promise((resolve, reject) => 
     {
-        let url = "/getFillUserAnswer.js?userID="+1+"&questionID="+this.id;
+        let url = "/getFillUserAnswer.js?userID="+2+"&questionID="+this.id;
         getFromDB(url, function(obj){
             resolve(obj.dbData); 
         });
@@ -246,7 +246,7 @@ function createButton(questionButton, index, div)
 
     div.appendChild(button);
 
-    let url = "./getUserAnswer.js?userID="+1+"&questionID="+questionButton.id;
+    let url = "./getUserAnswer.js?userID="+2+"&questionID="+questionButton.id;
     getFromDB(url, function(obj){
         console.log("button data" , obj.dbData);
         if(obj.dbData[0])
@@ -410,7 +410,7 @@ function quizLayout(quizID, quizTitle)
 
 function calculateResult(bar)
 {
-    let url = "/getQuizResults?userID="+1+"&quizID="+quiz;
+    let url = "/getQuizResults?userID="+2+"&quizID="+quiz;
     getFromDB(url, function(obj){
         var count = {correct : 0.0, incorrect: 0.0, unanswered: 0.0};
         var questionArray = obj.dbData;
@@ -570,7 +570,7 @@ function createResults()
 //This function styles the Css for the enabled check button.
 function checkEnabled()
 {
-    let url = "./getUserAnswer.js?userID="+1+"&questionID="+activeQuestion.id;
+    let url = "./getUserAnswer.js?userID="+2+"&questionID="+activeQuestion.id;
     getFromDB(url, function(obj){
         console.log("enable", obj.dbData)
         var userAnswerArray = obj.dbData;
@@ -606,7 +606,7 @@ function check()
     var correctQuestion = null; 
     var notBlank = false;
 
-    let url = "checkUserAnswered.js?userID="+ 1 +"&questionID="+activeQuestion.id;
+    let url = "checkUserAnswered.js?userID="+ 2 +"&questionID="+activeQuestion.id;
     var await = new Promise((resolve, reject) => { 
             getFromDB(url, function(obj){
             if(obj.dbData[0].bool == 1) //already answered...
@@ -631,6 +631,7 @@ function check()
         getFromDB(url, function(obj)
         {
             var optionArray = obj.dbData;
+            var selectedoption = {id: null, option: " "};
             var answer;
 
             if(optionArray[0].option)
@@ -649,15 +650,14 @@ function check()
             {
                 var radioDiv = document.getElementsByClassName("radioBlock")[0];
                 var selected = radioDiv.getElementsByTagName("INPUT"); 
-                var selectedoption;
 
                 for(var i = 0; i < selected.length; i++)
                 {
                     selected[i].disabled = true;
                     if(selected[i].checked)
                     {
-                        selectedoption = activeQuestion.options[i]; 
-                        console.log(selectedoption, activeQuestion.options[i]);
+                        selectedoption.id = activeQuestion.options[i].OptionID; 
+                        selectedoption.option = selected[i].nextSibling.childNodes[0].nodeValue;
                         notBlank = true;
                         if(selected[i].nextSibling.childNodes[0].nodeValue == answer)
                         {
@@ -684,25 +684,21 @@ function check()
                 notBlank = true;
                 document.getElementsByClassName("textbox--styling")[0].disabled = true;
 
-                
                 var input = document.getElementsByClassName("textbox--styling")[0].value;
+                selectedoption.option = input;
                 if(answer == input)
                 {
-                    
-                    selectedoption = {optionID: optionArray[0].OptionID, option: input};
+                    selectedoption.id = optionArray[0].OptionID;
                     section.setAttribute("class","correct");
                     correctQuestion = true;
                 }
                 else if(!input)
                 {
                     correctQuestion = null;
-                    //section.setAttribute("class", "question");
                 }
                 else
                 {
                     section.setAttribute("class","incorrect");
-                    
-                    selectedoption = {optionID: null, option: input};
                     correctQuestion = false;
                 } 
             }
@@ -715,7 +711,7 @@ function check()
                 var numberedButtons = document.getElementById("numberedButtons");
 
                 let url = "/storeUserAnswer.js";
-                sendToDB(url, {userID: 1, QuestionID: activeQuestion.id, optionID: selectedoption.OptionID, option: selectedoption.option});
+                sendToDB(url, {userID: 2, QuestionID: activeQuestion.id, optionID: selectedoption.id, option: selectedoption.option});
 
                 if(correctQuestion)
                 {
@@ -788,7 +784,7 @@ function newQuestion(index, newIndex){
 function retry()
 {
     let url = "/clearAnswer.js";
-    sendToDB(url, {userID: 1, QuestionID: activeQuestion.id});
+    sendToDB(url, {userID: 2, QuestionID: activeQuestion.id});
     questions[questions.indexOf(activeQuestion)].delete();
     activeQuestion.create();
     numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--correct");
