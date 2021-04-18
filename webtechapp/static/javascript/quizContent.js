@@ -47,6 +47,7 @@ multiplechoice.prototype.create = function()
     var divider = document.getElementById("questionDivider");
     section.insertBefore(radioDiv, divider);
 
+
     let url = "./getUserAnswer.js?userID="+2+"&questionID="+this.id;
     var await = new Promise((resolve, reject) => 
     {
@@ -55,7 +56,9 @@ multiplechoice.prototype.create = function()
         });
     });
 
+    
     await.then((userAnswerArray) => {
+        
         for(var i = 0; i < this.options.length; i++)
         {
             var input = document.createElement("INPUT");
@@ -67,17 +70,21 @@ multiplechoice.prototype.create = function()
                 document.getElementById("check").setAttribute("class", "qbutton--disabled");
                 if(!userAnswerArray[0])
                 {
+                    
                     input.disabled = false;
                     input.checked = false;
                 }
                 else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
                 {
+                    
                     if(userAnswerArray[0].Is_correct)
                     {
+                       
                         section.setAttribute("class", "correct");
                     }
                     else
                     {
+                        
                         section.setAttribute("class", "incorrect");
                     }
                     input.disabled = true;
@@ -116,18 +123,41 @@ multiplechoice.prototype.create = function()
             img.setAttribute("src", this.image);
             img.setAttribute("class", this.imageClass);
             section.insertBefore(img, radioDiv);
-        }});
-        var sectionLink = document.getElementsByTagName("section")[0];
-        var removeLink=sectionLink.getElementsByTagName("a")[0];
-
-        if(!removeLink){
-        let inputE = document.createElement("A");
-        inputE.setAttribute("class", "hiddenLink");
-        let image = document.createElement("IMG");
-        image.setAttribute("src", "resources/information.png");
-        inputE.appendChild(image);
-        section.appendChild(inputE);
-        };
+        }
+        
+            
+            var check;
+            var sectionLink = document.getElementsByTagName("section")[0];
+            var removeLink = sectionLink.getElementsByTagName("a")[0];
+            if(!removeLink){
+                let inputE = document.createElement("A");
+                inputE.setAttribute("class", "hiddenLink");
+                let image = document.createElement("IMG");
+                image.setAttribute("src", "resources/information.png");
+                inputE.appendChild(image);
+                section.appendChild(inputE);
+            }
+            if(userAnswerArray)
+            {
+                check = false;
+                for(var i = 0; i < userAnswerArray.length; i++)
+                {
+                    if(userAnswerArray[i].Is_correct == true)
+                    {
+                    }
+                    else
+                    {
+                        check = true;
+                    }
+                }
+                if(check)
+                {
+                    console.log("useranswerarray 3:", check);
+                    link();
+                }
+            }
+       
+    });          
 };
 
 //This function deletes the content of the multiplechoice questions.
@@ -136,7 +166,9 @@ multiplechoice.prototype.delete = function()
     strong.removeChild(strong.childNodes[0]);
     var radioDiv = section.getElementsByClassName("radioBlock")[0];
     radioDiv.remove();
-
+    var sectionLink = document.getElementsByTagName("section")[0];
+    var removeLink = sectionLink.getElementsByTagName("a")[0];
+    removeLink.remove();
     
     var quote = document.getElementById("quote");
     if(quote)
@@ -610,17 +642,14 @@ function checkDisabledTextbox()
 }
 function link()
 {
-
-    //removeLink.remove();
-    
     let url = "getActiveQuiz.js?quizID=" + quiz;
      getFromDB(url, function(obj){
         let activeQuizArray = obj.dbData;
         var sectionLink = document.getElementsByTagName("section")[0];
         var removeLink=sectionLink.getElementsByTagName("a")[0];
-        //let inputE = document.getElementsByClassName("hiddenLink")[0];
-        inputE.setAttribute("href", activeQuizArray[0].linkDescription);
-        inputE.setAttribute("class", "showLink");
+        //let removeLink = document.getElementsByClassName("hiddenLink")[0];
+        removeLink.setAttribute("href", activeQuizArray[0].linkDescription);
+        removeLink.setAttribute("class", "showLink");
             });
 }
 //This function checks whether the input is correct or incorrect.
@@ -809,9 +838,14 @@ function retry()
     let url = "/clearAnswer.js";
     sendToDB(url, {userID: 2, QuestionID: activeQuestion.id});
     questions[questions.indexOf(activeQuestion)].delete();
+    setTimeout(function cb(){
     activeQuestion.create();
+    var sectionclass = document.getElementsByTagName("section")[0];
+    sectionclass.setAttribute("class", "question");
     numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--correct");
     numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--false");
+    }, 50);
+    
     
 setTimeout(function cb(){
     if(activeQuestion.type.toString() == "mcq")
