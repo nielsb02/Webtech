@@ -190,6 +190,4 @@ function createLayout()
     copyright.setAttribute("id", "copyright");
     footer.appendChild(copyright);
 }
-
-
 createLayout();

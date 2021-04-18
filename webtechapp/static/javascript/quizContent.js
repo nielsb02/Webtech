@@ -1,5 +1,5 @@
 //Declaration of the global variables and arrays.
-var section, activeQuestion, strong, quiz; 
+var section, activeQuestion, strong, quiz, loggedIn; 
 var choiceSpan = [], questions = []; 
 var n = 0, progressBarCounter = 0;
 
@@ -46,6 +46,7 @@ multiplechoice.prototype.create = function()
     radioDiv.setAttribute("class", "radioBlock");
     var divider = document.getElementById("questionDivider");
     section.insertBefore(radioDiv, divider);
+    document.getElementById("check").setAttribute("class", "qbutton--disabled");
 
 
     let url = "./getUserAnswer.js?userID="+2+"&questionID="+this.id;
@@ -65,17 +66,27 @@ multiplechoice.prototype.create = function()
             input.setAttribute("type", "radio");
             input.setAttribute("name", "qoptions");
             input.setAttribute("id", i );
-            if(userAnswerArray)
+
+            if(!userAnswerArray[0])
             {
-                document.getElementById("check").setAttribute("class", "qbutton--disabled");
-                if(!userAnswerArray[0])
+                input.disabled = false;
+                input.checked = false;
+            }
+            else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
+            {
+                if(userAnswerArray[0].Is_correct)
                 {
+<<<<<<< Updated upstream
                     
                     input.disabled = false;
                     input.checked = false;
+=======
+                    section.setAttribute("class", "correct");
+>>>>>>> Stashed changes
                 }
-                else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
+                else
                 {
+<<<<<<< Updated upstream
                     
                     if(userAnswerArray[0].Is_correct)
                     {
@@ -89,13 +100,17 @@ multiplechoice.prototype.create = function()
                     }
                     input.disabled = true;
                     input.checked = true;
+=======
+                    section.setAttribute("class", "incorrect");
+>>>>>>> Stashed changes
                 }
+                input.disabled = true;
+                input.checked = true;
             }
             else
             {
                 input.disabled = true;
                 input.checked = false;
-                document.getElementById("check").setAttribute("class", "qbutton--enabled");
             }
 
             let label = document.createElement("LABEL");
@@ -106,7 +121,6 @@ multiplechoice.prototype.create = function()
             radioDiv.appendChild(input);
             radioDiv.appendChild(label);
         }
-        console.log(this.quote);
         if(this.quote != null)
         {
             let quote = document.createElement("P");
@@ -208,7 +222,6 @@ fillin.prototype.create = function()
         {
             textBox.setAttribute("value", userAnswer[0].Option.toString());
             textBox.disabled = true;
-            console.log("kaas" , userAnswer[0]);
             if(userAnswer[0].OptionID !== null)
             {
                 section.setAttribute("class", "correct");
@@ -288,7 +301,6 @@ function createButton(questionButton, index, div)
 
     let url = "./getUserAnswer.js?userID="+2+"&questionID="+questionButton.id;
     getFromDB(url, function(obj){
-        console.log("button data" , obj.dbData);
         if(obj.dbData[0])
         {
             if(obj.dbData[0].Is_correct)
@@ -309,15 +321,13 @@ function quizLayout(quizID, quizTitle)
 {
     // get quiz out of database by quiz id
     quiz = quizID;
+    logedIn = false;
     let url = "getQuestion.js?quizID=" + quizID;
     getFromDB(url, function(obj){
-        let questionArray = obj.dbData;
-        console.log(questionArray);
-        
+        let questionArray = obj.dbData;        
         
         var await = new Promise((resolve, reject) => {
             questionArray.forEach((quest, index, array) => { 
-                console.log(index);
                 var q;
                 if(quest.Type == "mcq")
                 {
@@ -330,7 +340,8 @@ function quizLayout(quizID, quizTitle)
                         q.options = optionArray;
             
             
-                        if (index === array.length -1) resolve();
+                        if (index === array.length -1) 
+                            resolve();
                     });
             
                     
@@ -340,7 +351,8 @@ function quizLayout(quizID, quizTitle)
                     q = new fillin(quest.QuestionID, quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, " ");
                     questions.push(q);
                     
-                    if (index === array.length -1) resolve();
+                    if (index === array.length -1) 
+                        resolve();
                 }
 
                 if(q)
@@ -351,8 +363,6 @@ function quizLayout(quizID, quizTitle)
                         var img = new Image();
                         // 2/1 height pixel verhouding
                         img.onload = function() {
-                            console.log(this.height , this.width);
-                            console.log(this.height / this.width);
 
                             if(this.height / this.width > 0.65)
                             {
@@ -374,8 +384,6 @@ function quizLayout(quizID, quizTitle)
         });
         
         await.then(() => {
-            
-            console.log("Await");
             activeQuestion = questions[0];
             
             var numberedButtonsDiv = document.createElement("DIV");
@@ -455,7 +463,6 @@ function calculateResult(bar)
     getFromDB(url, function(obj){
         var count = {correct : 0.0, incorrect: 0.0, unanswered: 0.0};
         var questionArray = obj.dbData;
-        console.log("quiz Results...", questionArray);
         for(let index = 0; index <questions.length; index++){
             if(questionArray[index])
             {
@@ -613,13 +620,12 @@ function checkEnabled()
 {
     let url = "./getUserAnswer.js?userID="+2+"&questionID="+activeQuestion.id;
     getFromDB(url, function(obj){
-        console.log("enable", obj.dbData)
-        var userAnswerArray = obj.dbData;
-        if(userAnswerArray)
-        {
-            let checkCss = document.getElementById("check");
-            checkCss.setAttribute("class","qbutton--enabled");
-        }});
+    var userAnswerArray = obj.dbData;
+    if(!userAnswerArray[0])
+    {
+        let checkCss = document.getElementById("check");
+        checkCss.setAttribute("class","qbutton--enabled");
+    }});
     
 }
 
@@ -662,7 +668,6 @@ function check()
             getFromDB(url, function(obj){
             if(obj.dbData[0].bool == 1) //already answered...
             {
-                console.log("already answered");
                 resolve(true);
             }
             else
@@ -673,7 +678,6 @@ function check()
     });
 
     await.then((bool) => {
-        console.log(bool);
         if(bool)
         {
             return;
@@ -694,7 +698,6 @@ function check()
                 answer = null;
                 
             }
-            console.log("array: ", optionArray);
         
 
             if(activeQuestion instanceof multiplechoice)
@@ -793,13 +796,15 @@ function newQuestion(index, newIndex){
     
     if(newIndex === 0)
     {
-        console.log("first question");
         previousCss.setAttribute("class","qbutton--disabled");
     }
     else if(newIndex === questions.length - 1)
     {
         previousCss.setAttribute("class","qbutton--enabled");
-        nextCss.value = "end quiz";
+        if(loggedIn)
+        {
+            nextCss.value = "end quiz";
+        }
     }
     else
     {
@@ -837,8 +842,12 @@ function retry()
 {
     let url = "/clearAnswer.js";
     sendToDB(url, {userID: 2, QuestionID: activeQuestion.id});
+<<<<<<< Updated upstream
     questions[questions.indexOf(activeQuestion)].delete();
     setTimeout(function cb(){
+=======
+    activeQuestion.delete();
+>>>>>>> Stashed changes
     activeQuestion.create();
     var sectionclass = document.getElementsByTagName("section")[0];
     sectionclass.setAttribute("class", "question");

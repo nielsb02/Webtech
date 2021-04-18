@@ -3,13 +3,14 @@
 var article = document.getElementsByTagName("ARTICLE")[0];
 var heading = document.createElement("H2");
 var headingText = document.createTextNode("Topics");
-heading.setAttribute("class", "first_heading");
-heading.appendChild(headingText);
-article.appendChild(heading);
 var section;
 
 function topicsLayout()
 {   
+    heading.setAttribute("class", "first_heading");
+    heading.appendChild(headingText);
+    article.appendChild(heading);
+    
     let url = "gettopics.js";
     getFromDB(url, function(obj){
         let topicArray = obj.dbData;
@@ -20,6 +21,7 @@ function topicsLayout()
 }
 
 function createTopic(topic){
+    
     let topicSection = document.createElement("SECTION");
     article.appendChild(topicSection);
     topicSection.setAttribute("class", "question");
@@ -31,7 +33,6 @@ function createTopic(topic){
     let hiddenDiv = document.createElement("DIV");
     hiddenDiv.setAttribute("class", "hideTopic");
     topicSection.addEventListener("click", function(){
-        console.log(hiddenDiv.getAttribute("class"));
         if(hiddenDiv.getAttribute("class") == "hideTopic")
         {
             hiddenDiv.setAttribute("class", "showTopic");
@@ -49,7 +50,6 @@ function createTopic(topic){
     let url = "getQuiz.js?topicID=" + topic.tid;
     getFromDB(url, function(obj){
         let quizArray = obj.dbData;
-        console.log(quizArray);
         quizArray.forEach(Quiz => {
             let description = document.createElement("A");
             description.setAttribute("href", Quiz.linkDescription);
@@ -60,7 +60,6 @@ function createTopic(topic){
             hiddenDiv.appendChild(description);
             let createQuiz = document.createElement("BUTTON");
             createQuiz.appendChild(document.createTextNode(Quiz.title));
-            console.log(Quiz.QuizID);
             createQuiz.addEventListener("click", function(){
                 article.remove();
                 quizLayout(Quiz.QuizID, Quiz.title);
@@ -72,8 +71,3 @@ function createTopic(topic){
 
 
 topicsLayout();
-
-
-// go to guiz
-//console.log(heading.firstChild);
-//quizLayout();

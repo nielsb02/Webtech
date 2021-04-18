@@ -1,32 +1,41 @@
-var article, section, secondSection, heading;
+var article = document.getElementsByTagName("ARTICLE")[0];;
+var section, secondSection, heading;
 var status;
 
-if (sessionStorage.getItem("status"))
-    {
-        status = sessionStorage.getItem("status"); // might replace with coockies.
+function getCookie(coockieName) {
+    var name = coockieName + "=";
+    var coockieArray = document.cookie.split(';');
+    for(var i = 0; i < coockieArray.length; i++) {
+      var coockie = coockieArray[i];
+      while (coockie.charAt(0) == ' ') {
+        coockie = coockie.substring(1);
+      }
+      if (coockie.indexOf(name) == 0) {
+        return coockie.substring(name.length, coockie.length);
+      }
     }
-else
-{
-    status = "LogIn";
+    return "";
 }
 
-
-function logIn(name, pass)
+function logIn()
 {
-    console.log(name, "pass: ", pass);
-    let logInput = document.getElementById("username_input");
-    let passInput = document.getElementById("password_input");
+    let logInput = document.getElementById("username_input").value;
+    let passInput = document.getElementById("password_input").value;
     console.log(logInput, passInput);
+    let data = {login: logInput, password: passInput};
+    let url = "/login.js"
 
-    if("correct" && document.title == "Quiz")
-    {
-        //status = LoggedIn;
-        sessionStorage.setItem("status","LoggedIn");
-        section.remove();
-        section = document.createElement("SECTION");
-        article.appendChild(section);
-        logedInLayout();
-    }
+    checkLogin(url, data, function(succes, data){
+        if(succes)
+        {
+            
+        }
+        else
+        {
+
+        }
+
+    });
 }
 
 function logOut(){
@@ -50,18 +59,54 @@ function Results()
 }
 
 function createAcc(){
+    var res;
+    var pass = document.getElementById("password_input").value;
 
+            switch(pass) {
+                case pass.match(/[a-z]/g):
+                    res += " A password should contain at least one lowercase character"
+                  break;
+                case pass.match(/[A-Z]/g):
+                    res += " A password should contain at least one uppercase character"
+                  break;
+                case pass.match(/[0-9]/g):
+                    res += " A password should contain at least one digit"
+                  break;
+                case  pass.length >= 7:
+                    res += " A password should contain at least 7 characters"
+                    break;
+                default: console.log("account created bitcheezzzz")
+              }
+    console.log(res);
 }
 
-function createBasicLayout()
+function AccountLayout()
 {
-    article = document.getElementsByTagName("ARTICLE")[0];
+    if(document.getElementsByTagName("ARTICLE")[0])
+        article = document.getElementsByTagName("ARTICLE")[0];
+    else 
+        article = document.insertBefore(document.createElement("ARTICLE"), document.getElementsByClassName("FOOTER")[0]);
+
     heading = document.createElement("H2");
     heading.setAttribute("class", "first_heading");
     article.appendChild(heading);
 
     section = document.createElement("SECTION");
     article.appendChild(section);
+
+    status = getCoockie("userStatus");
+    if(status === "loggedIn")
+    {
+        logInLayout();
+    }
+    else if(status === "notLoggedIn")
+    {
+        logedInLayout();
+    }
+    else if(status === "createAccount")
+    {
+        createAccLayout();
+    }
 }
 
 function logedInLayout()
@@ -197,7 +242,6 @@ function createAccLayout()
     else
     {
         heading.appendChild(headingText);
-        
     }
 
     section.setAttribute("class", "login_section");
@@ -267,29 +311,26 @@ function createAccLayout()
     logButton.addEventListener("click", createAcc, false);
     section.appendChild(logButton);
 
-    let cancel = document.createElement("BUTTON"); 
-    cancel.setAttribute("class", "login_input--inline");
-    cancel.appendChild(document.createTextNode("cancel"));  //go back to login page
-    cancel.addEventListener("click", function() {
+    let coockieArrayncel = document.createElement("BUTTON"); 
+    coockieArrayncel.setAttribute("class", "login_input--inline");
+    coockieArrayncel.appendChild(document.createTextNode("coockieArrayncel"));  //go back to login page
+    coockieArrayncel.addEventListener("click", function() {
         sessionStorage.setItem("status", "LogIn");
         section.remove();
         section = document.createElement("SECTION");
         article.appendChild(section);
         logInLayout();
     }, false);
-    section.appendChild(cancel);
+    section.appendChild(coockieArrayncel);
 
 }
 
-if(document.title !== "Quiz")
-{
-    //let loginButton = document.getElementById("login_button");
-    //loginButton.addEventListener("click", login, false);
-
+function createHiddenMenu(){
+    
     let createButton = document.getElementById("create_acc_button");
     createButton.addEventListener("click", function() {
-        sessionStorage.setItem("status", "CreateAcc");
-        window.location='account.html';
+        document.coockie = "accountStatus="+ "createAccount;"+ "max-age=" + 365*24*60*60 + "httpOnly=true" + "path=/";
+        window.location.href='account.html';
     }, false);
 
     let userInput = document.getElementById("username_input");
@@ -315,21 +356,15 @@ if(document.title !== "Quiz")
             x.type = "password";
         }
     });
+
+    let icon = document.getElementById("log");
+    icon.addEventListener("click", function() {
+        article.remove();
+        AccountLayout();
+    })
 }
-else
-{
-    createBasicLayout();
-    if(status == "CreateAcc")
-    {
-        createAccLayout();
-    }
-    else if(status == "LoggedIn")
-    {
-        logedInLayout();
-    }
-    else if(status == "LogIn")
-    {
-        logInLayout();
-    }
-}
+
+createHiddenMenu();
+
+    
 
