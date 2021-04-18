@@ -40,7 +40,7 @@ multiplechoice.prototype.create = function()
 {
     if(loggedIn)
     {
-     document.getElementById("retry").setAttribute("class", "qbutton--enabled");
+        document.getElementById("retry").setAttribute("class", "qbutton--enabled");
     }
 
     heading.replaceChild(document.createTextNode(this.title), heading.firstChild);
@@ -325,82 +325,98 @@ function quizLayout(quizID, quizTitle)
     n = 0;
     progressBarCounter = 0;
     quiz = quizID;
-    logedIn = false;
-    let url = "getQuestion.js?quizID=" + quizID;
-    getFromDB(url, function(obj){
-        let questionArray = obj.dbData;        
-        
-        var await = new Promise((resolve, reject) => {
-            questionArray.forEach((quest, index, array) => { 
-                var q;
-                if(quest.Type == "mcq")
-                {
-                    q = new multiplechoice(quest.QuestionID, quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, null);
-                    questions.push(q);
 
-                    let url = "getOptions.js?questionID=" + quest.QuestionID;
-                    getFromDB(url, function(obj){
-                        let optionArray = obj.dbData;
-                        q.options = optionArray;
+    var wait = new Promise((resolve, reject) => {
+
+        getFromDB("./loggedIn.js", function(obj)
+        {
+            if(!obj.bool)
+                logedIn = false;
+            else    
+                loggedIn = true;
+
+                resolve();
+        });
+    });
+
+    wait.then(() => {
+        let url = "getQuestion.js?quizID=" + quizID;
+        getFromDB(url, function(obj){
+            let questionArray = obj.dbData;        
             
-            
+            var await = new Promise((resolve, reject) => {
+                questionArray.forEach((quest, index, array) => { 
+                    var q;
+                    if(quest.Type == "mcq")
+                    {
+                        q = new multiplechoice(quest.QuestionID, quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, null);
+                        questions.push(q);
+
+                        let url = "getOptions.js?questionID=" + quest.QuestionID;
+                        getFromDB(url, function(obj){
+                            let optionArray = obj.dbData;
+                            q.options = optionArray;
+                
+                
+                            if (index === array.length -1) 
+                                resolve();
+                        });
+                
+                        
+                    }
+                    else if (quest.Type == "fillin")
+                    {
+                        q = new fillin(quest.QuestionID, quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, " ");
+                        questions.push(q);
+                        
                         if (index === array.length -1) 
                             resolve();
-                    });
-            
-                    
-                }
-                else if (quest.Type == "fillin")
-                {
-                    q = new fillin(quest.QuestionID, quest.Type, quizTitle, "question " + (index + 1) + ": " + quest.Question, quest.Quote, {img: null, class: null}, " ");
-                    questions.push(q);
-                    
-                    if (index === array.length -1) 
-                        resolve();
-                }
+                    }
 
-                if(q)
-                {
-                    if(quest.Source !== null)
+                    if(q)
                     {
-                        q.image = "Resources/" + quest.Source;
-                        var img = new Image();
-                        img.onload = function() {
+                        if(quest.Source !== null)
+                        {
+                            q.image = "Resources/" + quest.Source;
+                            var img = new Image();
+                            img.onload = function() {
 
-                            if(this.height / this.width > 0.65)
-                            {
-                                q.imageClass = "quiz-image--smaller";
+                                if(this.height / this.width > 0.65)
+                                {
+                                    q.imageClass = "quiz-image--smaller";
+                                }
+                                else
+                                {
+                                    q.imageClass = "quiz-image--wide";
+                                }
                             }
-                            else
-                            {
-                                q.imageClass = "quiz-image--wide";
-                            }
+                            img.src = "Resources/" + quest.Source;
                         }
-                        img.src = "Resources/" + quest.Source;
+                        if(quest.Quote !== null)
+                        {
+                            q.quote = quest.Quote;
+                        }
                     }
-                    if(quest.Quote !== null)
-                    {
-                        q.quote = quest.Quote;
-                    }
-                }
+                });
             });
-        });
         
-        await.then(() => {
-            activeQuestion = questions[0];
-            
-            var numberedButtonsDiv = document.createElement("DIV");
-            numberedButtonsDiv.setAttribute("id","numberedButtons");
-            numberedButtonsDiv.addEventListener("click", event => {
-                if (event.target.tagName === "INPUT")
-                    {
-                        newQuestion(questions.indexOf(activeQuestion), parseInt(event.target.getAttribute("id")));
-                    }}, false);
-            section.appendChild(numberedButtonsDiv);
         
-            questions.forEach((item, index) => createButton(item, index, numberedButtonsDiv));
+            await.then(() => {
+                activeQuestion = questions[0];
+                
+                var numberedButtonsDiv = document.createElement("DIV");
+                numberedButtonsDiv.setAttribute("id","numberedButtons");
+                numberedButtonsDiv.addEventListener("click", event => {
+                    if (event.target.tagName === "INPUT")
+                        {
+                            newQuestion(questions.indexOf(activeQuestion), parseInt(event.target.getAttribute("id")));
+                        }}, false);
+                section.appendChild(numberedButtonsDiv);
             
-            activeQuestion.create();
+                questions.forEach((item, index) => createButton(item, index, numberedButtonsDiv));
+                
+                activeQuestion.create();
+            });
         });
     });
 

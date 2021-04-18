@@ -126,12 +126,11 @@ router.get("/getAnswer.js", function (req, res, next){
 
 router.get("/checkUserAnswered.js", function (req, res, next){
     res.contentType('application/json');
+    currentSession = req.session;
     let questionID = req.query.questionID;
-    let userID = req.query.userID;
-    console.log(questionID, userID);
     var sql =  "SELECT EXISTS (SELECT * FROM UserAnswer WHERE QuestionID =? AND UserID =?) AS bool";
     
-    dbHandler.getQuizData(sql, [questionID, userID], next, function(data){
+    dbHandler.getQuizData(sql, [questionID, currentSession.userID], next, function(data){
         console.log("send data...", data);
         res.status(200).json({dbData:  data});
     });
@@ -139,7 +138,8 @@ router.get("/checkUserAnswered.js", function (req, res, next){
 });
 
 router.get("/getUserAnswer.js", function (req, res, next){
-    var values = [req.query.userID, req.query.questionID];
+    currentSession = req.session;
+    var values = [currentSession.userID, req.query.questionID];
     var sql = "SELECT OptionID, Is_correct FROM Option WHERE OptionID IN (SELECT OptionID FROM UserAnswer WHERE UserID =? AND QuestionID =?)";
     
     dbHandler.getQuizData(sql, values, next, function(data){
@@ -149,7 +149,8 @@ router.get("/getUserAnswer.js", function (req, res, next){
 });
 
 router.get("/getFillUserAnswer.js", function (req, res, next){
-    var values = [req.query.userID, req.query.questionID];
+    currentSession = req.session;
+    var values = [currentSession.userID, req.query.questionID];
     console.log(values);
     var sql = "SELECT OptionID, Option FROM UserAnswer WHERE UserID=? AND QuestionID=?";
     
@@ -160,7 +161,8 @@ router.get("/getFillUserAnswer.js", function (req, res, next){
 });
 
 router.get("/getQuizResults", function (req, res, next){
-    var values = [req.query.userID, req.query.quizID];
+    currentSession = req.session;
+    var values = [currentSession.userID, req.query.quizID];
     var sql = "SELECT OptionID, Is_correct FROM Option WHERE OptionID IN (SELECT OptionID FROM UserAnswer WHERE UserID =? AND QuestionID IN (SELECT QuestionID FROM Question WHERE QuizID =?))";
     
     dbHandler.getQuizData(sql, values, next, function(data){
@@ -177,6 +179,16 @@ router.get('/checkEmail.js', function (req, res, next){
         console.log("send data...", data);
         res.status(200).json({dbData:  data});
     })
+});
+
+router.get("/loggedIn.js", function (req, res, next){
+    currentSession = req.session;
+    console.log(currentSession)
+    if(currentSession.userID)
+    {
+        res.status(200).json({bool:  true}); 
+    }
+    
 });
 
 router.post("/login.js", function (req, res, next){
@@ -202,13 +214,13 @@ router.post("/login.js", function (req, res, next){
         else
         {
             status = "notLoggedIn";
-            json = null;
+            json = "";
         }
         res.cookie("accountStatus", status, {
             expires: new Date(Date.now() + 365*24*60*60*1000),
             sameSite: 'strict',
         });
-        res.status(200).json(json)
+        res.status(200).json(json);
     });
 });
 
@@ -238,7 +250,7 @@ router.post("/storeUserAnswer.js", function (req, res, next){
     currentSession = req.session;
 
     console.log("store answer:", req.body);
-    var values = [req.body.QuestionID, req.body.optionID, req.body.userID, req.body.option];
+    var values = [req.body.QuestionID, req.body.optionID, currentSession.userID, req.body.option];
     var sql = "INSERT INTO UserAnswer (QuestionID, OptionID, UserID, Option) VALUES (?, ?, ?, ?)";
     
     dbHandler.storeQuizData(sql, values, next, function(){
@@ -249,7 +261,7 @@ router.post("/storeUserAnswer.js", function (req, res, next){
 router.post("/clearAnswer.js", function (req, res, next){
     currentSession = req.session;
     console.log("delete answer:", req.body);
-    var values = [req.body.QuestionID, req.body.userID];
+    var values = [req.body.QuestionID, currentSession.userID];
     var sql = "DELETE FROM UserAnswer WHERE QuestionID =? AND UserID =?";
     
     dbHandler.storeQuizData(sql, values, next, function(){
