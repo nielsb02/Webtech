@@ -328,7 +328,7 @@ function quizLayout(quizID, quizTitle)
 
     var wait = new Promise((resolve, reject) => {
 
-        getFromDB("./loggedIn.js", function(obj)
+        getFromDB("/loggedIn.js", function(obj)
         {
             if(!obj.bool)
                 loggedIn = false;
