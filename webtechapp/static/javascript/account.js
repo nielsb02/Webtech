@@ -1,31 +1,42 @@
-var article = document.getElementsByTagName("ARTICLE")[0];;
+var article;
+if(document.getElementsByTagName("ARTICLE")[0])
+        article = document.getElementsByTagName("ARTICLE")[0];
+else 
+{
+    let aside = document.getElementsByTagName("ASIDE")[0];
+    let body = document.getElementsByTagName("BODY")[0];
+    article = body.insertBefore(document.createElement("ARTICLE"), aside);
+}
 var section, secondSection, heading;
 var status;
 
-function getCookie(coockieName) {
-    var name = coockieName + "=";
-    var coockieArray = document.cookie.split(';');
-    for(var i = 0; i < coockieArray.length; i++) {
-      var coockie = coockieArray[i];
-      while (coockie.charAt(0) == ' ') {
-        coockie = coockie.substring(1);
-      }
-      if (coockie.indexOf(name) == 0) {
-        return coockie.substring(name.length, coockie.length);
-      }
+function getCookie(cookieName, callback) {
+    var name = cookieName + "=";
+    var cookieArray = document.cookie.split(';');
+    console.log(document.cookie);
+    for(var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) == 0) {
+            console.log("cookie found", cookie);
+            callback(cookie);
+        }
     }
-    return "";
+    return;
 }
 
 function logIn()
 {
-    let logInput = document.getElementById("username_input").value;
-    let passInput = document.getElementById("password_input").value;
-    console.log(logInput, passInput);
-    let data = {login: logInput, password: passInput};
-    let url = "/login.js"
+    let logInput = document.getElementById("username_input");
+    let passInput = document.getElementById("password_input");
 
-    checkLogin(url, data, function(succes, data){
+    console.log(logInput.value, passInput.value);
+    let data = {logIn: logInput, password: passInput};
+    let url = "/logIn.js"
+
+    /*checkLogin(url, data, function(succes, data){
         if(succes)
         {
             
@@ -34,8 +45,7 @@ function logIn()
         {
 
         }
-
-    });
+    });*/
 }
 
 function logOut(){
@@ -76,37 +86,8 @@ function createAcc(){
                     res += " A password should contain at least 7 characters"
                     break;
                 default: console.log("account created bitcheezzzz")
-              }
+            }
     console.log(res);
-}
-
-function AccountLayout()
-{
-    if(document.getElementsByTagName("ARTICLE")[0])
-        article = document.getElementsByTagName("ARTICLE")[0];
-    else 
-        article = document.insertBefore(document.createElement("ARTICLE"), document.getElementsByClassName("FOOTER")[0]);
-
-    heading = document.createElement("H2");
-    heading.setAttribute("class", "first_heading");
-    article.appendChild(heading);
-
-    section = document.createElement("SECTION");
-    article.appendChild(section);
-
-    status = getCoockie("userStatus");
-    if(status === "loggedIn")
-    {
-        logInLayout();
-    }
-    else if(status === "notLoggedIn")
-    {
-        logedInLayout();
-    }
-    else if(status === "createAccount")
-    {
-        createAccLayout();
-    }
 }
 
 function logedInLayout()
@@ -152,7 +133,7 @@ function logedInLayout()
     secondStrong.appendChild(document.createTextNode("Yout Results:"));
     secondParagraph.appendChild(secondStrong);
 
-    createResults();
+    //createResults();
 }
 
 function logInLayout()
@@ -181,7 +162,7 @@ function logInLayout()
     username.setAttribute("type", "text");
     username.setAttribute("name", "");
     username.setAttribute("class", "login_input");
-    username.setAttribute("id", "username_input");
+    username.setAttribute("id", "username_input--article");
     username.setAttribute("placeholder", "Username or Email");
     username.addEventListener("keyup", function(event) {
         if (event.code === "Enter") {
@@ -194,19 +175,34 @@ function logInLayout()
     password.setAttribute("type", "password");
     password.setAttribute("name", "");
     password.setAttribute("class", "login_input");
-    password.setAttribute("id", "password_input");
+    password.setAttribute("id", "password_input--article");
     password.setAttribute("placeholder", "Password");
     password.addEventListener("keyup", function(event) {
         if (event.code === "Enter") {
-          login();
+          logIn();
         }
       }); 
     section.appendChild(password);
 
+    let showPass = document.createElement("INPUT");
+    showPass.setAttribute("type", "checkbox");
+    showPass.appendChild(document.createTextNode("Show Password"));
+    showPass.setAttribute("id", "showPass");
+    showPass.addEventListener("click", function(){
+        var x = document.getElementById("password_input");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    });
+    section.appendChild(document.createTextNode("Show Password"));
+    section.appendChild(showPass);
+
     let logButton = document.createElement("BUTTON");
     logButton.setAttribute("class", "login_input");
     logButton.appendChild(document.createTextNode("Log In"));
-    logButton.addEventListener("click", login, false);
+    logButton.addEventListener("click", logIn, false);
     section.appendChild(logButton);
 
     let create = document.createElement("BUTTON");
@@ -305,32 +301,89 @@ function createAccLayout()
       }); 
     section.appendChild(password);
 
+    let showPass = document.createElement("INPUT");
+    showPass.setAttribute("type", "checkbox");
+    showPass.appendChild(document.createTextNode("Show Password"));
+    showPass.setAttribute("id", "showPass");
+    showPass.addEventListener("click", function(){
+        var x = document.getElementById("password_input");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    });
+    section.appendChild(document.createTextNode("Show Password"));
+    section.appendChild(showPass);
+
     let logButton = document.createElement("BUTTON");
     logButton.setAttribute("class", "login_input--inline");
     logButton.appendChild(document.createTextNode("Create Your Account"));
     logButton.addEventListener("click", createAcc, false);
     section.appendChild(logButton);
 
-    let coockieArrayncel = document.createElement("BUTTON"); 
-    coockieArrayncel.setAttribute("class", "login_input--inline");
-    coockieArrayncel.appendChild(document.createTextNode("coockieArrayncel"));  //go back to login page
-    coockieArrayncel.addEventListener("click", function() {
+    let cookieArrayncel = document.createElement("BUTTON"); 
+    cookieArrayncel.setAttribute("class", "login_input--inline");
+    cookieArrayncel.appendChild(document.createTextNode("cookieArrayncel"));  //go back to logIn page
+    cookieArrayncel.addEventListener("click", function() {
         sessionStorage.setItem("status", "LogIn");
         section.remove();
         section = document.createElement("SECTION");
         article.appendChild(section);
         logInLayout();
     }, false);
-    section.appendChild(coockieArrayncel);
+    section.appendChild(cookieArrayncel);
 
+}
+
+function AccountLayout()
+{
+    if(document.getElementsByTagName("ARTICLE")[0])
+        article = document.getElementsByTagName("ARTICLE")[0];
+    else 
+    {
+        let aside = document.getElementsByTagName("ASIDE")[0];
+        let body = document.getElementsByTagName("BODY")[0];
+        article = body.insertBefore(document.createElement("ARTICLE"), aside);
+    }
+
+    heading = document.createElement("H2");
+    heading.setAttribute("class", "first_heading");
+    article.appendChild(heading);
+
+    section = document.createElement("SECTION");
+    article.appendChild(section);
+
+    getCookie("accountStatus", function(cookie)
+    {
+        console.log(cookie.split)
+        status = cookie.split("=")[1];
+
+        if(status === "loggedIn")
+        {
+            logedInLayout();
+        }
+        else if(status === "notLoggedIn")
+        {
+            logInLayout();
+        }
+        else if(status === "createAccount")
+        {
+            createAccLayout();
+        }
+    });
 }
 
 function createHiddenMenu(){
     
     let createButton = document.getElementById("create_acc_button");
     createButton.addEventListener("click", function() {
-        document.coockie = "accountStatus="+ "createAccount;"+ "max-age=" + 365*24*60*60 + "httpOnly=true" + "path=/";
-        window.location.href='account.html';
+        document.cookie = "accountStatus="+ "createAccount;"+ "max-age=" + 365*24*60*60 + "httpOnly=true" + "path=/";
+        if(document.title !== "Quiz")
+            window.location.href='assessment.html';
+        article.remove();
+        AccountLayout();
+        
     }, false);
 
     let userInput = document.getElementById("username_input");
@@ -343,7 +396,7 @@ function createHiddenMenu(){
     let passInput = document.getElementById("password_input");
     passInput.addEventListener("keyup", function(event) {
         if (event.code === "Enter") {
-            login();
+            logIn();
         }
     }); 
 
@@ -357,11 +410,13 @@ function createHiddenMenu(){
         }
     });
 
-    let icon = document.getElementById("log");
+    let icon = document.getElementById("logImg");
     icon.addEventListener("click", function() {
+        if(document.title !== "Quiz")
+            window.location.href='assessment.html';
         article.remove();
         AccountLayout();
-    })
+    });
 }
 
 createHiddenMenu();

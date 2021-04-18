@@ -15,8 +15,11 @@ var options = {
     cookie: {
         path: "/",
         httpOnly: true,
-        maxAge: 60*60*24*365
+        maxAge: 60*60*24*365,
+        sameSite: 'strict',
     },
+    resave: false,
+    saveUninitialized: false,
     name: "webtechG31.sid",
     secret: "my secret" //what should we put in secret?
 };
@@ -37,7 +40,7 @@ router.get("/*.html$/" , function (req, res, next){
     {
         res.cookie("accountStatus", "notLoggedIn", {
             expires: new Date(Date.now() + 365*24*60*60*1000),
-            httpOnly: true
+            sameSite: 'strict'
         });
 
         /* if we want to stay logged in

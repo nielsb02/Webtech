@@ -1,7 +1,6 @@
 //Declaration of the global variables and arrays.
 var section, activeQuestion, strong, quiz, loggedIn; 
-var choiceSpan = [], questions = []; 
-var n = 0, progressBarCounter = 0;
+var questions, n, progressBarCounter;
 
 //The superclass of all the questions.
 class question{
@@ -301,6 +300,9 @@ function createButton(questionButton, index, div)
 function quizLayout(quizID, quizTitle)
 {
     // get quiz out of database by quiz id
+    questions = []; 
+    n = 0;
+    progressBarCounter = 0;
     quiz = quizID;
     logedIn = false;
     let url = "getQuestion.js?quizID=" + quizID;

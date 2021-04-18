@@ -10,10 +10,12 @@ function createList(element, list, type)
         if(type === "nav")
         {
             listElement.appendChild(a);
-            a.setAttribute("href", list.href[i]);
-
             if(list.text[i] == "Account")
             {
+                if(document.title !== "Quiz")
+                {
+                    a.setAttribute("href", "assessment.html");
+                }
                 listElement.setAttribute("class", "login_li");
                 a.setAttribute("class", "login");
                 a.setAttribute("tabindex", "0");
@@ -22,59 +24,57 @@ function createList(element, list, type)
                 img.setAttribute("src", "Resources/user-selected.jpg");
                 img.setAttribute("class", "login_img");
                 img.setAttribute("alt", "User Icon, to redirect to login page.");
+                img.setAttribute("id", "logImg");
                 a.appendChild(img);
 
-                if(document.title !== "Account")
-                {
-                    img.setAttribute("src", "Resources/user.jpg");
+                img.setAttribute("src", "Resources/user.jpg");
 
-                    let account_div = document.createElement("DIV");
-                    account_div.setAttribute("class", "login_screen");
-                    account_div.appendChild(document.createElement("P").appendChild(document.createTextNode("Already have an Account? Log in...")));
-                    listElement.appendChild(account_div);
+                let account_div = document.createElement("DIV");
+                account_div.setAttribute("id", "log");
+                account_div.setAttribute("class", "login_screen");
+                account_div.appendChild(document.createElement("P").appendChild(document.createTextNode("Already have an Account? Log in...")));
+                listElement.appendChild(account_div);
 
-                    
+                let username = document.createElement("INPUT");
+                username.setAttribute("type", "text");
+                username.setAttribute("name", "");
+                username.setAttribute("class", "login_input--popup");
+                username.setAttribute("id", "username_input");
+                username.setAttribute("placeholder", "Username or Email");
+                account_div.appendChild(username);
+            
+                let password = document.createElement("INPUT");
+                password.setAttribute("type", "password");
+                password.setAttribute("name", "");
+                password.setAttribute("class", "login_input--popup");
+                password.setAttribute("id", "password_input");
+                password.setAttribute("placeholder", "Password");
+                account_div.appendChild(password);
 
-                    let username = document.createElement("INPUT");
-                    username.setAttribute("type", "text");
-                    username.setAttribute("name", "");
-                    username.setAttribute("class", "login_input--popup");
-                    username.setAttribute("id", "username_input");
-                    username.setAttribute("placeholder", "Username or Email");
-                    account_div.appendChild(username);
-                
-                    let password = document.createElement("INPUT");
-                    password.setAttribute("type", "password");
-                    password.setAttribute("name", "");
-                    password.setAttribute("class", "login_input--popup");
-                    password.setAttribute("id", "password_input");
-                    password.setAttribute("placeholder", "Password");
-                    account_div.appendChild(password);
+                let showPass = document.createElement("INPUT");
+                showPass.setAttribute("type", "checkbox");
+                showPass.appendChild(document.createTextNode("Show Password"));
+                showPass.setAttribute("id", "showPass");
+                account_div.appendChild(showPass);
+                account_div.appendChild(document.createTextNode("Show Password"));
 
-                    //<input type="checkbox" onclick="myFunction()">Show Password 
-                    let showPass = document.createElement("INPUT");
-                    showPass.setAttribute("type", "checkbox");
-                    showPass.appendChild(document.createTextNode("Show Password"));
-                    showPass.setAttribute("id", "showPass");
-                    account_div.appendChild(showPass);
-                    account_div.appendChild(document.createTextNode("Show Password"));
-
-                
-                    let logButton = document.createElement("BUTTON");
-                    logButton.setAttribute("class", "login_input--popup");
-                    logButton.appendChild(document.createTextNode("Log In"));
-                    logButton.setAttribute("id", "login_button")
-                    account_div.appendChild(logButton);
-                
-                    let create = document.createElement("BUTTON");
-                    create.setAttribute("class", "login_input--popup");
-                    create.setAttribute("id", "create_acc_button");
-                    create.appendChild(document.createTextNode("Or create an account"));
-                    account_div.appendChild(create);
-                }
+            
+                let logButton = document.createElement("BUTTON");
+                logButton.setAttribute("class", "login_input--popup");
+                logButton.appendChild(document.createTextNode("Log In"));
+                logButton.setAttribute("id", "login_button")
+                account_div.appendChild(logButton);
+            
+                let create = document.createElement("BUTTON");
+                create.setAttribute("class", "login_input--popup");
+                create.setAttribute("id", "create_acc_button");
+                create.appendChild(document.createTextNode("Or create an account"));
+                account_div.appendChild(create);
             }
             else
             {
+                
+                a.setAttribute("href", list.href[i]);
                 var text = document.createTextNode(list.text[i]);
                 
                 if(document.title == list.text[i])
