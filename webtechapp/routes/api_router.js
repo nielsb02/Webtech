@@ -53,6 +53,17 @@ router.get("/gettopics.js", function (req, res, next){
     });
 });
 
+router.get("/getActiveQuiz.js", function (req, res, next){
+    res.contentType('application/json');
+    let quizID = req.query.quizID;
+    var sql =  "SELECT linkDescription FROM Quiz WHERE quizID=?";
+
+    dbHandler.getQuizData(sql, [quizID], next, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    });
+});
+
 router.get("/getQuiz.js", function (req, res, next){
     res.contentType('application/json');
     let topicID = req.query.topicID;

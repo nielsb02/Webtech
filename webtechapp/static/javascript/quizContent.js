@@ -117,9 +117,17 @@ multiplechoice.prototype.create = function()
             img.setAttribute("class", this.imageClass);
             section.insertBefore(img, radioDiv);
         }});
-        
-    
-    
+        var sectionLink = document.getElementsByTagName("section")[0];
+        var removeLink=sectionLink.getElementsByTagName("a")[0];
+
+        if(!removeLink){
+        let inputE = document.createElement("A");
+        inputE.setAttribute("class", "hiddenLink");
+        let image = document.createElement("IMG");
+        image.setAttribute("src", "resources/information.png");
+        inputE.appendChild(image);
+        section.appendChild(inputE);
+        };
 };
 
 //This function deletes the content of the multiplechoice questions.
@@ -403,6 +411,7 @@ function quizLayout(quizID, quizTitle)
     section.appendChild(inputC);
     section.appendChild(inputD);
     
+    
     section.appendChild(document.createElement("HR"));
 }
 
@@ -599,13 +608,26 @@ function checkDisabledTextbox()
         check.setAttribute("class","qbutton--disabled");
     }
 }
+function link()
+{
 
+    //removeLink.remove();
+    
+    let url = "getActiveQuiz.js?quizID=" + quiz;
+     getFromDB(url, function(obj){
+        let activeQuizArray = obj.dbData;
+        var sectionLink = document.getElementsByTagName("section")[0];
+        var removeLink=sectionLink.getElementsByTagName("a")[0];
+        //let inputE = document.getElementsByClassName("hiddenLink")[0];
+        inputE.setAttribute("href", activeQuizArray[0].linkDescription);
+        inputE.setAttribute("class", "showLink");
+            });
+}
 //This function checks whether the input is correct or incorrect.
 function check()
 {   
     var correctQuestion = null; 
     var notBlank = false;
-
     let url = "checkUserAnswered.js?userID="+ 2 +"&questionID="+activeQuestion.id;
     var await = new Promise((resolve, reject) => { 
             getFromDB(url, function(obj){
@@ -668,6 +690,7 @@ function check()
                         {
                             section.setAttribute("class","incorrect");
                             correctQuestion = false;
+                            link();
                         }                       
                     }
                 }
