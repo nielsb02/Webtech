@@ -74,35 +74,16 @@ multiplechoice.prototype.create = function()
             }
             else if(userAnswerArray[0].OptionID === this.options[i].OptionID)
             {
+                
                 if(userAnswerArray[0].Is_correct)
                 {
-<<<<<<< Updated upstream
                     
-                    input.disabled = false;
-                    input.checked = false;
-=======
                     section.setAttribute("class", "correct");
->>>>>>> Stashed changes
                 }
                 else
                 {
-<<<<<<< Updated upstream
                     
-                    if(userAnswerArray[0].Is_correct)
-                    {
-                       
-                        section.setAttribute("class", "correct");
-                    }
-                    else
-                    {
-                        
-                        section.setAttribute("class", "incorrect");
-                    }
-                    input.disabled = true;
-                    input.checked = true;
-=======
                     section.setAttribute("class", "incorrect");
->>>>>>> Stashed changes
                 }
                 input.disabled = true;
                 input.checked = true;
@@ -842,17 +823,13 @@ function retry()
 {
     let url = "/clearAnswer.js";
     sendToDB(url, {userID: 2, QuestionID: activeQuestion.id});
-<<<<<<< Updated upstream
-    questions[questions.indexOf(activeQuestion)].delete();
-    setTimeout(function cb(){
-=======
     activeQuestion.delete();
->>>>>>> Stashed changes
-    activeQuestion.create();
-    var sectionclass = document.getElementsByTagName("section")[0];
-    sectionclass.setAttribute("class", "question");
-    numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--correct");
-    numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--false");
+    setTimeout(function cb(){
+        activeQuestion.create();
+        var sectionclass = document.getElementsByTagName("section")[0];
+        sectionclass.setAttribute("class", "question");
+        numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--correct");
+        numberedButtons.childNodes[questions.indexOf(activeQuestion)].classList.remove("questionButton--false");
     }, 50);
     
     
