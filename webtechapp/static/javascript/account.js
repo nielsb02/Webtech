@@ -35,10 +35,6 @@ function logIn(name, pass)
     checkLogin(url, data, function(succes, data){
         if(succes)
         {
-<<<<<<< Updated upstream
-=======
-            document.getElementById()
->>>>>>> Stashed changes
             article.remove();
             let aside = document.getElementsByTagName("ASIDE")[0];
             let body = document.getElementsByTagName("BODY")[0];
