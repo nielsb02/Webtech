@@ -14,14 +14,12 @@ var status;
 function getCookie(cookieName, callback) {
     var name = cookieName + "=";
     var cookieArray = document.cookie.split(';');
-    console.log(document.cookie);
     for(var i = 0; i < cookieArray.length; i++) {
         var cookie = cookieArray[i];
         while (cookie.charAt(0) == ' ') {
             cookie = cookie.substring(1);
         }
         if (cookie.indexOf(name) == 0) {
-            console.log("cookie found", cookie);
             callback(cookie);
         }
     }
@@ -37,7 +35,6 @@ function logIn(name, pass)
     checkLogin(url, data, function(succes, data){
         if(succes)
         {
-            console.log("succes");
             article.remove();
             let aside = document.getElementsByTagName("ASIDE")[0];
             let body = document.getElementsByTagName("BODY")[0];
@@ -47,7 +44,6 @@ function logIn(name, pass)
         }
         else
         {
-            console.log("no succes");
         }
     });
 }
@@ -86,8 +82,6 @@ function createAcc(pass, first, last, user){
         getFromDB(url, function(data){
             if(!data.dbdata)
                 res += " This Emailaddress already exists";
-        
-        console.log(res);
         if(res === "")
         {   
             
@@ -364,7 +358,6 @@ function AccountLayout()
 
     getCookie("accountStatus", function(cookie)
     {
-        console.log(cookie.split)
         status = cookie.split("=")[1];
 
         if(status === "loggedIn")
@@ -435,7 +428,6 @@ function createHiddenMenu(){
         {
             window.location.href='assessment.html';
         }
-        console.log("logggin screen")
         article.remove();
         AccountLayout();
     });

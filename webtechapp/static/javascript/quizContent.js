@@ -156,7 +156,6 @@ multiplechoice.prototype.create = function()
                 }
                 if(check)
                 {
-                    console.log("useranswerarray 3:", check);
                     link();
                 }
             }
@@ -283,6 +282,8 @@ fillin.prototype.delete = function()
         img.remove();
     }
 };
+
+//Creates the numbered buttons which indicate which question you are currently on.
 function createButton(questionButton, index, div)
 {
     var button = document.createElement("INPUT");
@@ -320,7 +321,6 @@ function createButton(questionButton, index, div)
 //This function creates the layout of the section.
 function quizLayout(quizID, quizTitle)
 {
-    // get quiz out of database by quiz id
     questions = []; 
     n = 0;
     progressBarCounter = 0;
@@ -365,7 +365,6 @@ function quizLayout(quizID, quizTitle)
                     {
                         q.image = "Resources/" + quest.Source;
                         var img = new Image();
-                        // 2/1 height pixel verhouding
                         img.onload = function() {
 
                             if(this.height / this.width > 0.65)
@@ -461,6 +460,7 @@ function quizLayout(quizID, quizTitle)
 
 //The function above is called here.
 
+//Calculates the result.
 function calculateResult(bar)
 {
     let url = "/getQuizResults?userID="+2+"&quizID="+quiz;
@@ -489,6 +489,7 @@ function calculateResult(bar)
     });
 }
 
+//Shows how many questions you have answered correctly in percentages.
 function resultBar(barArray, resultArray, heading, lastBar)
 {
     var move = true;
@@ -562,26 +563,12 @@ function resultBar(barArray, resultArray, heading, lastBar)
                 {
                     bar.innerHTML = width  + "%";
                 }
-
-                /*
-                if(string === "......")
-                {
-                    string = "";
-                }
-                else
-                {
-                string += ".";
-                }
-
-                
-                let calculating = document.createTextNode("Calculating Result" + string);
-                heading.replaceChild(calculating, heading.firstChild);
-                */
             }
         }
     }
 }
 
+//Creates the results.
 function createResults()
 {   
     while (section.lastElementChild) {
@@ -652,6 +639,8 @@ function checkDisabledTextbox()
         check.setAttribute("class","qbutton--disabled");
     }
 }
+
+//Enables the link button if the user has guessed an answer incorrectly. 
 function link()
 {
     let url = "getActiveQuiz.js?quizID=" + quiz;
@@ -659,11 +648,11 @@ function link()
         let activeQuizArray = obj.dbData;
         var sectionLink = document.getElementsByTagName("section")[0];
         var removeLink=sectionLink.getElementsByTagName("a")[0];
-        //let removeLink = document.getElementsByClassName("hiddenLink")[0];
         removeLink.setAttribute("href", activeQuizArray[0].linkDescription);
         removeLink.setAttribute("class", "showLink");
             });
 }
+
 //This function checks whether the input is correct or incorrect.
 function check()
 {   
@@ -674,7 +663,7 @@ function check()
         let url = "checkUserAnswered.js?userID="+ 2 +"&questionID="+activeQuestion.id;
         var await = new Promise((resolve, reject) => { 
                 getFromDB(url, function(obj){
-                if(obj.dbData[0].bool == 1) //already answered...
+                if(obj.dbData[0].bool == 1) 
                 {
                     resolve(true);
                 }
@@ -790,9 +779,9 @@ function check()
     }
 }
 
-//This function controls the actions that need to happen if the previous button is clicked.
-
-function newQuestion(index, newIndex){
+//Creates a new question.
+function newQuestion(index, newIndex)
+{
     if(index === newIndex)
     {
         return;
@@ -847,6 +836,8 @@ function newQuestion(index, newIndex){
     numberedButtons.childNodes[newIndex].classList.remove("questionButton--default");
     numberedButtons.childNodes[newIndex].classList.add("questionButton--selected");
 }
+
+//Resets the question if the user clicks on the "retry" button.
 function retry()
 {
     if(loggedIn)
@@ -887,6 +878,7 @@ setTimeout(function cb(){
     }
 }
 
+//This function controls the actions that need to happen if the previous button is clicked.
 function previous()
 {
     var index = questions.indexOf(activeQuestion);

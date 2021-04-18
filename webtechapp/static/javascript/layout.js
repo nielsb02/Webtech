@@ -1,3 +1,4 @@
+//Creation of the navbar.
 function createList(element, list, type)
 {
     var unorderedList = document.createElement("UL");
@@ -124,6 +125,7 @@ function createList(element, list, type)
         element.appendChild(unorderedList);
 }
 
+//creates the general layout of the website.
 function createLayout()
 {
     var header = document.getElementsByTagName("HEADER")[0];

@@ -5,6 +5,7 @@ var heading = document.createElement("H2");
 var headingText = document.createTextNode("Topics");
 var section;
 
+//Creates the layout of the topic.
 function topicsLayout()
 {   
     heading.setAttribute("class", "first_heading");
@@ -20,6 +21,7 @@ function topicsLayout()
     });
 }
 
+//Creates the topic.
 function createTopic(topic){
     
     let topicSection = document.createElement("SECTION");

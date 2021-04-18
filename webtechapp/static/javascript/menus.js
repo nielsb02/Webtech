@@ -179,7 +179,6 @@ function changeScheme(property, semanticElement, n)
             {
                 if(getSemantic.classList.contains("section--border"))
                 {
-                    console.log("border found");
                     getSemantic.classList.remove("section--border");
                     let img = getSemantic.children[1];
                     img.setAttribute("src", "Resources/headerbgrdark.jpg");
