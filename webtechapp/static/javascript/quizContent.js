@@ -53,7 +53,7 @@ multiplechoice.prototype.create = function()
     document.getElementById("check").setAttribute("class", "qbutton--disabled");
 
 
-    let url = "./getUserAnswer.js?userID="+2+"&questionID="+this.id;
+    let url = "./getUserAnswer.js?questionID="+this.id;
     var await = new Promise((resolve, reject) => 
     {
         getFromDB(url, function(obj){
@@ -210,7 +210,7 @@ fillin.prototype.create = function()
 
     var await = new Promise((resolve, reject) => 
     {
-        let url = "/getFillUserAnswer.js?userID="+2+"&questionID="+this.id;
+        let url = "/getFillUserAnswer.js?questionID="+this.id;
         getFromDB(url, function(obj){
             resolve(obj.dbData); 
         });
@@ -301,7 +301,7 @@ function createButton(questionButton, index, div)
 
     div.appendChild(button);
 
-    let url = "./getUserAnswer.js?userID="+2+"&questionID="+questionButton.id;
+    let url = "./getUserAnswer.js?questionID="+questionButton.id;
     getFromDB(url, function(obj){
         if(obj.dbData[0])
         {
@@ -463,7 +463,7 @@ function quizLayout(quizID, quizTitle)
 //Calculates the result.
 function calculateResult(bar)
 {
-    let url = "/getQuizResults?userID="+2+"&quizID="+quiz;
+    let url = "/getQuizResults?quizID="+quiz;
     getFromDB(url, function(obj){
         var count = {correct : 0.0, incorrect: 0.0, unanswered: 0.0};
         var questionArray = obj.dbData;
@@ -611,7 +611,7 @@ function checkEnabled()
 {
     if(loggedIn)
     {
-        let url = "./getUserAnswer.js?userID="+2+"&questionID="+activeQuestion.id;
+        let url = "./getUserAnswer.js?questionID="+activeQuestion.id;
         getFromDB(url, function(obj){
         var userAnswerArray = obj.dbData;
         if(!userAnswerArray[0])
@@ -660,7 +660,7 @@ function check()
     {
         var correctQuestion = null; 
         var notBlank = false;
-        let url = "checkUserAnswered.js?userID="+ 2 +"&questionID="+activeQuestion.id;
+        let url = "checkUserAnswered.js?questionID="+activeQuestion.id;
         var await = new Promise((resolve, reject) => { 
                 getFromDB(url, function(obj){
                 if(obj.dbData[0].bool == 1) 
@@ -763,7 +763,7 @@ function check()
                     var numberedButtons = document.getElementById("numberedButtons");
 
                     let url = "/storeUserAnswer.js";
-                    sendToDB(url, {userID: 2, QuestionID: activeQuestion.id, optionID: selectedoption.id, option: selectedoption.option});
+                    sendToDB(url, {QuestionID: activeQuestion.id, optionID: selectedoption.id, option: selectedoption.option});
 
                     if(correctQuestion)
                     {
@@ -843,7 +843,7 @@ function retry()
     if(loggedIn)
     {
     let url = "/clearAnswer.js";
-    sendToDB(url, {userID: 2, QuestionID: activeQuestion.id});
+    sendToDB(url, {QuestionID: activeQuestion.id});
     activeQuestion.delete();
     setTimeout(function cb(){
         activeQuestion.create();

@@ -15,10 +15,10 @@ var options = {
         return uuidv4();
     },
     cookie: {
+        sameSite: 'strict',
         path: "/",
         httpOnly: true,
-        maxAge: 60*60*24*365,
-        sameSite: 'strict',
+        maxAge: 60*60*24*365
     },
     resave: false,
     saveUninitialized: false,
@@ -44,21 +44,6 @@ router.get("/*.html$/", function (req, res, next){
             expires: new Date(Date.now() + 365*24*60*60*1000),
             sameSite: 'strict'
         });
-
-        /* if we want to stay logged in
-        if (currentSession.userID)
-        {
-            res.cookie("accountStatus",  encodeURIComponent("loggedIn"), {
-                expires: new Date(Date.now() + 365*24*60*60*1000),
-                httpOnly: true
-            });get user info from database
-            let accountInfo = {firstName: "name", lastName: "name"};//["firstName", "=", JSON.stringify('naam'), "; ", "lastName", "=", JSON.stringify("lastname"), ";"].join('');
-            res.cookie("account", JSON.stringify(accountInfo), {
-                expires: new Date(Date.now() + 365*24*60*60*1000),
-                httpOnly: true
-            });
-        }
-        */
     }
     else 
     {
@@ -184,6 +169,16 @@ router.get("/getQuizResults", function (req, res, next){
     })
 });
 
+router.get('/checkEmail.js', function (req, res, next){
+    var values = [req.query.email];
+    var sql = "SELECT EXISTS (SELECT * FROM User WHERE email=?) AS bool";
+    
+    dbHandler.getQuizData(sql, values, next, function(data){
+        console.log("send data...", data);
+        res.status(200).json({dbData:  data});
+    })
+});
+
 router.post("/login.js", function (req, res, next){
     currentSession = req.session;
 
@@ -197,6 +192,7 @@ router.post("/login.js", function (req, res, next){
         if(data[0])
         {
             currentSession.userID = data[0].UserID;
+            console.log(currentSession);
             let userData = data[0];
             delete userData.UserID;
 
@@ -224,8 +220,18 @@ router.post("/storeAccount.js", function (req, res, next){
     var sql = "INSERT INTO User (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
 
     dbHandler.storeQuizData(sql, values, next, function(){
-        res.send(200, "user stored");
-    })
+        sql = "SELECT UserID FROM USER WHERE email=?"
+        dbHandler.getQuizData(sql, [req.body.email], next, function(data){
+            currentSession = req.session;
+            if(data[0])
+            {
+                currentSession.userID = data[0].UserID;
+                console.log(currentSession);
+
+            }
+            res.send(200, "answer deleted");
+        });
+    });
 });
 
 router.post("/storeUserAnswer.js", function (req, res, next){

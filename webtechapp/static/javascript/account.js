@@ -35,6 +35,10 @@ function logIn(name, pass)
     checkLogin(url, data, function(succes, data){
         if(succes)
         {
+<<<<<<< Updated upstream
+=======
+            document.getElementById()
+>>>>>>> Stashed changes
             article.remove();
             let aside = document.getElementsByTagName("ASIDE")[0];
             let body = document.getElementsByTagName("BODY")[0];
@@ -78,13 +82,16 @@ function createAcc(pass, first, last, user){
             res += " A password should contain at least one digit \n";
         if(!pass.length >= 7)
             res += " A password should contain at least 7 characters \n";
-        url = "./checkEmail.js"
-        getFromDB(url, function(data){
-            if(!data.dbdata)
+        let url = "./checkEmail.js?email="+user;
+        getFromDB(url, function(obj){
+            console.log(obj);
+            if(obj.dbData[0].bool)
                 res += " This Emailaddress already exists";
         if(res === "")
         {   
-            
+            let url = "/storeAccount.js"
+            values= {first_name: first, last_name: last, email: user, password: pass};
+            sendToDB(url, values);
         }
     });
 }

@@ -1,6 +1,5 @@
 var express = require("express");
 var path = require("path");
-var fs = require('fs');
 var serveStatic = require('serve-static');
 const apiRouter = require("./routes/api_router");
 const apiLogger = require("./log/api_logger");
