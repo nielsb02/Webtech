@@ -28,14 +28,18 @@ var options = {
 
 var router = express.Router();
 router.use(bodyParser.json());
-
-//router.use(session(options));
+router.use(session(options));
 var currentSession;
 
-router.get("/*.html$/" , function (req, res, next){
+router.get("/", function (req, res, next){
+    res.redirect("/index.html");
+})
+
+router.get("/*.html$/", function (req, res, next){
     currentSession = req.session;
     if(currentSession.id) 
     {
+        console.log("sessie")
         res.cookie("accountStatus", "notLoggedIn", {
             expires: new Date(Date.now() + 365*24*60*60*1000),
             sameSite: 'strict'
@@ -61,6 +65,10 @@ router.get("/*.html$/" , function (req, res, next){
         console.log("no sessions");
     }
     next();
+});
+
+router.get("/favicon.ico", function (req, res, next){
+    res.status(200).json("no favicon set up");
 });
 
 router.get("/gettopics.js", function (req, res, next){
@@ -168,12 +176,55 @@ router.get("/getFillUserAnswer.js", function (req, res, next){
 
 router.get("/getQuizResults", function (req, res, next){
     var values = [req.query.userID, req.query.quizID];
-    console.log("values..", values)
     var sql = "SELECT OptionID, Is_correct FROM Option WHERE OptionID IN (SELECT OptionID FROM UserAnswer WHERE UserID =? AND QuestionID IN (SELECT QuestionID FROM Question WHERE QuizID =?))";
     
     dbHandler.getQuizData(sql, values, next, function(data){
         console.log("send data...", data);
         res.status(200).json({dbData:  data});
+    })
+});
+
+router.post("/login.js", function (req, res, next){
+    currentSession = req.session;
+
+    console.log("try logging in:", req.body);
+    var values = [req.body.username, req.body.password];
+    var sql = "SELECT UserID, first_name, last_name FROM User WHERE email=? AND password=?";
+    
+    dbHandler.getQuizData(sql, values, next, function(data){
+        var json, status, code;
+        console.log(data);
+        if(data[0])
+        {
+            currentSession.userID = data[0].UserID;
+            let userData = data[0];
+            delete userData.UserID;
+
+            status = "loggedIn";
+            json = {dbData: userData};
+        }
+        else
+        {
+            status = "notLoggedIn";
+            json = null;
+        }
+        res.cookie("accountStatus", status, {
+            expires: new Date(Date.now() + 365*24*60*60*1000),
+            sameSite: 'strict',
+        });
+        res.status(200).json(json)
+    });
+});
+
+router.post("/storeAccount.js", function (req, res, next){
+    currentSession = req.session;
+
+    console.log("store user:", req.body);
+    var values = [req.body.first_name, req.body.last_name, req.body.email, req.body.password];
+    var sql = "INSERT INTO User (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
+
+    dbHandler.storeQuizData(sql, values, next, function(){
+        res.send(200, "user stored");
     })
 });
 

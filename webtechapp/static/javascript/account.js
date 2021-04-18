@@ -1,6 +1,7 @@
 var article;
+
 if(document.getElementsByTagName("ARTICLE")[0])
-        article = document.getElementsByTagName("ARTICLE")[0];
+    article = document.getElementsByTagName("ARTICLE")[0];
 else 
 {
     let aside = document.getElementsByTagName("ASIDE")[0];
@@ -30,23 +31,25 @@ function getCookie(cookieName, callback) {
 
 function logIn(name, pass)
 {
-    let logInput = document.getElementById("username_input");
-    let passInput = document.getElementById("password_input");
-
-    console.log(logInput.value, passInput.value);
-    let data = {logIn: logInput, password: passInput};
+    let data = {username: name, password: pass};
     let url = "/logIn.js"
 
-    /*checkLogin(url, data, function(succes, data){
+    checkLogin(url, data, function(succes, data){
         if(succes)
         {
-            
+            console.log("succes");
+            article.remove();
+            let aside = document.getElementsByTagName("ASIDE")[0];
+            let body = document.getElementsByTagName("BODY")[0];
+            article = body.insertBefore(document.createElement("ARTICLE"), aside);
+            topicsLayout();
+
         }
         else
         {
-
+            console.log("no succes");
         }
-    });*/
+    });
 }
 
 function logOut(){
@@ -69,26 +72,27 @@ function Results()
     
 }
 
-function createAcc(){
-    var res;
-    var pass = document.getElementById("password_input").value;
-
-            switch(pass) {
-                case pass.match(/[a-z]/g):
-                    res += " A password should contain at least one lowercase character"
-                  break;
-                case pass.match(/[A-Z]/g):
-                    res += " A password should contain at least one uppercase character"
-                  break;
-                case pass.match(/[0-9]/g):
-                    res += " A password should contain at least one digit"
-                  break;
-                case  pass.length >= 7:
-                    res += " A password should contain at least 7 characters"
-                    break;
-                default: console.log("account created bitcheezzzz")
-            }
-    console.log(res);
+function createAcc(pass, first, last, user){
+    var res ="";
+        if(!pass.match(/[a-z]/g))
+            res += " A password should contain at least one lowercase character \n";
+        if(!pass.match(/[A-Z]/g))
+            res += " A password should contain at least one uppercase character \n";
+        if(!pass.match(/[0-9]/g))
+            res += " A password should contain at least one digit \n";
+        if(!pass.length >= 7)
+            res += " A password should contain at least 7 characters \n";
+        url = "./checkEmail.js"
+        getFromDB(url, function(data){
+            if(!data.dbdata)
+                res += " This Emailaddress already exists";
+        
+        console.log(res);
+        if(res === "")
+        {   
+            
+        }
+    });
 }
 
 function logedInLayout()
@@ -178,11 +182,6 @@ function logInLayout()
     password.setAttribute("class", "login_input");
     password.setAttribute("id", "password_input--article");
     password.setAttribute("placeholder", "Password");
-    password.addEventListener("keyup", function(event) {
-        if (event.code === "Enter") {
-          logIn();
-        }
-      }); 
     section.appendChild(password);
 
     let showPass = document.createElement("INPUT");
@@ -190,7 +189,7 @@ function logInLayout()
     showPass.appendChild(document.createTextNode("Show Password"));
     showPass.setAttribute("id", "showPass");
     showPass.addEventListener("click", function(){
-        var x = document.getElementById("password_input");
+        var x = document.getElementById("password_input--article");
         if (x.type === "password") {
             x.type = "text";
         } else {
@@ -203,7 +202,6 @@ function logInLayout()
     let logButton = document.createElement("BUTTON");
     logButton.setAttribute("class", "login_input");
     logButton.appendChild(document.createTextNode("Log In"));
-    logButton.addEventListener("click", logIn, false);
     section.appendChild(logButton);
 
     let create = document.createElement("BUTTON");
@@ -222,9 +220,15 @@ function logInLayout()
     back.appendChild(document.createTextNode("Or go back"));
     back.addEventListener("click", function() {
         //go back (history);
-
     }, false);
     section.appendChild(back);
+
+    password.addEventListener("keyup", function(event) {
+        if (event.code === "Enter") {
+            logIn(username.value, password.value);
+        }
+    }); 
+    logButton.addEventListener("click", function() {logIn(username.value, password.value)}, false);
 }
 
 function createAccLayout()
@@ -298,7 +302,7 @@ function createAccLayout()
     password.setAttribute("placeholder", "Password");
     password.addEventListener("keyup", function(event) {
         if (event.code === "Enter") {
-          createAcc();
+          createAcc(password.value, surname.value, lastname.value, username.value);
         }
       }); 
     section.appendChild(password);
@@ -321,7 +325,9 @@ function createAccLayout()
     let logButton = document.createElement("BUTTON");
     logButton.setAttribute("class", "login_input--inline");
     logButton.appendChild(document.createTextNode("Create Your Account"));
-    logButton.addEventListener("click", createAcc, false);
+    logButton.addEventListener("click", function(){
+        createAcc(password.value, surname.value, lastname.value, username.value);
+    }, false);
     section.appendChild(logButton);
 
     let cancel = document.createElement("BUTTON"); 
@@ -382,9 +388,13 @@ function createHiddenMenu(){
     createButton.addEventListener("click", function() {
         document.cookie = "accountStatus="+ "createAccount;"+ "max-age=" + 365*24*60*60 + "httpOnly=true" + "path=/";
         if(document.title !== "Quiz")
+        {
             window.location.href='assessment.html';
+        }
+        else{
         article.remove();
         AccountLayout();
+        }
         
     }, false);
 
@@ -398,8 +408,14 @@ function createHiddenMenu(){
     let passInput = document.getElementById("password_input");
     passInput.addEventListener("keyup", function(event) {
         if (event.code === "Enter") {
-            logIn();
+            
+            logIn(document.getElementById("password_input")[0], document.getElementById("username_input")[0]);
         }
+    }); 
+
+    let logButton = document.getElementById("password_input");
+    logButton.addEventListener("click", function() {
+        logIn(document.getElementById("password_input")[0], document.getElementById("username_input")[0]);
     }); 
 
     let showPass = document.getElementById("showPass");
@@ -407,7 +423,8 @@ function createHiddenMenu(){
         var x = document.getElementById("password_input");
         if (x.type === "password") {
             x.type = "text";
-        } else {
+        } 
+        else {
             x.type = "password";
         }
     });
@@ -415,9 +432,13 @@ function createHiddenMenu(){
     let icon = document.getElementById("logImg");
     icon.addEventListener("click", function() {
         if(document.title !== "Quiz")
+        {
             window.location.href='assessment.html';
+        }
+        console.log("logggin screen")
         article.remove();
         AccountLayout();
     });
 }
 
+createHiddenMenu();

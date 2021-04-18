@@ -29,11 +29,7 @@ function checkLogin(url, data, callback){  //AJAX function
     req.onreadystatechange = function () {
         if (req.readyState === 4 && req.status === 200) {
             var obj = JSON.parse(req.responseText);
-            callback(true, obj);
-        }
-        else if (req.readyState === 4)
-        {
-            callback(false , null); 
+            callback(obj);
         }
     }
     let storeData = JSON.stringify(data);
