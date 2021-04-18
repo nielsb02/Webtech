@@ -27,7 +27,8 @@ function getCookie(cookieName, callback) {
     return;
 }
 
-function logIn()
+
+function logIn(name, pass)
 {
     let logInput = document.getElementById("username_input");
     let passInput = document.getElementById("password_input");
@@ -238,6 +239,7 @@ function createAccLayout()
     else
     {
         heading.appendChild(headingText);
+        
     }
 
     section.setAttribute("class", "login_section");
@@ -322,17 +324,17 @@ function createAccLayout()
     logButton.addEventListener("click", createAcc, false);
     section.appendChild(logButton);
 
-    let cookieArrayncel = document.createElement("BUTTON"); 
-    cookieArrayncel.setAttribute("class", "login_input--inline");
-    cookieArrayncel.appendChild(document.createTextNode("cookieArrayncel"));  //go back to logIn page
-    cookieArrayncel.addEventListener("click", function() {
+    let cancel = document.createElement("BUTTON"); 
+    cancel.setAttribute("class", "login_input--inline");
+    cancel.appendChild(document.createTextNode("cancel"));  //go back to login page
+    cancel.addEventListener("click", function() {
         sessionStorage.setItem("status", "LogIn");
         section.remove();
         section = document.createElement("SECTION");
         article.appendChild(section);
         logInLayout();
     }, false);
-    section.appendChild(cookieArrayncel);
+    section.appendChild(cancel);
 
 }
 
@@ -418,8 +420,4 @@ function createHiddenMenu(){
         AccountLayout();
     });
 }
-
-createHiddenMenu();
-
-    
 
