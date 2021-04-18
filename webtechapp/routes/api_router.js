@@ -183,12 +183,16 @@ router.get('/checkEmail.js', function (req, res, next){
 
 router.get("/loggedIn.js", function (req, res, next){
     currentSession = req.session;
-    console.log(currentSession)
+    let loggedIn;
     if(currentSession.userID)
     {
-        res.status(200).json({bool:  true}); 
+        loggedIn = true
     }
-    
+    else
+    {
+        loggedIn = false
+    }
+    res.status(200).json({bool: loggedIn}); 
 });
 
 router.post("/login.js", function (req, res, next){
