@@ -331,11 +331,10 @@ function quizLayout(quizID, quizTitle)
         getFromDB("./loggedIn.js", function(obj)
         {
             if(!obj.bool)
-                logedIn = false;
+                loggedIn = false;
             else    
                 loggedIn = true;
-
-                resolve();
+            resolve();
         });
     });
 
