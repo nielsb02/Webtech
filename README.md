@@ -1,2 +1,2 @@
 # Webtech
- Webtech group 31
+Containing all three phases of the course Webtech's practical assignment.
