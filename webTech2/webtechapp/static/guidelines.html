@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Free Webaccessibility information">
+    <meta name="keywords" content="Webaccessibility, perspectivesweb, document_and_website_structure, webstandards, Webaccessibility, webguidelines">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Guidelines</title>
+</head>
+
+<body  class="body--default body--medium_font" id="body" >
+    <header> 
+        <h1> Basic Web Accesibility tips and tricks </h1>
+        <img src="Resources/headerbgr1.png" alt ="Web Accesibility Banner">
+    </header>
+
+    <nav>
+        <ul> 
+            <li><a href= "index.html"> <strong> Home </strong>  </a>  </li>
+            <li><a href= "why.html"> Importance </a> </li>
+            <li><a href= "perspectives.html"> Perspectives </a></li>
+            <li><a href= "standards.html"> Standards </a></li>
+            <li><a class="active" href= "guidelines.html"><strong><em>Basic guidelines</em></strong></a></li>
+            <li><a href= "assessment.html"> Quiz </a></li>
+        </ul>
+    </nav>
+
+    <article>
+        <h2 class="first_heading">Page Design</h2>
+        <section id="layout">
+            <h3> Layout </h3>
+            <p>
+                Page Layouts used to be created by using HTML tables, using different table cells to contain the header, footer, sidebar, main content column, etc.
+                This is not a good idea because a screen reader will likely give out confusing readouts, especially if the layout is complex. 
+            </p>
+            <p>
+                Using the modern page layout (seen the figure underneath), screen readers are able to readout the content.
+                It is also much leaner and smaller in terms of code size, which means easier to maintain code,
+                and less bandwidth for the user to download (particularly prevalent for those on slow connections). 
+                You can verify these claims by testing out a <a class="article__links" title="modern page layout example" href=https://mdn.github.io/learning-area/html/introduction-to-html/document_and_website_structure/ target="_blank"><em>modern website structure example</em></a>.
+            
+            </p>
+            
+            <table class="html_layout_table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <strong>&lt;header&gt;</strong> <br>
+                            <em>contains the brandings like logo</em>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <strong>&lt;nav&gt;</strong> <br>
+                            <em>contains navigational section of the site</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="column1"> 
+                            <strong>&lt;article&gt;</strong> <br> 
+                            <em>web paged main content</em><br>
+                            <div class="sub-column">
+                                <strong>&lt;section&gt;</strong> <br>
+                                <em>divided section of main content</em><br>
+                            </div>
+                            <div class="sub-column">
+                                <strong>&lt;section&gt;</strong><br>
+                                <em>divided section of main content</em>
+                            </div>
+                        </td>
+                        <td class="column2">
+                            <strong>&lt;aside&gt;</strong><br>
+                            <em>contains extra information and related content or links</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <strong>&lt;footer&gt;</strong> <br>
+                            <em>information about copyright, privacy policy, terms of use, etc.</em>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3> Semantic HTML</h3>
+            <p>
+                Semantic HTML means using correct HTML elements for their correct purpose as much as possible.
+                Semantic elements are elements with a meaning; if you need a button, use the <strong> &lt;button&gt; </strong> element (and not a <strong>&lt;div&gt; </strong> element).
+                For example, a control button to play a video on your site could be marked up like this:
+            </p>
+
+            <div class="code-example">
+                <strong>&lt;div&gt;</strong>Play video<strong>&lt;/div&gt; </strong>
+            </div>
+            But as you'll see in greater detail later on, it makes sense to use the correct element for the job:
+            <div class="code-example">
+                <strong>&lt;button&gt;</strong>Play video<strong>&lt;/button&gt; </strong>
+            </div>
+
+            <p>
+                Not only does HTML <strong>&lt;button&gt; </strong> have some suitable styling applied by default (which you will probably want to override),
+                it also has built-in keyboard accessibility — users can navigate between buttons using the “Tab” key and activate their selection using “Return” or “Enter”. 
+            </p>
+
+            <h3> Basic layout with semantic HTML </h3>
+            <p>
+                One of the best accessibility aids a screen reader user can have is an excellent content
+                structure with basic layout semantics as: headings, paragraphs, lists, etc.
+            </p>
+
+            <ul>
+                <li> Avoid using <strong>&lt;br&gt; </strong> to separate between paragraphs, instead use <strong>&lt;P&gt; </strong>.</li>
+                <li> Don not use custom styles to define headers, instead us <strong>&lt;h1&gt; </strong> up to and including <strong>&lt;h6&gt; </strong>. </li>
+                <li> Do not skip <strong>&lt;h...&gt; </strong> levels, instead start with <strong>&lt;h1&gt; </strong> and use the same header again or go a level up. </li>
+            </ul>
+
+            <div class="code-example" title="A code snippet, with the correct use of semantic HTML">
+                <p>
+                    &lt;<strong>h1</strong>&gt;This is a heading. &lt;<strong>/h1</strong>&gt;
+                </p>
+                <p>
+                    &lt;<strong>p</strong>&gt;This is the first paragraph.&lt;<strong>p</strong>&gt;
+                </p> 
+                <p>
+                &lt;<strong>p</strong>&gt;This is the second paragraph.&lt;<strong>p</strong>&gt;
+                </p>
+                &lt;<strong>ul</strong>&gt; This is an unordered list.
+                <div class = "code-example-list">  
+                    &lt;<strong>li</strong>&gt;an unordered&lt;<strong>/li</strong>&gt;<br>
+                    &lt;<strong>li</strong>&gt;This is&lt;<strong>/li</strong>&gt;<br>
+                    &lt;<strong>li</strong>&gt;list.&lt;<strong>/li</strong>&gt;<br>
+                </div>
+                &lt;<strong>/ul</strong>&gt;
+                <p>
+                    &lt;<strong>h2</strong>&gt; This is a subheading. &lt;<strong>/h2</strong>&gt;
+                </p>
+                <p>
+                    &lt;<strong>p</strong>&gt; This is the first subsection. &lt;<strong>p</strong>&gt;
+                </p>
+                <p>
+                    &lt;<strong>h3</strong>&gt; This is a subheading within a subheading. &lt;<strong>/h3</strong>&gt;
+                </p>
+                <p>
+                    &lt;<strong>p</strong>&gt; This is a subsection within the subsection. &lt;<strong>p</strong>&gt;
+                </p>
+            </div>
+            <P>
+                If you would try this code snippet out with a screen reader, you would see that this is pretty easy to navigate:
+            </P>
+
+            <ol>
+                <li>The screen reader reads each header out as you progress through the content, notifying you what a heading is, what is a paragraph, etc.</li>
+                <li>It stops after each element, letting you go at whatever pace is comfortable for you. </li>
+                <li>You can jump to the next/previous heading in many screen readers. </li>
+                <li>You can also bring up a list of all headings in many screen readers, allowing you to use them as a handy table of contents to find specific content.</li>
+            </ol>
+
+            <h3 id="attributes"> The Title Attribute</h3>
+            <p>
+                The title attribute gives specific information about an element.
+                This information is often shown as a tooltip text when the mouse hovers over the element.
+                The title attribute can be used on any HTML element, although it is not really useful for every element. But it can be a nice feature for image abbreviations, or links:
+            </p>
+
+            <div class="code-example" title ="example abbreviations">
+                &lt;<strong>p</strong>&gt;&lt;<strong>abbr </strong> title="World Health Organization"&gt;WHO&lt;<strong>/abbr</strong>&gt; was founded in 1948.&lt;<strong>/p</strong>&gt;
+            </div>
+            <div class="code-example" title ="example link">
+                &lt;<strong>p</strong>&gt; &lt;<strong>a </strong>title="Free Web tutorials" href="W3Schools.com"&gt;&lt;<strong>/p</strong>&gt;
+            </div>
+
+            <h3> Labels and form controls </h3>
+            <p>
+                Use a for attribute on the &lt;<strong>label</strong>&gt; element linked to the id attribute of the form element,
+                or using WAI-ARIA attributes. In specific situations it may be acceptable to hide &lt;<strong>label</strong>&gt; elements visually,
+                but in most cases labels are needed to help all readers understand the required input.
+                Example: Using for and id attributes
+            </p>
+
+            <div class="code-example" title="example lablel">
+                &lt;<strong>label</strong> for="username"&gt;Username&lt;<strong>/label</strong>&gt;
+                <br>
+                &lt;<strong>input</strong> id="username" type="text" name="username"&gt;
+            </div>
+
+            <p>
+                Associating a  &lt;<strong>label</strong>&gt; with an &lt;<strong>input</strong>&gt; element offers some major advantages:
+            </p>    
+            <ul>
+                <li>
+                    The label text is not only visually associated with its corresponding text input; it is programmatically associated with it too. This means that, for example,
+                    a screen reader will read out the label when the user is focused on the form input,
+                    making it easier for an assistive technology user to understand what data should be entered.
+                </li>
+                <li>
+                    You can click the associated label to focus/activate the input,
+                    as well as the input itself. This increased hit area provides an advantage to anyone trying to activate the input,
+                    including those using a touch-screen device.
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Alt text</h3>
+            <p>
+                When it comes to websites, images are very important because their main role is to capture the attention of the visitor.
+                They can convey complex messages in the blink of an eye.
+            </p>
+            <p>
+                But, when an image is viewed by a screen reader, it doesn't really offer the user much help,
+                 VoiceOver for example reads out the filename to try to provide some help, but often files may be uploaded with machine-generated file names
+                  (e.g. from a digital camera) and these file names would likely provide no context to the image's content.
+            </p>
+            <p>
+                When a screen reader encounters the second image, it reads out the full alt attribute. 
+                This highlights the importance of not only using meaningful file names in case so-called alt text is not available, 
+                but also making sure that alt text is provided in “Alt” attributes wherever possible. Some tips for using alt texts:
+            </p>
+
+            <ul>
+                <li> Image alt text should contain just enough information to describe the image without being too lengthy - between a few words and a short sentence or two.</li>
+                <li> Image alt text for images being used as links to another page should describe where the image link is taking the user.</li>
+                <li> Image alt text for complex images such as charts or graphs should be accompanied by a link to a text-only description of the image. See the bar graph example below. </li>
+                <li> If image alt text is left blank, the image will be skipped over by screen readers. These are identified as "decorative" images. Images such as information graphics and mega menu thumbnails are decorative.</li>
+            </ul>
+            By Using these tips your alt text will look something like this:
+            
+            <div class="alt-example">
+                <figure class="alt-example__figure">
+                    <img class="alt-example__figure__img" title="First image alt text example" src="Resources/Alt1.png" alt="image alt text example, about the new arch on the esplanade extension." >
+                    <p>
+                        <strong>Alt text:</strong> <em>Students walk through the new arch on the esplanade extension that connects the Kent State campus with downtown Kent.</em>
+                    </p>
+                    The alt text description adequately describes the content of the image without becoming too lengthy or overly descriptive.
+                </figure>
+                <figure class="alt-example__figure">
+                    <img class="alt-example__figure__img" title="Second image alt text example" src="Resources/Alt2.png" alt="image alt text example, about an decorative image." >
+                    <p>
+                        <strong>Alt text:</strong> <em>(left blank)</em>
+                    </p>
+                    The alt text description for the information graphics is left blank because the images are decorative, 
+                    and are only being used to draw attention to the links they're placed above. The adjacent link text is sufficient.
+                </figure>
+            </div> 
+        </section>
+    </article>
+
+    <aside>
+        <p class="text">
+            Share on Instagram, Facebook, or Twitter!
+        </p> 
+        <a href="https://www.instagram.com/" target="_blank"><img src="Resources/insta.png" alt="picture of the instagram logo" class="imgaside"></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://webtech.nblonk.nl/Webtech/index.html" target="_blank"><img src="Resources/facebook.png" alt="picture of the facebook logo" class="imgaside"></a>
+        <a href="https://twitter.com/intent/tweet?url=https://webtech.nblonk.nl/Webtech/index.html&text=" target="_blank"><img src="Resources/twitter.png" alt="picture of the twitter logo" class="imgaside"></a>
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://webtech.nblonk.nl/Webtech/index.html" target="_blank"><img src="Resources/LinkedIn.png" alt="picture of the linkedIn logo" class="imgaside"></a>
+    </aside>
+
+    <footer>
+        <h4>References:</h4>
+        <ul id="references">
+            <li><a title ="Mozilla HTML Accessibility" href="https://developer.mozilla.org/en-US/docs/Learn/Accessibility/HTML" target="_blank"> HTML: A good basis for accessibility</a> <em>by MDN contributors</em></li>
+            <li><a title ="Mozilla CSS Accessibility" href="https://developer.mozilla.org/en-US/docs/Learn/Accessibility/CSS_and_JavaScript" target="_blank"> CSS and JavaScript accessibility best practices</a> <em>by MDN contributors</em></li>
+            <li><a title ="Mozilla Label Element" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label" target="_blank"> The Label Element</a> <em>by MDN contributors</em> </li>
+            <li><a title ="W3C Tips for Developing" href="https://www.w3.org/WAI/tips/developing/" target="_blank"> Developing for Web Accessibility</a> by W3C Web Accessibility Initiative (WAI) </li>
+            <li><a title ="w3schools HTML Accessibility" href="https://www.w3schools.com/html/html_accessibility.asp" target="_blank">HTML Accessibility</a> by W3Schools </li>
+            <li><a title = "Kent State University Web Accessibility Examples" href="https://du1ux2871uqvu.cloudfront.net/digital-accessibility/web-accessibility-examples" target="_blank">Web Accessibility Examples</a> by Kent State University's Student Accessibility Services </li>
+        </ul>
+        <hr id="footerDivider">
+        
+        <ul>
+            <li><a title="Back to top" href="#body">Back to top</a></li>
+            <li><a title="Cookies Policy" href="https://www.termsfeed.com/live/023163d7-5810-4d74-815a-bc41a6fafc2e" target="_blank"> Cookies </a></li>
+            <li><a title="terms of use" href="https://www.termsofusegenerator.net/live.php?token=bqIFkZ18svcfGGWGhp30vbO1juMjOMqx" target="_blank"> Terms of use</a></li>
+            <li><a title="webtechnolgies Utrecht" href="http://www.cs.uu.nl/education/vak.php?vak=INFOB2WT" target="_blank"> Webtechnolgies UU</a> </li>
+            <li><a title="Contact" href="mailto:g.shamon@students.uu.nl" target="_blank"> Contact</a></li>
+        </ul>
+        <p id="copyright">© 2021 - All Rights Reserved.</p>
+    </footer>
+    <script src ="javascript/ajax.js"></script>
+    <script src="javascript/menus.js"></script>
+</body>
+</html>
